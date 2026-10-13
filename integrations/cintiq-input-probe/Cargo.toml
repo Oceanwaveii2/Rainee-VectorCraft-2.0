@@ -1,0 +1,28 @@
+[package]
+name = "cintiq-input-probe"
+version = "0.3.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+publish = false
+
+# Standalone diagnostic; does not pull the editor or GPU stack into a native packet test.
+[workspace]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["float_roundtrip"] }
+sha2 = "0.10"
+libm = "0.2"
+vectorcraft-geom = { path = "../../crates/geom" }
+
+[target.'cfg(windows)'.dependencies]
+winit = { version = "=0.30.13", default-features = false, features = ["rwh_06"] }
+windows = { version = "=0.62.2", features = ["Win32_UI_Input_Pointer", "Win32_UI_WindowsAndMessaging", "Win32_UI_HiDpi", "Win32_Graphics_Gdi", "Win32_System_Performance"] }
+raw-window-handle = "0.6"
+
+[lints.rust]
+unsafe_code = "deny"
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"

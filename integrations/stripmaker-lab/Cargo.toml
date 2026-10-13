@@ -1,0 +1,18 @@
+[package]
+name = "stripmaker-classifier-lab"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+publish = false
+
+# An offline research probe, not an editor dependency or substitute feature extractor.
+[workspace]
+
+[dependencies]
+serde_json = "1"
+sha2 = "0.10"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"

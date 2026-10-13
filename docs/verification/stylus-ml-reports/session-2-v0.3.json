@@ -1,0 +1,3483 @@
+{
+  "schema": 1,
+  "evaluator_version": "0.3.0",
+  "capture_sha256": "11ed0520bdfb2e45fd64216269ed35c39bf5917eb749c0cac444a67f22215dd2",
+  "model_sha256": "66dd372bbbc7717cf64067c1257117d35d6a2c727506ea39cb1cb51b83d03bd7",
+  "model_description": "AOSP model: 123 tensors, 88 ops, 5 history steps, 5 predicted steps",
+  "model_executed": true,
+  "model_inferences": 5375,
+  "inference_mean_us": 145.08256744186076,
+  "inference_p95_us": 217.4,
+  "inference_max_us": 5384.8,
+  "evaluated_strokes": 17,
+  "excluded_strokes": {
+    "eraser_or_inverted": 5
+  },
+  "model_history_unavailable": 369,
+  "model_noise_floor_abstentions": 734,
+  "training_performed": false,
+  "document_edits": 0,
+  "promoted_to_editor": false,
+  "limitations": [
+    "Unlabelled sessions cannot establish corner/reversal/pressure-specific acceptance",
+    "Offline endpoint error is not measured pen-to-photon latency",
+    "Rust kernels have not been cross-checked against the TensorFlow Lite runtime",
+    "Android fixed-rate and tilt adaptation require hardware validation; pretrained training-data provenance is not established",
+    "All methods scored on identical future targets; unavailable prediction falls back to current measured position",
+    "Existing predictors run in 96-DPI logical units at zoom 1; ML uses physical screen pixels; no heuristic tuning on these captures"
+  ],
+  "horizons": {
+    "12": {
+      "aosp_guarded": {
+        "targets": 5653,
+        "predictions": 4390,
+        "coverage": 0.7765788077127189,
+        "mean_error_px": 7.890028603744731,
+        "p95_error_px": 23.18633426281938,
+        "p99_error_px": 34.35198595200586,
+        "max_error_px": 99.1528969325554,
+        "fraction_better_than_hold": 0.759596674332213
+      },
+      "aosp_raw": {
+        "targets": 5653,
+        "predictions": 4581,
+        "coverage": 0.8103661772510171,
+        "mean_error_px": 8.273730532253104,
+        "p95_error_px": 24.762821511777545,
+        "p99_error_px": 37.80998162597949,
+        "max_error_px": 99.1528969325554,
+        "fraction_better_than_hold": 0.7772863966035733
+      },
+      "existing_predictor": {
+        "targets": 5653,
+        "predictions": 4572,
+        "coverage": 0.8087741022465947,
+        "mean_error_px": 8.442740121730605,
+        "p95_error_px": 21.270583323152362,
+        "p99_error_px": 29.81548910413093,
+        "max_error_px": 94.06019637805018,
+        "fraction_better_than_hold": 0.7413762603927119
+      },
+      "existing_stabilized": {
+        "targets": 5653,
+        "predictions": 4535,
+        "coverage": 0.8022289050061914,
+        "mean_error_px": 41.01580421267659,
+        "p95_error_px": 105.0646432472687,
+        "p99_error_px": 134.86744653400396,
+        "max_error_px": 188.9360954871365,
+        "fraction_better_than_hold": 0.014151777817088271
+      },
+      "hold": {
+        "targets": 5653,
+        "predictions": 5653,
+        "coverage": 1.0,
+        "mean_error_px": 19.856365714895396,
+        "p95_error_px": 47.095947199030405,
+        "p99_error_px": 61.01525996985508,
+        "max_error_px": 99.1528969325554,
+        "fraction_better_than_hold": 0.0
+      },
+      "last_velocity": {
+        "targets": 5653,
+        "predictions": 5619,
+        "coverage": 0.9939854944277375,
+        "mean_error_px": 14.700964966769774,
+        "p95_error_px": 27.21704584419134,
+        "p99_error_px": 58.41667555547762,
+        "max_error_px": 3651.3205455746615,
+        "fraction_better_than_hold": 0.7603042632230674
+      }
+    },
+    "14": {
+      "aosp_guarded": {
+        "targets": 5639,
+        "predictions": 4382,
+        "coverage": 0.7770881361943607,
+        "mean_error_px": 9.068232965604809,
+        "p95_error_px": 25.197602708588484,
+        "p99_error_px": 37.23846818423419,
+        "max_error_px": 115.20227829480825,
+        "fraction_better_than_hold": 0.762723887214045
+      },
+      "aosp_raw": {
+        "targets": 5639,
+        "predictions": 4572,
+        "coverage": 0.810782053555595,
+        "mean_error_px": 9.527007027541327,
+        "p95_error_px": 27.07929065957954,
+        "p99_error_px": 42.24447102226759,
+        "max_error_px": 115.20227829480825,
+        "fraction_better_than_hold": 0.7793935094874977
+      },
+      "existing_predictor": {
+        "targets": 5639,
+        "predictions": 4564,
+        "coverage": 0.8093633622982799,
+        "mean_error_px": 8.736346504950676,
+        "p95_error_px": 21.737839585146087,
+        "p99_error_px": 31.474760817716874,
+        "max_error_px": 109.26007552062738,
+        "fraction_better_than_hold": 0.7519063663770172
+      },
+      "existing_stabilized": {
+        "targets": 5639,
+        "predictions": 4527,
+        "coverage": 0.8028019152331973,
+        "mean_error_px": 41.992165426723275,
+        "p95_error_px": 108.84095490391253,
+        "p99_error_px": 140.47619765625117,
+        "max_error_px": 196.84116679235467,
+        "fraction_better_than_hold": 0.05586096825678312
+      },
+      "hold": {
+        "targets": 5639,
+        "predictions": 5639,
+        "coverage": 1.0,
+        "mean_error_px": 23.39141566287585,
+        "p95_error_px": 54.73775583368238,
+        "p99_error_px": 70.95876486053972,
+        "max_error_px": 115.20227829480825,
+        "fraction_better_than_hold": 0.0
+      },
+      "last_velocity": {
+        "targets": 5639,
+        "predictions": 5605,
+        "coverage": 0.9939705621564107,
+        "mean_error_px": 16.53584620519357,
+        "p95_error_px": 29.9617645028129,
+        "p99_error_px": 67.96615592275388,
+        "max_error_px": 4259.758078541552,
+        "fraction_better_than_hold": 0.7689306614647987
+      }
+    },
+    "16": {
+      "aosp_guarded": {
+        "targets": 5625,
+        "predictions": 4373,
+        "coverage": 0.7774222222222222,
+        "mean_error_px": 10.64555651549408,
+        "p95_error_px": 29.123330396482395,
+        "p99_error_px": 41.51335276521661,
+        "max_error_px": 131.86843065723767,
+        "fraction_better_than_hold": 0.7640888888888889
+      },
+      "aosp_raw": {
+        "targets": 5625,
+        "predictions": 4563,
+        "coverage": 0.8112,
+        "mean_error_px": 11.011097778065004,
+        "p95_error_px": 29.892854899738225,
+        "p99_error_px": 46.76113409726533,
+        "max_error_px": 131.86843065723767,
+        "fraction_better_than_hold": 0.7799111111111111
+      },
+      "existing_predictor": {
+        "targets": 5625,
+        "predictions": 4554,
+        "coverage": 0.8096,
+        "mean_error_px": 9.285724201993768,
+        "p95_error_px": 24.01998107355494,
+        "p99_error_px": 36.52324821588727,
+        "max_error_px": 125.07671513384582,
+        "fraction_better_than_hold": 0.76
+      },
+      "existing_stabilized": {
+        "targets": 5625,
+        "predictions": 4517,
+        "coverage": 0.8030222222222222,
+        "mean_error_px": 43.49829105852163,
+        "p95_error_px": 113.60302375944552,
+        "p99_error_px": 150.48069808899385,
+        "max_error_px": 210.3011937403551,
+        "fraction_better_than_hold": 0.09066666666666667
+      },
+      "hold": {
+        "targets": 5625,
+        "predictions": 5625,
+        "coverage": 1.0,
+        "mean_error_px": 27.129663534972583,
+        "p95_error_px": 62.94082595431634,
+        "p99_error_px": 80.4330509498971,
+        "max_error_px": 131.86843065723767,
+        "fraction_better_than_hold": 0.0
+      },
+      "last_velocity": {
+        "targets": 5625,
+        "predictions": 5592,
+        "coverage": 0.9941333333333333,
+        "mean_error_px": 18.31229978435345,
+        "p95_error_px": 32.15441924372883,
+        "p99_error_px": 76.06463194148759,
+        "max_error_px": 4869.1803236527485,
+        "fraction_better_than_hold": 0.7744
+      }
+    }
+  },
+  "per_stroke": [
+    {
+      "id": 0,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 1439,
+            "predictions": 958,
+            "coverage": 0.6657400972897846,
+            "mean_error_px": 6.635298614698205,
+            "p95_error_px": 20.603381015036078,
+            "p99_error_px": 37.30817707461399,
+            "max_error_px": 99.1528969325554,
+            "fraction_better_than_hold": 0.6539263377345379
+          },
+          "aosp_raw": {
+            "targets": 1439,
+            "predictions": 1035,
+            "coverage": 0.7192494788047255,
+            "mean_error_px": 6.762915694752952,
+            "p95_error_px": 20.98906411955742,
+            "p99_error_px": 41.72551036750341,
+            "max_error_px": 99.1528969325554,
+            "fraction_better_than_hold": 0.6803335649756775
+          },
+          "existing_predictor": {
+            "targets": 1439,
+            "predictions": 1029,
+            "coverage": 0.715079916608756,
+            "mean_error_px": 7.282212773559597,
+            "p95_error_px": 18.93759411112982,
+            "p99_error_px": 32.69221412366534,
+            "max_error_px": 94.06019637805018,
+            "fraction_better_than_hold": 0.6497567755385685
+          },
+          "existing_stabilized": {
+            "targets": 1439,
+            "predictions": 1020,
+            "coverage": 0.7088255733148019,
+            "mean_error_px": 29.796022720195694,
+            "p95_error_px": 82.95207937891814,
+            "p99_error_px": 120.16936622049694,
+            "max_error_px": 138.7177738531896,
+            "fraction_better_than_hold": 0.015983321751216122
+          },
+          "hold": {
+            "targets": 1439,
+            "predictions": 1439,
+            "coverage": 1.0,
+            "mean_error_px": 15.161730099246265,
+            "p95_error_px": 35.746660811238456,
+            "p99_error_px": 47.0093491101115,
+            "max_error_px": 99.1528969325554,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1439,
+            "predictions": 1428,
+            "coverage": 0.9923558026407228,
+            "mean_error_px": 12.76280322711885,
+            "p95_error_px": 22.90634524089792,
+            "p99_error_px": 100.46386819852343,
+            "max_error_px": 1150.0001159012231,
+            "fraction_better_than_hold": 0.6810284920083391
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 1435,
+            "predictions": 955,
+            "coverage": 0.6655052264808362,
+            "mean_error_px": 7.59178563032633,
+            "p95_error_px": 22.177753068305247,
+            "p99_error_px": 42.98206235994769,
+            "max_error_px": 115.20227829480825,
+            "fraction_better_than_hold": 0.6557491289198606
+          },
+          "aosp_raw": {
+            "targets": 1435,
+            "predictions": 1032,
+            "coverage": 0.7191637630662021,
+            "mean_error_px": 7.810302529844418,
+            "p95_error_px": 22.74662329755784,
+            "p99_error_px": 46.15818440724024,
+            "max_error_px": 115.20227829480825,
+            "fraction_better_than_hold": 0.6836236933797909
+          },
+          "existing_predictor": {
+            "targets": 1435,
+            "predictions": 1026,
+            "coverage": 0.7149825783972126,
+            "mean_error_px": 7.549084117204509,
+            "p95_error_px": 19.791327109162197,
+            "p99_error_px": 32.97531771234768,
+            "max_error_px": 109.26007552062738,
+            "fraction_better_than_hold": 0.6627177700348432
+          },
+          "existing_stabilized": {
+            "targets": 1435,
+            "predictions": 1017,
+            "coverage": 0.7087108013937282,
+            "mean_error_px": 30.20150936983627,
+            "p95_error_px": 83.00804966623859,
+            "p99_error_px": 122.91167652793143,
+            "max_error_px": 143.9323383972611,
+            "fraction_better_than_hold": 0.07038327526132404
+          },
+          "hold": {
+            "targets": 1435,
+            "predictions": 1435,
+            "coverage": 1.0,
+            "mean_error_px": 17.853634524624752,
+            "p95_error_px": 41.424602292053024,
+            "p99_error_px": 54.691182145009655,
+            "max_error_px": 115.20227829480825,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1435,
+            "predictions": 1424,
+            "coverage": 0.9923344947735192,
+            "mean_error_px": 14.37440069332663,
+            "p95_error_px": 25.218470476730356,
+            "p99_error_px": 117.64428640350356,
+            "max_error_px": 1336.5636545000111,
+            "fraction_better_than_hold": 0.6919860627177701
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 1431,
+            "predictions": 952,
+            "coverage": 0.6652690426275332,
+            "mean_error_px": 8.747951293872097,
+            "p95_error_px": 23.938620262664116,
+            "p99_error_px": 46.76113409726533,
+            "max_error_px": 131.86843065723767,
+            "fraction_better_than_hold": 0.6540880503144654
+          },
+          "aosp_raw": {
+            "targets": 1431,
+            "predictions": 1029,
+            "coverage": 0.7190775681341719,
+            "mean_error_px": 9.032879558011054,
+            "p95_error_px": 24.643914462511997,
+            "p99_error_px": 52.893382696023096,
+            "max_error_px": 131.86843065723767,
+            "fraction_better_than_hold": 0.6820405310971349
+          },
+          "existing_predictor": {
+            "targets": 1431,
+            "predictions": 1023,
+            "coverage": 0.7148846960167715,
+            "mean_error_px": 7.622039965466439,
+            "p95_error_px": 19.370517500680123,
+            "p99_error_px": 34.55688897948215,
+            "max_error_px": 125.07671513384582,
+            "fraction_better_than_hold": 0.6687631027253669
+          },
+          "existing_stabilized": {
+            "targets": 1431,
+            "predictions": 1014,
+            "coverage": 0.7085953878406709,
+            "mean_error_px": 30.89028304657246,
+            "p95_error_px": 90.42918255258614,
+            "p99_error_px": 126.31993400345384,
+            "max_error_px": 155.09347556126673,
+            "fraction_better_than_hold": 0.1488469601677149
+          },
+          "hold": {
+            "targets": 1431,
+            "predictions": 1431,
+            "coverage": 1.0,
+            "mean_error_px": 20.667080599072047,
+            "p95_error_px": 47.57893166706266,
+            "p99_error_px": 60.70707424663111,
+            "max_error_px": 131.86843065723767,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1431,
+            "predictions": 1420,
+            "coverage": 0.9923130677847659,
+            "mean_error_px": 15.91378099431066,
+            "p95_error_px": 26.799569281540112,
+            "p99_error_px": 135.26402557379603,
+            "max_error_px": 1523.9210999637583,
+            "fraction_better_than_hold": 0.6981132075471698
+          }
+        }
+      }
+    },
+    {
+      "id": 1,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 237,
+            "predictions": 214,
+            "coverage": 0.9029535864978903,
+            "mean_error_px": 5.809979162642453,
+            "p95_error_px": 16.909752111685687,
+            "p99_error_px": 21.75127014759344,
+            "max_error_px": 29.24246545410372,
+            "fraction_better_than_hold": 0.8945147679324894
+          },
+          "aosp_raw": {
+            "targets": 237,
+            "predictions": 217,
+            "coverage": 0.9156118143459916,
+            "mean_error_px": 5.800317001638913,
+            "p95_error_px": 16.909752111685687,
+            "p99_error_px": 21.75127014759344,
+            "max_error_px": 29.24246545410372,
+            "fraction_better_than_hold": 0.8987341772151899
+          },
+          "existing_predictor": {
+            "targets": 237,
+            "predictions": 216,
+            "coverage": 0.9113924050632911,
+            "mean_error_px": 6.43820473777,
+            "p95_error_px": 17.032230757283557,
+            "p99_error_px": 24.078152248700434,
+            "max_error_px": 33.968172122215805,
+            "fraction_better_than_hold": 0.8438818565400844
+          },
+          "existing_stabilized": {
+            "targets": 237,
+            "predictions": 214,
+            "coverage": 0.9029535864978903,
+            "mean_error_px": 37.98036850803312,
+            "p95_error_px": 80.99728849110006,
+            "p99_error_px": 94.87997124687816,
+            "max_error_px": 99.73605570834656,
+            "fraction_better_than_hold": 0.012658227848101266
+          },
+          "hold": {
+            "targets": 237,
+            "predictions": 237,
+            "coverage": 1.0,
+            "mean_error_px": 13.253673024807915,
+            "p95_error_px": 32.95879307547711,
+            "p99_error_px": 41.08636993925362,
+            "max_error_px": 44.3323024222331,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 237,
+            "predictions": 236,
+            "coverage": 0.9957805907172996,
+            "mean_error_px": 6.85232322168329,
+            "p95_error_px": 17.531224784053784,
+            "p99_error_px": 25.917410038869935,
+            "max_error_px": 90.08579451929903,
+            "fraction_better_than_hold": 0.8734177215189873
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 236,
+            "predictions": 213,
+            "coverage": 0.902542372881356,
+            "mean_error_px": 6.547327605566644,
+            "p95_error_px": 18.290212096667446,
+            "p99_error_px": 24.62366474418457,
+            "max_error_px": 31.301951808974554,
+            "fraction_better_than_hold": 0.8983050847457628
+          },
+          "aosp_raw": {
+            "targets": 236,
+            "predictions": 216,
+            "coverage": 0.9152542372881356,
+            "mean_error_px": 6.594303391569867,
+            "p95_error_px": 18.290212096667446,
+            "p99_error_px": 24.62366474418457,
+            "max_error_px": 31.301951808974554,
+            "fraction_better_than_hold": 0.9067796610169492
+          },
+          "existing_predictor": {
+            "targets": 236,
+            "predictions": 215,
+            "coverage": 0.9110169491525424,
+            "mean_error_px": 6.632250860660815,
+            "p95_error_px": 16.694933879380095,
+            "p99_error_px": 20.914682503222522,
+            "max_error_px": 31.03710321858986,
+            "fraction_better_than_hold": 0.864406779661017
+          },
+          "existing_stabilized": {
+            "targets": 236,
+            "predictions": 213,
+            "coverage": 0.902542372881356,
+            "mean_error_px": 38.43020748071596,
+            "p95_error_px": 81.83110236321617,
+            "p99_error_px": 96.12927085019828,
+            "max_error_px": 100.66899866597397,
+            "fraction_better_than_hold": 0.0211864406779661
+          },
+          "hold": {
+            "targets": 236,
+            "predictions": 236,
+            "coverage": 1.0,
+            "mean_error_px": 15.641537399487742,
+            "p95_error_px": 39.380668421619276,
+            "p99_error_px": 45.63278191431148,
+            "max_error_px": 48.792500920494035,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 236,
+            "predictions": 235,
+            "coverage": 0.9957627118644068,
+            "mean_error_px": 7.456153477970141,
+            "p95_error_px": 19.683876381222216,
+            "p99_error_px": 26.0717502643912,
+            "max_error_px": 104.50880544830537,
+            "fraction_better_than_hold": 0.8898305084745762
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 236,
+            "predictions": 213,
+            "coverage": 0.902542372881356,
+            "mean_error_px": 7.3838157968335105,
+            "p95_error_px": 19.504630172084045,
+            "p99_error_px": 26.545843453063842,
+            "max_error_px": 33.60112755013251,
+            "fraction_better_than_hold": 0.8983050847457628
+          },
+          "aosp_raw": {
+            "targets": 236,
+            "predictions": 216,
+            "coverage": 0.9152542372881356,
+            "mean_error_px": 7.505213953997359,
+            "p95_error_px": 20.357537079313307,
+            "p99_error_px": 26.545843453063842,
+            "max_error_px": 33.60112755013251,
+            "fraction_better_than_hold": 0.9067796610169492
+          },
+          "existing_predictor": {
+            "targets": 236,
+            "predictions": 215,
+            "coverage": 0.9110169491525424,
+            "mean_error_px": 6.864732048920064,
+            "p95_error_px": 16.6919665166966,
+            "p99_error_px": 21.430526286095986,
+            "max_error_px": 27.918866178264604,
+            "fraction_better_than_hold": 0.8813559322033898
+          },
+          "existing_stabilized": {
+            "targets": 236,
+            "predictions": 213,
+            "coverage": 0.902542372881356,
+            "mean_error_px": 39.22387519463986,
+            "p95_error_px": 84.87102363871955,
+            "p99_error_px": 98.84150567684217,
+            "max_error_px": 101.6067161320624,
+            "fraction_better_than_hold": 0.0211864406779661
+          },
+          "hold": {
+            "targets": 236,
+            "predictions": 236,
+            "coverage": 1.0,
+            "mean_error_px": 18.135741255027114,
+            "p95_error_px": 45.98708758550671,
+            "p99_error_px": 52.35153985563436,
+            "max_error_px": 53.453947788624404,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 236,
+            "predictions": 235,
+            "coverage": 0.9957627118644068,
+            "mean_error_px": 8.039587787038482,
+            "p95_error_px": 20.91516181433637,
+            "p99_error_px": 26.582647657152975,
+            "max_error_px": 118.74601436874178,
+            "fraction_better_than_hold": 0.9067796610169492
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 74,
+            "predictions": 52,
+            "coverage": 0.7027027027027027,
+            "mean_error_px": 4.863557004454365,
+            "p95_error_px": 15.40596782352717,
+            "p99_error_px": 18.817782021120436,
+            "max_error_px": 18.817782021120436,
+            "fraction_better_than_hold": 0.7027027027027027
+          },
+          "aosp_raw": {
+            "targets": 74,
+            "predictions": 55,
+            "coverage": 0.7432432432432432,
+            "mean_error_px": 4.848824109455297,
+            "p95_error_px": 15.40596782352717,
+            "p99_error_px": 18.817782021120436,
+            "max_error_px": 18.817782021120436,
+            "fraction_better_than_hold": 0.7297297297297297
+          },
+          "existing_predictor": {
+            "targets": 74,
+            "predictions": 59,
+            "coverage": 0.7972972972972973,
+            "mean_error_px": 6.342840421618311,
+            "p95_error_px": 14.71923411648195,
+            "p99_error_px": 40.17457906735903,
+            "max_error_px": 40.17457906735903,
+            "fraction_better_than_hold": 0.6486486486486487
+          },
+          "existing_stabilized": {
+            "targets": 74,
+            "predictions": 59,
+            "coverage": 0.7972972972972973,
+            "mean_error_px": 29.344940540317676,
+            "p95_error_px": 68.89642553660339,
+            "p99_error_px": 72.3943869611321,
+            "max_error_px": 72.3943869611321,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 74,
+            "predictions": 74,
+            "coverage": 1.0,
+            "mean_error_px": 10.6307470060837,
+            "p95_error_px": 26.704333134620633,
+            "p99_error_px": 28.403043539386044,
+            "max_error_px": 28.403043539386044,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 74,
+            "predictions": 73,
+            "coverage": 0.9864864864864865,
+            "mean_error_px": 8.158078975398286,
+            "p95_error_px": 14.71923411648195,
+            "p99_error_px": 167.81262669399723,
+            "max_error_px": 167.81262669399723,
+            "fraction_better_than_hold": 0.6891891891891891
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 73,
+            "predictions": 52,
+            "coverage": 0.7123287671232876,
+            "mean_error_px": 5.624246178617732,
+            "p95_error_px": 16.05371570118382,
+            "p99_error_px": 20.34949356326694,
+            "max_error_px": 20.34949356326694,
+            "fraction_better_than_hold": 0.6986301369863014
+          },
+          "aosp_raw": {
+            "targets": 73,
+            "predictions": 54,
+            "coverage": 0.7397260273972602,
+            "mean_error_px": 5.575407878304364,
+            "p95_error_px": 16.05371570118382,
+            "p99_error_px": 20.34949356326694,
+            "max_error_px": 20.34949356326694,
+            "fraction_better_than_hold": 0.726027397260274
+          },
+          "existing_predictor": {
+            "targets": 73,
+            "predictions": 59,
+            "coverage": 0.8082191780821918,
+            "mean_error_px": 6.894419270931921,
+            "p95_error_px": 16.742875187697653,
+            "p99_error_px": 39.48228087172267,
+            "max_error_px": 39.48228087172267,
+            "fraction_better_than_hold": 0.684931506849315
+          },
+          "existing_stabilized": {
+            "targets": 73,
+            "predictions": 59,
+            "coverage": 0.8082191780821918,
+            "mean_error_px": 29.91424212060908,
+            "p95_error_px": 69.35785893687473,
+            "p99_error_px": 72.08156809981286,
+            "max_error_px": 72.08156809981286,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 73,
+            "predictions": 73,
+            "coverage": 1.0,
+            "mean_error_px": 12.682981435571639,
+            "p95_error_px": 28.971375240659388,
+            "p99_error_px": 31.13017061895257,
+            "max_error_px": 31.13017061895257,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 73,
+            "predictions": 72,
+            "coverage": 0.9863013698630136,
+            "mean_error_px": 9.103227850644519,
+            "p95_error_px": 16.742875187697653,
+            "p99_error_px": 196.393411937133,
+            "max_error_px": 196.393411937133,
+            "fraction_better_than_hold": 0.726027397260274
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 72,
+            "predictions": 52,
+            "coverage": 0.7222222222222222,
+            "mean_error_px": 6.587989922818933,
+            "p95_error_px": 17.395418607787413,
+            "p99_error_px": 22.012622794079675,
+            "max_error_px": 22.012622794079675,
+            "fraction_better_than_hold": 0.7083333333333334
+          },
+          "aosp_raw": {
+            "targets": 72,
+            "predictions": 54,
+            "coverage": 0.75,
+            "mean_error_px": 6.529385991448449,
+            "p95_error_px": 17.395418607787413,
+            "p99_error_px": 22.012622794079675,
+            "max_error_px": 22.012622794079675,
+            "fraction_better_than_hold": 0.7361111111111112
+          },
+          "existing_predictor": {
+            "targets": 72,
+            "predictions": 59,
+            "coverage": 0.8194444444444444,
+            "mean_error_px": 7.37384561013926,
+            "p95_error_px": 18.788839863066872,
+            "p99_error_px": 38.99813026941853,
+            "max_error_px": 38.99813026941853,
+            "fraction_better_than_hold": 0.6944444444444444
+          },
+          "existing_stabilized": {
+            "targets": 72,
+            "predictions": 59,
+            "coverage": 0.8194444444444444,
+            "mean_error_px": 30.553712513642225,
+            "p95_error_px": 70.48619392369307,
+            "p99_error_px": 72.41144661484289,
+            "max_error_px": 72.41144661484289,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 72,
+            "predictions": 72,
+            "coverage": 1.0,
+            "mean_error_px": 14.83092176264991,
+            "p95_error_px": 32.92071862529044,
+            "p99_error_px": 34.36098926054099,
+            "max_error_px": 34.36098926054099,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 72,
+            "predictions": 71,
+            "coverage": 0.9861111111111112,
+            "mean_error_px": 10.073115309687708,
+            "p95_error_px": 18.843674757650117,
+            "p99_error_px": 225.18195457026158,
+            "max_error_px": 225.18195457026158,
+            "fraction_better_than_hold": 0.7222222222222222
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 7.922906354783276,
+            "p95_error_px": 7.922906354783276,
+            "p99_error_px": 7.922906354783276,
+            "max_error_px": 7.922906354783276,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 7.922906354783276,
+            "p95_error_px": 7.922906354783276,
+            "p99_error_px": 7.922906354783276,
+            "max_error_px": 7.922906354783276,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 7.922906354783276,
+            "p95_error_px": 7.922906354783276,
+            "p99_error_px": 7.922906354783276,
+            "max_error_px": 7.922906354783276,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 7.922906354783276,
+            "p95_error_px": 7.922906354783276,
+            "p99_error_px": 7.922906354783276,
+            "max_error_px": 7.922906354783276,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 1,
+            "predictions": 1,
+            "coverage": 1.0,
+            "mean_error_px": 7.922906354783276,
+            "p95_error_px": 7.922906354783276,
+            "p99_error_px": 7.922906354783276,
+            "max_error_px": 7.922906354783276,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 7.922906354783276,
+            "p95_error_px": 7.922906354783276,
+            "p99_error_px": 7.922906354783276,
+            "max_error_px": 7.922906354783276,
+            "fraction_better_than_hold": 0.0
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 9.38737061323317,
+            "p95_error_px": 9.38737061323317,
+            "p99_error_px": 9.38737061323317,
+            "max_error_px": 9.38737061323317,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 9.38737061323317,
+            "p95_error_px": 9.38737061323317,
+            "p99_error_px": 9.38737061323317,
+            "max_error_px": 9.38737061323317,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 9.38737061323317,
+            "p95_error_px": 9.38737061323317,
+            "p99_error_px": 9.38737061323317,
+            "max_error_px": 9.38737061323317,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 9.38737061323317,
+            "p95_error_px": 9.38737061323317,
+            "p99_error_px": 9.38737061323317,
+            "max_error_px": 9.38737061323317,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 1,
+            "predictions": 1,
+            "coverage": 1.0,
+            "mean_error_px": 9.38737061323317,
+            "p95_error_px": 9.38737061323317,
+            "p99_error_px": 9.38737061323317,
+            "max_error_px": 9.38737061323317,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 9.38737061323317,
+            "p95_error_px": 9.38737061323317,
+            "p99_error_px": 9.38737061323317,
+            "max_error_px": 9.38737061323317,
+            "fraction_better_than_hold": 0.0
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "aosp_raw": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_predictor": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_stabilized": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "hold": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "last_velocity": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 9,
+            "predictions": 4,
+            "coverage": 0.4444444444444444,
+            "mean_error_px": 4.68299900716903,
+            "p95_error_px": 7.664671471146201,
+            "p99_error_px": 7.664671471146201,
+            "max_error_px": 7.664671471146201,
+            "fraction_better_than_hold": 0.4444444444444444
+          },
+          "aosp_raw": {
+            "targets": 9,
+            "predictions": 4,
+            "coverage": 0.4444444444444444,
+            "mean_error_px": 4.68299900716903,
+            "p95_error_px": 7.664671471146201,
+            "p99_error_px": 7.664671471146201,
+            "max_error_px": 7.664671471146201,
+            "fraction_better_than_hold": 0.4444444444444444
+          },
+          "existing_predictor": {
+            "targets": 9,
+            "predictions": 6,
+            "coverage": 0.6666666666666666,
+            "mean_error_px": 4.272935965356158,
+            "p95_error_px": 7.664671471146201,
+            "p99_error_px": 7.664671471146201,
+            "max_error_px": 7.664671471146201,
+            "fraction_better_than_hold": 0.5555555555555556
+          },
+          "existing_stabilized": {
+            "targets": 9,
+            "predictions": 6,
+            "coverage": 0.6666666666666666,
+            "mean_error_px": 13.363121417871,
+            "p95_error_px": 23.537893320894202,
+            "p99_error_px": 23.537893320894202,
+            "max_error_px": 23.537893320894202,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 9,
+            "predictions": 9,
+            "coverage": 1.0,
+            "mean_error_px": 6.5935754343492095,
+            "p95_error_px": 10.198039027185569,
+            "p99_error_px": 10.198039027185569,
+            "max_error_px": 10.198039027185569,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 9,
+            "predictions": 8,
+            "coverage": 0.8888888888888888,
+            "mean_error_px": 4.9013077766003885,
+            "p95_error_px": 9.83234317224632,
+            "p99_error_px": 9.83234317224632,
+            "max_error_px": 9.83234317224632,
+            "fraction_better_than_hold": 0.5555555555555556
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 8,
+            "predictions": 3,
+            "coverage": 0.375,
+            "mean_error_px": 5.988786110045636,
+            "p95_error_px": 8.135954784789227,
+            "p99_error_px": 8.135954784789227,
+            "max_error_px": 8.135954784789227,
+            "fraction_better_than_hold": 0.375
+          },
+          "aosp_raw": {
+            "targets": 8,
+            "predictions": 3,
+            "coverage": 0.375,
+            "mean_error_px": 5.988786110045636,
+            "p95_error_px": 8.135954784789227,
+            "p99_error_px": 8.135954784789227,
+            "max_error_px": 8.135954784789227,
+            "fraction_better_than_hold": 0.375
+          },
+          "existing_predictor": {
+            "targets": 8,
+            "predictions": 5,
+            "coverage": 0.625,
+            "mean_error_px": 4.40353216581188,
+            "p95_error_px": 8.130825699227108,
+            "p99_error_px": 8.130825699227108,
+            "max_error_px": 8.130825699227108,
+            "fraction_better_than_hold": 0.625
+          },
+          "existing_stabilized": {
+            "targets": 8,
+            "predictions": 5,
+            "coverage": 0.625,
+            "mean_error_px": 13.336394047641953,
+            "p95_error_px": 23.252590051772813,
+            "p99_error_px": 23.252590051772813,
+            "max_error_px": 23.252590051772813,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 8,
+            "predictions": 8,
+            "coverage": 1.0,
+            "mean_error_px": 7.871907028834919,
+            "p95_error_px": 11.334368337423939,
+            "p99_error_px": 11.334368337423939,
+            "max_error_px": 11.334368337423939,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 8,
+            "predictions": 7,
+            "coverage": 0.875,
+            "mean_error_px": 5.175101721649381,
+            "p95_error_px": 11.305751266233814,
+            "p99_error_px": 11.305751266233814,
+            "max_error_px": 11.305751266233814,
+            "fraction_better_than_hold": 0.625
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 8,
+            "predictions": 3,
+            "coverage": 0.375,
+            "mean_error_px": 6.955221060328673,
+            "p95_error_px": 9.167657509687436,
+            "p99_error_px": 9.167657509687436,
+            "max_error_px": 9.167657509687436,
+            "fraction_better_than_hold": 0.375
+          },
+          "aosp_raw": {
+            "targets": 8,
+            "predictions": 3,
+            "coverage": 0.375,
+            "mean_error_px": 6.955221060328673,
+            "p95_error_px": 9.167657509687436,
+            "p99_error_px": 9.167657509687436,
+            "max_error_px": 9.167657509687436,
+            "fraction_better_than_hold": 0.375
+          },
+          "existing_predictor": {
+            "targets": 8,
+            "predictions": 5,
+            "coverage": 0.625,
+            "mean_error_px": 5.003008687627678,
+            "p95_error_px": 8.65528628315146,
+            "p99_error_px": 8.65528628315146,
+            "max_error_px": 8.65528628315146,
+            "fraction_better_than_hold": 0.625
+          },
+          "existing_stabilized": {
+            "targets": 8,
+            "predictions": 5,
+            "coverage": 0.625,
+            "mean_error_px": 14.474873913351846,
+            "p95_error_px": 24.666081415400804,
+            "p99_error_px": 24.666081415400804,
+            "max_error_px": 24.666081415400804,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 8,
+            "predictions": 8,
+            "coverage": 1.0,
+            "mean_error_px": 9.151475716038581,
+            "p95_error_px": 14.317821063276353,
+            "p99_error_px": 14.317821063276353,
+            "max_error_px": 14.317821063276353,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 8,
+            "predictions": 7,
+            "coverage": 0.875,
+            "mean_error_px": 5.83908673741715,
+            "p95_error_px": 12.785362105842143,
+            "p99_error_px": 12.785362105842143,
+            "max_error_px": 12.785362105842143,
+            "fraction_better_than_hold": 0.625
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 15,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 0.7695418784612836,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 15,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 0.7695418784612836,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 15,
+            "predictions": 2,
+            "coverage": 0.13333333333333333,
+            "mean_error_px": 1.0441496574498765,
+            "p95_error_px": 3.056985762209365,
+            "p99_error_px": 3.056985762209365,
+            "max_error_px": 3.056985762209365,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 15,
+            "predictions": 2,
+            "coverage": 0.13333333333333333,
+            "mean_error_px": 1.1019778515458256,
+            "p95_error_px": 3.418990182040261,
+            "p99_error_px": 3.418990182040261,
+            "max_error_px": 3.418990182040261,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 15,
+            "predictions": 15,
+            "coverage": 1.0,
+            "mean_error_px": 0.7695418784612836,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 15,
+            "predictions": 14,
+            "coverage": 0.9333333333333333,
+            "mean_error_px": 1.3361970093784672,
+            "p95_error_px": 3.056985762209365,
+            "p99_error_px": 3.056985762209365,
+            "max_error_px": 3.056985762209365,
+            "fraction_better_than_hold": 0.06666666666666667
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 14,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 0.9506450927469002,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 14,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 0.9506450927469002,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 14,
+            "predictions": 2,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.1918369299258091,
+            "p95_error_px": 3.080462412515317,
+            "p99_error_px": 3.080462412515317,
+            "max_error_px": 3.080462412515317,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 14,
+            "predictions": 2,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.301493001288309,
+            "p95_error_px": 3.6322124078013758,
+            "p99_error_px": 3.6322124078013758,
+            "max_error_px": 3.6322124078013758,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 14,
+            "predictions": 14,
+            "coverage": 1.0,
+            "mean_error_px": 0.9506450927469002,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 14,
+            "predictions": 13,
+            "coverage": 0.9285714285714286,
+            "mean_error_px": 1.6283246912651228,
+            "p95_error_px": 3.4436108719714866,
+            "p99_error_px": 3.4436108719714866,
+            "max_error_px": 3.4436108719714866,
+            "fraction_better_than_hold": 0.07142857142857142
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 14,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.0570352868837745,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 14,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.0570352868837745,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 14,
+            "predictions": 2,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.2463896145812328,
+            "p95_error_px": 3.1122919786130296,
+            "p99_error_px": 3.1122919786130296,
+            "max_error_px": 3.1122919786130296,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 14,
+            "predictions": 2,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.4025497042331543,
+            "p95_error_px": 3.845434633562377,
+            "p99_error_px": 3.845434633562377,
+            "max_error_px": 3.845434633562377,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 14,
+            "predictions": 14,
+            "coverage": 1.0,
+            "mean_error_px": 1.0570352868837745,
+            "p95_error_px": 2.0,
+            "p99_error_px": 2.0,
+            "max_error_px": 2.0,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 14,
+            "predictions": 13,
+            "coverage": 0.9285714285714286,
+            "mean_error_px": 1.7975163977128221,
+            "p95_error_px": 3.9355552822530626,
+            "p99_error_px": 3.9355552822530626,
+            "max_error_px": 3.9355552822530626,
+            "fraction_better_than_hold": 0.0
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 149,
+            "predictions": 36,
+            "coverage": 0.24161073825503357,
+            "mean_error_px": 1.7276283334696303,
+            "p95_error_px": 4.313488924012259,
+            "p99_error_px": 7.444370477953622,
+            "max_error_px": 10.649797680529968,
+            "fraction_better_than_hold": 0.21476510067114093
+          },
+          "aosp_raw": {
+            "targets": 149,
+            "predictions": 61,
+            "coverage": 0.40939597315436244,
+            "mean_error_px": 1.7296409799126546,
+            "p95_error_px": 4.4610445974141335,
+            "p99_error_px": 7.750723625383909,
+            "max_error_px": 10.649797680529968,
+            "fraction_better_than_hold": 0.3288590604026846
+          },
+          "existing_predictor": {
+            "targets": 149,
+            "predictions": 45,
+            "coverage": 0.30201342281879195,
+            "mean_error_px": 2.158120009253089,
+            "p95_error_px": 4.570311189797051,
+            "p99_error_px": 14.635626606062313,
+            "max_error_px": 40.56174607581818,
+            "fraction_better_than_hold": 0.2080536912751678
+          },
+          "existing_stabilized": {
+            "targets": 149,
+            "predictions": 43,
+            "coverage": 0.28859060402684567,
+            "mean_error_px": 5.184520167217689,
+            "p95_error_px": 21.76093754087773,
+            "p99_error_px": 23.653619939185464,
+            "max_error_px": 24.204164920025836,
+            "fraction_better_than_hold": 0.006711409395973154
+          },
+          "hold": {
+            "targets": 149,
+            "predictions": 149,
+            "coverage": 1.0,
+            "mean_error_px": 2.149969282898421,
+            "p95_error_px": 5.219337169087752,
+            "p99_error_px": 7.444370477953622,
+            "max_error_px": 10.649797680529968,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 149,
+            "predictions": 147,
+            "coverage": 0.9865771812080537,
+            "mean_error_px": 2.61203534647209,
+            "p95_error_px": 4.663857843286411,
+            "p99_error_px": 14.635626606062313,
+            "max_error_px": 89.26801302025208,
+            "fraction_better_than_hold": 0.35570469798657717
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 149,
+            "predictions": 36,
+            "coverage": 0.24161073825503357,
+            "mean_error_px": 1.9840405240768682,
+            "p95_error_px": 4.83651525340561,
+            "p99_error_px": 9.22507928942837,
+            "max_error_px": 12.430986930672649,
+            "fraction_better_than_hold": 0.21476510067114093
+          },
+          "aosp_raw": {
+            "targets": 149,
+            "predictions": 61,
+            "coverage": 0.40939597315436244,
+            "mean_error_px": 1.9859896594612712,
+            "p95_error_px": 5.391901697838028,
+            "p99_error_px": 9.22507928942837,
+            "max_error_px": 12.430986930672649,
+            "fraction_better_than_hold": 0.3288590604026846
+          },
+          "existing_predictor": {
+            "targets": 149,
+            "predictions": 45,
+            "coverage": 0.30201342281879195,
+            "mean_error_px": 2.4293667615233665,
+            "p95_error_px": 5.541992392722607,
+            "p99_error_px": 17.488855821792942,
+            "max_error_px": 38.780082688322764,
+            "fraction_better_than_hold": 0.21476510067114093
+          },
+          "existing_stabilized": {
+            "targets": 149,
+            "predictions": 43,
+            "coverage": 0.28859060402684567,
+            "mean_error_px": 5.4554492104741525,
+            "p95_error_px": 22.033750410289592,
+            "p99_error_px": 23.811920398567434,
+            "max_error_px": 24.16173199523625,
+            "fraction_better_than_hold": 0.013422818791946308
+          },
+          "hold": {
+            "targets": 149,
+            "predictions": 149,
+            "coverage": 1.0,
+            "mean_error_px": 2.5087322078797905,
+            "p95_error_px": 5.83335896281892,
+            "p99_error_px": 9.22507928942837,
+            "max_error_px": 12.430986930672649,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 149,
+            "predictions": 147,
+            "coverage": 0.9865771812080537,
+            "mean_error_px": 3.013736922922553,
+            "p95_error_px": 5.541992392722607,
+            "p99_error_px": 17.488855821792942,
+            "max_error_px": 103.60404383506109,
+            "fraction_better_than_hold": 0.3624161073825503
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 148,
+            "predictions": 35,
+            "coverage": 0.23648648648648649,
+            "mean_error_px": 2.257209654829706,
+            "p95_error_px": 5.608691088981414,
+            "p99_error_px": 9.84357577514157,
+            "max_error_px": 13.344595296465949,
+            "fraction_better_than_hold": 0.20270270270270271
+          },
+          "aosp_raw": {
+            "targets": 148,
+            "predictions": 60,
+            "coverage": 0.40540540540540543,
+            "mean_error_px": 2.26527491015665,
+            "p95_error_px": 5.608691088981414,
+            "p99_error_px": 10.21321397662824,
+            "max_error_px": 13.344595296465949,
+            "fraction_better_than_hold": 0.31756756756756754
+          },
+          "existing_predictor": {
+            "targets": 148,
+            "predictions": 44,
+            "coverage": 0.2972972972972973,
+            "mean_error_px": 2.7320137773518716,
+            "p95_error_px": 6.247241918641103,
+            "p99_error_px": 20.414902170607643,
+            "max_error_px": 38.15885417505223,
+            "fraction_better_than_hold": 0.20945945945945946
+          },
+          "existing_stabilized": {
+            "targets": 148,
+            "predictions": 42,
+            "coverage": 0.28378378378378377,
+            "mean_error_px": 5.755126823859527,
+            "p95_error_px": 22.072770126238947,
+            "p99_error_px": 24.365737492869435,
+            "max_error_px": 24.64045380803262,
+            "fraction_better_than_hold": 0.006756756756756757
+          },
+          "hold": {
+            "targets": 148,
+            "predictions": 148,
+            "coverage": 1.0,
+            "mean_error_px": 2.863316062394948,
+            "p95_error_px": 6.740577390796707,
+            "p99_error_px": 9.84357577514157,
+            "max_error_px": 13.344595296465949,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 148,
+            "predictions": 146,
+            "coverage": 0.9864864864864865,
+            "mean_error_px": 3.4582193170327358,
+            "p95_error_px": 6.247241918641103,
+            "p99_error_px": 20.414902170607643,
+            "max_error_px": 119.10089464832913,
+            "fraction_better_than_hold": 0.3783783783783784
+          }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 1592,
+            "predictions": 1510,
+            "coverage": 0.9484924623115578,
+            "mean_error_px": 9.835156062342968,
+            "p95_error_px": 24.315319244704266,
+            "p99_error_px": 32.71293760676199,
+            "max_error_px": 50.28722070913609,
+            "fraction_better_than_hold": 0.9202261306532663
+          },
+          "aosp_raw": {
+            "targets": 1592,
+            "predictions": 1521,
+            "coverage": 0.9554020100502513,
+            "mean_error_px": 10.195171473188275,
+            "p95_error_px": 25.028633295635775,
+            "p99_error_px": 35.747651042067275,
+            "max_error_px": 67.49508085861909,
+            "fraction_better_than_hold": 0.9221105527638191
+          },
+          "existing_predictor": {
+            "targets": 1592,
+            "predictions": 1533,
+            "coverage": 0.9629396984924623,
+            "mean_error_px": 10.903748073343136,
+            "p95_error_px": 22.71480407493892,
+            "p99_error_px": 29.81548910413093,
+            "max_error_px": 43.577720054922565,
+            "fraction_better_than_hold": 0.8907035175879398
+          },
+          "existing_stabilized": {
+            "targets": 1592,
+            "predictions": 1525,
+            "coverage": 0.9579145728643216,
+            "mean_error_px": 55.53504388439208,
+            "p95_error_px": 105.85853142099239,
+            "p99_error_px": 126.86597391849658,
+            "max_error_px": 140.5238078701129,
+            "fraction_better_than_hold": 0.009422110552763818
+          },
+          "hold": {
+            "targets": 1592,
+            "predictions": 1592,
+            "coverage": 1.0,
+            "mean_error_px": 24.821039903206366,
+            "p95_error_px": 43.46864824295913,
+            "p99_error_px": 52.140506962101966,
+            "max_error_px": 67.48262933626505,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1592,
+            "predictions": 1589,
+            "coverage": 0.9981155778894473,
+            "mean_error_px": 22.88644513013755,
+            "p95_error_px": 28.11176435772858,
+            "p99_error_px": 204.1765784002879,
+            "max_error_px": 3651.3205455746615,
+            "fraction_better_than_hold": 0.878140703517588
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 1590,
+            "predictions": 1508,
+            "coverage": 0.9484276729559749,
+            "mean_error_px": 10.962577316858335,
+            "p95_error_px": 25.56848702779375,
+            "p99_error_px": 34.62593546825684,
+            "max_error_px": 57.56003088817315,
+            "fraction_better_than_hold": 0.9289308176100629
+          },
+          "aosp_raw": {
+            "targets": 1590,
+            "predictions": 1519,
+            "coverage": 0.9553459119496855,
+            "mean_error_px": 11.673004484604087,
+            "p95_error_px": 27.69743661307261,
+            "p99_error_px": 38.72466478309857,
+            "max_error_px": 83.97494088194972,
+            "fraction_better_than_hold": 0.9264150943396227
+          },
+          "existing_predictor": {
+            "targets": 1590,
+            "predictions": 1531,
+            "coverage": 0.9628930817610063,
+            "mean_error_px": 10.692784559572846,
+            "p95_error_px": 21.835994043321843,
+            "p99_error_px": 29.828036863674022,
+            "max_error_px": 49.198383936244284,
+            "fraction_better_than_hold": 0.9050314465408805
+          },
+          "existing_stabilized": {
+            "targets": 1590,
+            "predictions": 1523,
+            "coverage": 0.9578616352201258,
+            "mean_error_px": 56.35462742107541,
+            "p95_error_px": 109.37270324655373,
+            "p99_error_px": 131.58859022161818,
+            "max_error_px": 140.80259433923501,
+            "fraction_better_than_hold": 0.012578616352201259
+          },
+          "hold": {
+            "targets": 1590,
+            "predictions": 1590,
+            "coverage": 1.0,
+            "mean_error_px": 29.21719326243489,
+            "p95_error_px": 50.099161653540236,
+            "p99_error_px": 58.62099124812796,
+            "max_error_px": 76.95584067054452,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1590,
+            "predictions": 1587,
+            "coverage": 0.9981132075471698,
+            "mean_error_px": 25.888939165130882,
+            "p95_error_px": 31.787192822294326,
+            "p99_error_px": 238.14993075136647,
+            "max_error_px": 4259.758078541552,
+            "fraction_better_than_hold": 0.8849056603773585
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 1588,
+            "predictions": 1506,
+            "coverage": 0.9483627204030227,
+            "mean_error_px": 12.541417065713201,
+            "p95_error_px": 27.705925315585482,
+            "p99_error_px": 37.48956398665272,
+            "max_error_px": 62.67935996933065,
+            "fraction_better_than_hold": 0.9351385390428212
+          },
+          "aosp_raw": {
+            "targets": 1588,
+            "predictions": 1517,
+            "coverage": 0.9552896725440806,
+            "mean_error_px": 13.472000204843452,
+            "p95_error_px": 29.890374750033605,
+            "p99_error_px": 42.67252518229854,
+            "max_error_px": 101.07392841232517,
+            "fraction_better_than_hold": 0.931360201511335
+          },
+          "existing_predictor": {
+            "targets": 1588,
+            "predictions": 1529,
+            "coverage": 0.9628463476070529,
+            "mean_error_px": 10.762813880802463,
+            "p95_error_px": 22.175984252909544,
+            "p99_error_px": 30.58337837577825,
+            "max_error_px": 52.625259197482784,
+            "fraction_better_than_hold": 0.9175062972292192
+          },
+          "existing_stabilized": {
+            "targets": 1588,
+            "predictions": 1521,
+            "coverage": 0.957808564231738,
+            "mean_error_px": 57.91539353507959,
+            "p95_error_px": 113.44433398638985,
+            "p99_error_px": 135.52842449228768,
+            "max_error_px": 144.69660115336163,
+            "fraction_better_than_hold": 0.014483627204030227
+          },
+          "hold": {
+            "targets": 1588,
+            "predictions": 1588,
+            "coverage": 1.0,
+            "mean_error_px": 33.91713056021734,
+            "p95_error_px": 57.96746100303074,
+            "p99_error_px": 66.01163730718167,
+            "max_error_px": 84.2182821920218,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1588,
+            "predictions": 1585,
+            "coverage": 0.9981108312342569,
+            "mean_error_px": 28.818362408976558,
+            "p95_error_px": 35.03597158025009,
+            "p99_error_px": 272.8133976228652,
+            "max_error_px": 4869.1803236527485,
+            "fraction_better_than_hold": 0.8916876574307305
+          }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 8,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.3168059768009002,
+            "p95_error_px": 3.1311204325817,
+            "p99_error_px": 3.1311204325817,
+            "max_error_px": 3.1311204325817,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 8,
+            "predictions": 1,
+            "coverage": 0.125,
+            "mean_error_px": 1.7216717515683366,
+            "p95_error_px": 4.634755839383643,
+            "p99_error_px": 4.634755839383643,
+            "max_error_px": 4.634755839383643,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 8,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.3168059768009002,
+            "p95_error_px": 3.1311204325817,
+            "p99_error_px": 3.1311204325817,
+            "max_error_px": 3.1311204325817,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 8,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.3168059768009002,
+            "p95_error_px": 3.1311204325817,
+            "p99_error_px": 3.1311204325817,
+            "max_error_px": 3.1311204325817,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 8,
+            "predictions": 8,
+            "coverage": 1.0,
+            "mean_error_px": 1.3168059768009002,
+            "p95_error_px": 3.1311204325817,
+            "p99_error_px": 3.1311204325817,
+            "max_error_px": 3.1311204325817,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 8,
+            "predictions": 7,
+            "coverage": 0.875,
+            "mean_error_px": 2.5494242853586164,
+            "p95_error_px": 10.293935968992832,
+            "p99_error_px": 10.293935968992832,
+            "max_error_px": 10.293935968992832,
+            "fraction_better_than_hold": 0.0
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.4872298915798334,
+            "p95_error_px": 3.0431049939195867,
+            "p99_error_px": 3.0431049939195867,
+            "max_error_px": 3.0431049939195867,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 7,
+            "predictions": 1,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 2.05500835547169,
+            "p95_error_px": 5.38866280961609,
+            "p99_error_px": 5.38866280961609,
+            "max_error_px": 5.38866280961609,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.4872298915798334,
+            "p95_error_px": 3.0431049939195867,
+            "p99_error_px": 3.0431049939195867,
+            "max_error_px": 3.0431049939195867,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.4872298915798334,
+            "p95_error_px": 3.0431049939195867,
+            "p99_error_px": 3.0431049939195867,
+            "max_error_px": 3.0431049939195867,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 7,
+            "predictions": 7,
+            "coverage": 1.0,
+            "mean_error_px": 1.4872298915798334,
+            "p95_error_px": 3.0431049939195867,
+            "p99_error_px": 3.0431049939195867,
+            "max_error_px": 3.0431049939195867,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 7,
+            "predictions": 6,
+            "coverage": 0.8571428571428571,
+            "mean_error_px": 2.995757839358643,
+            "p95_error_px": 11.858895314620495,
+            "p99_error_px": 11.858895314620495,
+            "max_error_px": 11.858895314620495,
+            "fraction_better_than_hold": 0.0
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.701014375911398,
+            "p95_error_px": 3.095005604918157,
+            "p99_error_px": 3.095005604918157,
+            "max_error_px": 3.095005604918157,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 7,
+            "predictions": 1,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 2.374466251159177,
+            "p95_error_px": 6.138820543678841,
+            "p99_error_px": 6.138820543678841,
+            "max_error_px": 6.138820543678841,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_predictor": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.701014375911398,
+            "p95_error_px": 3.095005604918157,
+            "p99_error_px": 3.095005604918157,
+            "max_error_px": 3.095005604918157,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.701014375911398,
+            "p95_error_px": 3.095005604918157,
+            "p99_error_px": 3.095005604918157,
+            "max_error_px": 3.095005604918157,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 7,
+            "predictions": 7,
+            "coverage": 1.0,
+            "mean_error_px": 1.701014375911398,
+            "p95_error_px": 3.095005604918157,
+            "p99_error_px": 3.095005604918157,
+            "max_error_px": 3.095005604918157,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 7,
+            "predictions": 6,
+            "coverage": 0.8571428571428571,
+            "mean_error_px": 3.4135673687182084,
+            "p95_error_px": 13.407179253573181,
+            "p99_error_px": 13.407179253573181,
+            "max_error_px": 13.407179253573181,
+            "fraction_better_than_hold": 0.0
+          }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 64,
+            "predictions": 44,
+            "coverage": 0.6875,
+            "mean_error_px": 3.2447310421191933,
+            "p95_error_px": 6.960696894624853,
+            "p99_error_px": 10.61492101453888,
+            "max_error_px": 10.61492101453888,
+            "fraction_better_than_hold": 0.6875
+          },
+          "aosp_raw": {
+            "targets": 64,
+            "predictions": 45,
+            "coverage": 0.703125,
+            "mean_error_px": 3.2178362454337766,
+            "p95_error_px": 6.960696894624853,
+            "p99_error_px": 10.61492101453888,
+            "max_error_px": 10.61492101453888,
+            "fraction_better_than_hold": 0.703125
+          },
+          "existing_predictor": {
+            "targets": 64,
+            "predictions": 49,
+            "coverage": 0.765625,
+            "mean_error_px": 3.242452372751514,
+            "p95_error_px": 7.200063351731848,
+            "p99_error_px": 8.220293368225045,
+            "max_error_px": 8.220293368225045,
+            "fraction_better_than_hold": 0.703125
+          },
+          "existing_stabilized": {
+            "targets": 64,
+            "predictions": 49,
+            "coverage": 0.765625,
+            "mean_error_px": 24.977173360011513,
+            "p95_error_px": 44.851748137690024,
+            "p99_error_px": 45.79207612241869,
+            "max_error_px": 45.79207612241869,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 64,
+            "predictions": 64,
+            "coverage": 1.0,
+            "mean_error_px": 6.644928075948737,
+            "p95_error_px": 11.915679557033286,
+            "p99_error_px": 14.280179842637722,
+            "max_error_px": 14.280179842637722,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 64,
+            "predictions": 63,
+            "coverage": 0.984375,
+            "mean_error_px": 3.2191154945881735,
+            "p95_error_px": 7.200063351731848,
+            "p99_error_px": 8.220293368225045,
+            "max_error_px": 8.220293368225045,
+            "fraction_better_than_hold": 0.75
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 63,
+            "predictions": 44,
+            "coverage": 0.6984126984126984,
+            "mean_error_px": 3.8193064113799258,
+            "p95_error_px": 8.677887951157134,
+            "p99_error_px": 11.615995263974158,
+            "max_error_px": 11.615995263974158,
+            "fraction_better_than_hold": 0.6984126984126984
+          },
+          "aosp_raw": {
+            "targets": 63,
+            "predictions": 45,
+            "coverage": 0.7142857142857143,
+            "mean_error_px": 3.7872846063652315,
+            "p95_error_px": 8.677887951157134,
+            "p99_error_px": 11.615995263974158,
+            "max_error_px": 11.615995263974158,
+            "fraction_better_than_hold": 0.7142857142857143
+          },
+          "existing_predictor": {
+            "targets": 63,
+            "predictions": 49,
+            "coverage": 0.7777777777777778,
+            "mean_error_px": 3.5662821003786314,
+            "p95_error_px": 8.050541422457028,
+            "p99_error_px": 9.335916067487943,
+            "max_error_px": 9.335916067487943,
+            "fraction_better_than_hold": 0.7142857142857143
+          },
+          "existing_stabilized": {
+            "targets": 63,
+            "predictions": 49,
+            "coverage": 0.7777777777777778,
+            "mean_error_px": 25.521485206756203,
+            "p95_error_px": 45.088168524658734,
+            "p99_error_px": 46.466753593593374,
+            "max_error_px": 46.466753593593374,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 63,
+            "predictions": 63,
+            "coverage": 1.0,
+            "mean_error_px": 7.904504054585223,
+            "p95_error_px": 13.987168694676143,
+            "p99_error_px": 15.778868490071204,
+            "max_error_px": 15.778868490071204,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 63,
+            "predictions": 62,
+            "coverage": 0.9841269841269841,
+            "mean_error_px": 3.5340855601065795,
+            "p95_error_px": 8.050541422457028,
+            "p99_error_px": 9.335916067487943,
+            "max_error_px": 9.335916067487943,
+            "fraction_better_than_hold": 0.746031746031746
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 63,
+            "predictions": 44,
+            "coverage": 0.6984126984126984,
+            "mean_error_px": 4.4250845020089145,
+            "p95_error_px": 10.306161030023347,
+            "p99_error_px": 12.635506827113035,
+            "max_error_px": 12.635506827113035,
+            "fraction_better_than_hold": 0.6984126984126984
+          },
+          "aosp_raw": {
+            "targets": 63,
+            "predictions": 45,
+            "coverage": 0.7142857142857143,
+            "mean_error_px": 4.370839822006555,
+            "p95_error_px": 10.306161030023347,
+            "p99_error_px": 12.635506827113035,
+            "max_error_px": 12.635506827113035,
+            "fraction_better_than_hold": 0.7142857142857143
+          },
+          "existing_predictor": {
+            "targets": 63,
+            "predictions": 49,
+            "coverage": 0.7777777777777778,
+            "mean_error_px": 3.849600850860964,
+            "p95_error_px": 9.292365307929282,
+            "p99_error_px": 10.871848332095697,
+            "max_error_px": 10.871848332095697,
+            "fraction_better_than_hold": 0.7301587301587301
+          },
+          "existing_stabilized": {
+            "targets": 63,
+            "predictions": 49,
+            "coverage": 0.7777777777777778,
+            "mean_error_px": 25.767036378372968,
+            "p95_error_px": 45.182023420166296,
+            "p99_error_px": 47.34349787029845,
+            "max_error_px": 47.34349787029845,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 63,
+            "predictions": 63,
+            "coverage": 1.0,
+            "mean_error_px": 9.157338012925026,
+            "p95_error_px": 16.60917087988812,
+            "p99_error_px": 17.292493772056194,
+            "max_error_px": 17.292493772056194,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 63,
+            "predictions": 62,
+            "coverage": 0.9841269841269841,
+            "mean_error_px": 3.7839805496800554,
+            "p95_error_px": 9.292365307929282,
+            "p99_error_px": 10.871848332095697,
+            "max_error_px": 10.871848332095697,
+            "fraction_better_than_hold": 0.7619047619047619
+          }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 127,
+            "predictions": 114,
+            "coverage": 0.8976377952755905,
+            "mean_error_px": 7.309253443060518,
+            "p95_error_px": 25.165620679542084,
+            "p99_error_px": 31.57007133836887,
+            "max_error_px": 34.88061548645935,
+            "fraction_better_than_hold": 0.889763779527559
+          },
+          "aosp_raw": {
+            "targets": 127,
+            "predictions": 114,
+            "coverage": 0.8976377952755905,
+            "mean_error_px": 7.615447177747205,
+            "p95_error_px": 25.165620679542084,
+            "p99_error_px": 31.57007133836887,
+            "max_error_px": 34.88061548645935,
+            "fraction_better_than_hold": 0.889763779527559
+          },
+          "existing_predictor": {
+            "targets": 127,
+            "predictions": 115,
+            "coverage": 0.905511811023622,
+            "mean_error_px": 6.956069864319619,
+            "p95_error_px": 24.27611883933227,
+            "p99_error_px": 27.10672242514565,
+            "max_error_px": 28.003514687152684,
+            "fraction_better_than_hold": 0.8346456692913385
+          },
+          "existing_stabilized": {
+            "targets": 127,
+            "predictions": 113,
+            "coverage": 0.889763779527559,
+            "mean_error_px": 45.645944084393605,
+            "p95_error_px": 130.07443034214657,
+            "p99_error_px": 133.44500715785367,
+            "max_error_px": 140.55350214282592,
+            "fraction_better_than_hold": 0.007874015748031496
+          },
+          "hold": {
+            "targets": 127,
+            "predictions": 127,
+            "coverage": 1.0,
+            "mean_error_px": 20.220068068625153,
+            "p95_error_px": 57.742685375873556,
+            "p99_error_px": 63.633507299420685,
+            "max_error_px": 64.35225779579552,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 127,
+            "predictions": 126,
+            "coverage": 0.9921259842519685,
+            "mean_error_px": 10.415970487158377,
+            "p95_error_px": 26.06326324556248,
+            "p99_error_px": 28.003514687152684,
+            "max_error_px": 288.8901262952694,
+            "fraction_better_than_hold": 0.8503937007874016
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 127,
+            "predictions": 114,
+            "coverage": 0.8976377952755905,
+            "mean_error_px": 9.537432239672373,
+            "p95_error_px": 27.485665109566447,
+            "p99_error_px": 33.54218323707358,
+            "max_error_px": 37.23846818423419,
+            "fraction_better_than_hold": 0.889763779527559
+          },
+          "aosp_raw": {
+            "targets": 127,
+            "predictions": 114,
+            "coverage": 0.8976377952755905,
+            "mean_error_px": 9.06953321996519,
+            "p95_error_px": 27.485665109566447,
+            "p99_error_px": 33.54218323707358,
+            "max_error_px": 37.23846818423419,
+            "fraction_better_than_hold": 0.889763779527559
+          },
+          "existing_predictor": {
+            "targets": 127,
+            "predictions": 115,
+            "coverage": 0.905511811023622,
+            "mean_error_px": 8.35168928718267,
+            "p95_error_px": 24.632520876123532,
+            "p99_error_px": 28.828134327717734,
+            "max_error_px": 31.624509496003142,
+            "fraction_better_than_hold": 0.84251968503937
+          },
+          "existing_stabilized": {
+            "targets": 127,
+            "predictions": 113,
+            "coverage": 0.889763779527559,
+            "mean_error_px": 47.49933342981733,
+            "p95_error_px": 137.60068662214752,
+            "p99_error_px": 141.43845949796375,
+            "max_error_px": 142.84898743761354,
+            "fraction_better_than_hold": 0.007874015748031496
+          },
+          "hold": {
+            "targets": 127,
+            "predictions": 127,
+            "coverage": 1.0,
+            "mean_error_px": 23.833284386561004,
+            "p95_error_px": 66.75375129130177,
+            "p99_error_px": 72.5038986779325,
+            "max_error_px": 72.65437493815892,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 127,
+            "predictions": 126,
+            "coverage": 0.9921259842519685,
+            "mean_error_px": 11.360594431687291,
+            "p95_error_px": 26.94979821079317,
+            "p99_error_px": 32.61533735207423,
+            "max_error_px": 337.97540270651126,
+            "fraction_better_than_hold": 0.8503937007874016
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 127,
+            "predictions": 114,
+            "coverage": 0.8976377952755905,
+            "mean_error_px": 11.874024727412237,
+            "p95_error_px": 33.89382683364843,
+            "p99_error_px": 36.315604540388165,
+            "max_error_px": 40.29187672975721,
+            "fraction_better_than_hold": 0.889763779527559
+          },
+          "aosp_raw": {
+            "targets": 127,
+            "predictions": 114,
+            "coverage": 0.8976377952755905,
+            "mean_error_px": 10.548734083391276,
+            "p95_error_px": 29.892854899738225,
+            "p99_error_px": 36.315604540388165,
+            "max_error_px": 40.29187672975721,
+            "fraction_better_than_hold": 0.889763779527559
+          },
+          "existing_predictor": {
+            "targets": 127,
+            "predictions": 115,
+            "coverage": 0.905511811023622,
+            "mean_error_px": 10.070591465579103,
+            "p95_error_px": 30.693823947568493,
+            "p99_error_px": 33.65412445702125,
+            "max_error_px": 33.86757454032946,
+            "fraction_better_than_hold": 0.8582677165354331
+          },
+          "existing_stabilized": {
+            "targets": 127,
+            "predictions": 113,
+            "coverage": 0.889763779527559,
+            "mean_error_px": 49.619506830387905,
+            "p95_error_px": 144.53842178395956,
+            "p99_error_px": 151.40517534700282,
+            "max_error_px": 155.6700531277854,
+            "fraction_better_than_hold": 0.007874015748031496
+          },
+          "hold": {
+            "targets": 127,
+            "predictions": 127,
+            "coverage": 1.0,
+            "mean_error_px": 27.66825161074942,
+            "p95_error_px": 78.57186849569709,
+            "p99_error_px": 81.6457169613532,
+            "max_error_px": 81.65494268779808,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 127,
+            "predictions": 126,
+            "coverage": 0.9921259842519685,
+            "mean_error_px": 12.206919136505912,
+            "p95_error_px": 27.50063364745003,
+            "p99_error_px": 37.576269877030484,
+            "max_error_px": 387.51122951906035,
+            "fraction_better_than_hold": 0.8661417322834646
+          }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 1420,
+            "predictions": 1076,
+            "coverage": 0.7577464788732394,
+            "mean_error_px": 7.5162256267314485,
+            "p95_error_px": 23.05492898735476,
+            "p99_error_px": 34.08901050842332,
+            "max_error_px": 61.85840186070171,
+            "fraction_better_than_hold": 0.7387323943661972
+          },
+          "aosp_raw": {
+            "targets": 1420,
+            "predictions": 1135,
+            "coverage": 0.7992957746478874,
+            "mean_error_px": 8.019432716925584,
+            "p95_error_px": 26.439178358473836,
+            "p99_error_px": 38.90991285963729,
+            "max_error_px": 68.53999433248752,
+            "fraction_better_than_hold": 0.7654929577464789
+          },
+          "existing_predictor": {
+            "targets": 1420,
+            "predictions": 1116,
+            "coverage": 0.7859154929577464,
+            "mean_error_px": 7.802108362614374,
+            "p95_error_px": 21.145106710574147,
+            "p99_error_px": 28.519037332350756,
+            "max_error_px": 55.25199402989792,
+            "fraction_better_than_hold": 0.7133802816901409
+          },
+          "existing_stabilized": {
+            "targets": 1420,
+            "predictions": 1102,
+            "coverage": 0.776056338028169,
+            "mean_error_px": 37.61093066468626,
+            "p95_error_px": 117.13462628027416,
+            "p99_error_px": 172.82943234324887,
+            "max_error_px": 188.9360954871365,
+            "fraction_better_than_hold": 0.02464788732394366
+          },
+          "hold": {
+            "targets": 1420,
+            "predictions": 1420,
+            "coverage": 1.0,
+            "mean_error_px": 19.90011620758659,
+            "p95_error_px": 52.09119346587031,
+            "p99_error_px": 65.3879664887137,
+            "max_error_px": 74.49227127080957,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1420,
+            "predictions": 1417,
+            "coverage": 0.997887323943662,
+            "mean_error_px": 11.887609587966713,
+            "p95_error_px": 27.67358921772643,
+            "p99_error_px": 49.27047895538055,
+            "max_error_px": 786.7684473647558,
+            "fraction_better_than_hold": 0.7464788732394366
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 1419,
+            "predictions": 1076,
+            "coverage": 0.7582804792107117,
+            "mean_error_px": 8.954447335216331,
+            "p95_error_px": 25.722913752942937,
+            "p99_error_px": 36.149343154552184,
+            "max_error_px": 65.65644925523446,
+            "fraction_better_than_hold": 0.7378435517970402
+          },
+          "aosp_raw": {
+            "targets": 1419,
+            "predictions": 1135,
+            "coverage": 0.7998590556730092,
+            "mean_error_px": 9.361105988283331,
+            "p95_error_px": 29.28340369778149,
+            "p99_error_px": 43.6284953042571,
+            "max_error_px": 85.30796181095808,
+            "fraction_better_than_hold": 0.7618040873854828
+          },
+          "existing_predictor": {
+            "targets": 1419,
+            "predictions": 1116,
+            "coverage": 0.7864693446088795,
+            "mean_error_px": 8.375002999879154,
+            "p95_error_px": 22.32230761169347,
+            "p99_error_px": 29.693342767834977,
+            "max_error_px": 58.00876530093565,
+            "fraction_better_than_hold": 0.7159971811134602
+          },
+          "existing_stabilized": {
+            "targets": 1419,
+            "predictions": 1102,
+            "coverage": 0.7766032417195208,
+            "mean_error_px": 38.81104022979423,
+            "p95_error_px": 121.64952671638946,
+            "p99_error_px": 180.691872106883,
+            "max_error_px": 196.84116679235467,
+            "fraction_better_than_hold": 0.12332628611698379
+          },
+          "hold": {
+            "targets": 1419,
+            "predictions": 1419,
+            "coverage": 1.0,
+            "mean_error_px": 23.385359900145207,
+            "p95_error_px": 62.211593978307036,
+            "p99_error_px": 72.97497563856717,
+            "max_error_px": 84.47827563777024,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1419,
+            "predictions": 1416,
+            "coverage": 0.9978858350951374,
+            "mean_error_px": 13.301108552945935,
+            "p95_error_px": 30.516254575934123,
+            "p99_error_px": 54.39138210694236,
+            "max_error_px": 918.4015655039561,
+            "fraction_better_than_hold": 0.7505285412262156
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 1418,
+            "predictions": 1076,
+            "coverage": 0.7588152327221439,
+            "mean_error_px": 10.832634548732047,
+            "p95_error_px": 32.11184524674438,
+            "p99_error_px": 39.565355732665246,
+            "max_error_px": 71.30818024301914,
+            "fraction_better_than_hold": 0.7376586741889986
+          },
+          "aosp_raw": {
+            "targets": 1418,
+            "predictions": 1135,
+            "coverage": 0.8004231311706629,
+            "mean_error_px": 10.941196175689358,
+            "p95_error_px": 31.924777616540315,
+            "p99_error_px": 48.351720119882685,
+            "max_error_px": 102.4744820105801,
+            "fraction_better_than_hold": 0.7595204513399154
+          },
+          "existing_predictor": {
+            "targets": 1418,
+            "predictions": 1116,
+            "coverage": 0.7870239774330042,
+            "mean_error_px": 9.27228309507055,
+            "p95_error_px": 26.971349316078015,
+            "p99_error_px": 36.52324821588727,
+            "max_error_px": 63.821122148601376,
+            "fraction_better_than_hold": 0.7221438645980254
+          },
+          "existing_stabilized": {
+            "targets": 1418,
+            "predictions": 1102,
+            "coverage": 0.7771509167842031,
+            "mean_error_px": 40.60467894797693,
+            "p95_error_px": 132.4702980500232,
+            "p99_error_px": 190.22898579031147,
+            "max_error_px": 210.3011937403551,
+            "fraction_better_than_hold": 0.17489421720733428
+          },
+          "hold": {
+            "targets": 1418,
+            "predictions": 1418,
+            "coverage": 1.0,
+            "mean_error_px": 27.109938217428528,
+            "p95_error_px": 72.51485876115929,
+            "p99_error_px": 83.49983885511169,
+            "max_error_px": 98.19807659588636,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 1418,
+            "predictions": 1415,
+            "coverage": 0.9978843441466855,
+            "mean_error_px": 14.649822080760876,
+            "p95_error_px": 32.54979972011637,
+            "p99_error_px": 60.83043439765284,
+            "max_error_px": 1051.6176585741296,
+            "fraction_better_than_hold": 0.7510578279266573
+          }
+        }
+      }
+    },
+    {
+      "id": 14,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "aosp_raw": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_predictor": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_stabilized": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "hold": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "last_velocity": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "aosp_raw": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_predictor": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_stabilized": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "hold": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "last_velocity": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "aosp_raw": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_predictor": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "existing_stabilized": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "hold": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          },
+          "last_velocity": {
+            "targets": 0,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": null,
+            "p95_error_px": null,
+            "p99_error_px": null,
+            "max_error_px": null,
+            "fraction_better_than_hold": null
+          }
+        }
+      }
+    },
+    {
+      "id": 15,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.5710092234033763,
+            "p95_error_px": 4.612823675707894,
+            "p99_error_px": 4.612823675707894,
+            "max_error_px": 4.612823675707894,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 7,
+            "predictions": 1,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.3094091372974173,
+            "p95_error_px": 4.612823675707894,
+            "p99_error_px": 4.612823675707894,
+            "max_error_px": 4.612823675707894,
+            "fraction_better_than_hold": 0.14285714285714285
+          },
+          "existing_predictor": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.5710092234033763,
+            "p95_error_px": 4.612823675707894,
+            "p99_error_px": 4.612823675707894,
+            "max_error_px": 4.612823675707894,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.5710092234033763,
+            "p95_error_px": 4.612823675707894,
+            "p99_error_px": 4.612823675707894,
+            "max_error_px": 4.612823675707894,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 7,
+            "predictions": 7,
+            "coverage": 1.0,
+            "mean_error_px": 1.5710092234033763,
+            "p95_error_px": 4.612823675707894,
+            "p99_error_px": 4.612823675707894,
+            "max_error_px": 4.612823675707894,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 7,
+            "predictions": 6,
+            "coverage": 0.8571428571428571,
+            "mean_error_px": 2.0250344617866536,
+            "p95_error_px": 6.235308412732382,
+            "p99_error_px": 6.235308412732382,
+            "max_error_px": 6.235308412732382,
+            "fraction_better_than_hold": 0.0
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.8569977584745392,
+            "p95_error_px": 5.2963490372801445,
+            "p99_error_px": 5.2963490372801445,
+            "max_error_px": 5.2963490372801445,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 7,
+            "predictions": 1,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.4455670336760111,
+            "p95_error_px": 5.2963490372801445,
+            "p99_error_px": 5.2963490372801445,
+            "max_error_px": 5.2963490372801445,
+            "fraction_better_than_hold": 0.14285714285714285
+          },
+          "existing_predictor": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.8569977584745392,
+            "p95_error_px": 5.2963490372801445,
+            "p99_error_px": 5.2963490372801445,
+            "max_error_px": 5.2963490372801445,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 1.8569977584745392,
+            "p95_error_px": 5.2963490372801445,
+            "p99_error_px": 5.2963490372801445,
+            "max_error_px": 5.2963490372801445,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 7,
+            "predictions": 7,
+            "coverage": 1.0,
+            "mean_error_px": 1.8569977584745392,
+            "p95_error_px": 5.2963490372801445,
+            "p99_error_px": 5.2963490372801445,
+            "max_error_px": 5.2963490372801445,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 7,
+            "predictions": 6,
+            "coverage": 0.8571428571428571,
+            "mean_error_px": 2.2513691915652845,
+            "p95_error_px": 6.7699270857824905,
+            "p99_error_px": 6.7699270857824905,
+            "max_error_px": 6.7699270857824905,
+            "fraction_better_than_hold": 0.0
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 2.3620985657358546,
+            "p95_error_px": 5.991648490432012,
+            "p99_error_px": 5.991648490432012,
+            "max_error_px": 5.991648490432012,
+            "fraction_better_than_hold": 0.0
+          },
+          "aosp_raw": {
+            "targets": 7,
+            "predictions": 1,
+            "coverage": 0.14285714285714285,
+            "mean_error_px": 1.7867098542269808,
+            "p95_error_px": 5.991648490432012,
+            "p99_error_px": 5.991648490432012,
+            "max_error_px": 5.991648490432012,
+            "fraction_better_than_hold": 0.14285714285714285
+          },
+          "existing_predictor": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 2.3620985657358546,
+            "p95_error_px": 5.991648490432012,
+            "p99_error_px": 5.991648490432012,
+            "max_error_px": 5.991648490432012,
+            "fraction_better_than_hold": 0.0
+          },
+          "existing_stabilized": {
+            "targets": 7,
+            "predictions": 0,
+            "coverage": 0.0,
+            "mean_error_px": 2.3620985657358546,
+            "p95_error_px": 5.991648490432012,
+            "p99_error_px": 5.991648490432012,
+            "max_error_px": 5.991648490432012,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 7,
+            "predictions": 7,
+            "coverage": 1.0,
+            "mean_error_px": 2.3620985657358546,
+            "p95_error_px": 5.991648490432012,
+            "p99_error_px": 5.991648490432012,
+            "max_error_px": 5.991648490432012,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 7,
+            "predictions": 6,
+            "coverage": 0.8571428571428571,
+            "mean_error_px": 2.68045957364286,
+            "p95_error_px": 7.244022748558337,
+            "p99_error_px": 7.244022748558337,
+            "max_error_px": 7.244022748558337,
+            "fraction_better_than_hold": 0.0
+          }
+        }
+      }
+    },
+    {
+      "id": 16,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 135,
+            "predictions": 16,
+            "coverage": 0.11851851851851852,
+            "mean_error_px": 1.663594755846386,
+            "p95_error_px": 7.169440884291764,
+            "p99_error_px": 19.415379618230546,
+            "max_error_px": 24.8404132239784,
+            "fraction_better_than_hold": 0.11851851851851852
+          },
+          "aosp_raw": {
+            "targets": 135,
+            "predictions": 26,
+            "coverage": 0.1925925925925926,
+            "mean_error_px": 1.9145477971054345,
+            "p95_error_px": 9.368631931426444,
+            "p99_error_px": 19.415379618230546,
+            "max_error_px": 24.8404132239784,
+            "fraction_better_than_hold": 0.14074074074074075
+          },
+          "existing_predictor": {
+            "targets": 135,
+            "predictions": 32,
+            "coverage": 0.23703703703703705,
+            "mean_error_px": 2.2552883589457307,
+            "p95_error_px": 8.215337993086031,
+            "p99_error_px": 40.83313506376649,
+            "max_error_px": 44.98393387365047,
+            "fraction_better_than_hold": 0.15555555555555556
+          },
+          "existing_stabilized": {
+            "targets": 135,
+            "predictions": 32,
+            "coverage": 0.23703703703703705,
+            "mean_error_px": 5.811274097424381,
+            "p95_error_px": 33.213993658009706,
+            "p99_error_px": 38.332729587181035,
+            "max_error_px": 38.75842219856983,
+            "fraction_better_than_hold": 0.007407407407407408
+          },
+          "hold": {
+            "targets": 135,
+            "predictions": 135,
+            "coverage": 1.0,
+            "mean_error_px": 2.1717156207410215,
+            "p95_error_px": 10.507478125282436,
+            "p99_error_px": 19.415379618230546,
+            "max_error_px": 24.8404132239784,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 135,
+            "predictions": 131,
+            "coverage": 0.9703703703703703,
+            "mean_error_px": 3.4326872474883845,
+            "p95_error_px": 8.983983745903739,
+            "p99_error_px": 45.25421749480573,
+            "max_error_px": 164.68858562511707,
+            "fraction_better_than_hold": 0.17037037037037037
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 134,
+            "predictions": 15,
+            "coverage": 0.11194029850746269,
+            "mean_error_px": 1.9275030983929002,
+            "p95_error_px": 8.869874819324279,
+            "p99_error_px": 20.849151256771716,
+            "max_error_px": 26.273973235566196,
+            "fraction_better_than_hold": 0.11194029850746269
+          },
+          "aosp_raw": {
+            "targets": 134,
+            "predictions": 25,
+            "coverage": 0.1865671641791045,
+            "mean_error_px": 2.2660012263896694,
+            "p95_error_px": 11.264645649234401,
+            "p99_error_px": 20.849151256771716,
+            "max_error_px": 26.273973235566196,
+            "fraction_better_than_hold": 0.13432835820895522
+          },
+          "existing_predictor": {
+            "targets": 134,
+            "predictions": 31,
+            "coverage": 0.23134328358208955,
+            "mean_error_px": 2.4889904982702973,
+            "p95_error_px": 9.731473318358937,
+            "p99_error_px": 40.72465346562641,
+            "max_error_px": 43.83039762198914,
+            "fraction_better_than_hold": 0.16417910447761194
+          },
+          "existing_stabilized": {
+            "targets": 134,
+            "predictions": 31,
+            "coverage": 0.23134328358208955,
+            "mean_error_px": 5.837899631079595,
+            "p95_error_px": 32.29900737373744,
+            "p99_error_px": 39.395191159566714,
+            "max_error_px": 39.62240515784883,
+            "fraction_better_than_hold": 0.007462686567164179
+          },
+          "hold": {
+            "targets": 134,
+            "predictions": 134,
+            "coverage": 1.0,
+            "mean_error_px": 2.5191085802188016,
+            "p95_error_px": 11.926882836514755,
+            "p99_error_px": 20.849151256771716,
+            "max_error_px": 26.273973235566196,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 134,
+            "predictions": 130,
+            "coverage": 0.9701492537313433,
+            "mean_error_px": 3.980274975095647,
+            "p95_error_px": 10.637634536386997,
+            "p99_error_px": 52.14394430182448,
+            "max_error_px": 193.2224466430676,
+            "fraction_better_than_hold": 0.1791044776119403
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 131,
+            "predictions": 13,
+            "coverage": 0.09923664122137404,
+            "mean_error_px": 2.081994509432388,
+            "p95_error_px": 8.70023303739271,
+            "p99_error_px": 22.282991748081574,
+            "max_error_px": 27.70761052018164,
+            "fraction_better_than_hold": 0.09923664122137404
+          },
+          "aosp_raw": {
+            "targets": 131,
+            "predictions": 23,
+            "coverage": 0.17557251908396945,
+            "mean_error_px": 2.5189098077331864,
+            "p95_error_px": 11.778822414249221,
+            "p99_error_px": 22.282991748081574,
+            "max_error_px": 27.70761052018164,
+            "fraction_better_than_hold": 0.12213740458015267
+          },
+          "existing_predictor": {
+            "targets": 131,
+            "predictions": 28,
+            "coverage": 0.21374045801526717,
+            "mean_error_px": 2.7209099002849593,
+            "p95_error_px": 11.243239594733431,
+            "p99_error_px": 40.72465346562641,
+            "max_error_px": 43.349558427415396,
+            "fraction_better_than_hold": 0.15267175572519084
+          },
+          "existing_stabilized": {
+            "targets": 131,
+            "predictions": 28,
+            "coverage": 0.21374045801526717,
+            "mean_error_px": 5.518732002436998,
+            "p95_error_px": 30.857624680270597,
+            "p99_error_px": 40.468360019758535,
+            "max_error_px": 40.48913879841499,
+            "fraction_better_than_hold": 0.007633587786259542
+          },
+          "hold": {
+            "targets": 131,
+            "predictions": 131,
+            "coverage": 1.0,
+            "mean_error_px": 2.716698691153953,
+            "p95_error_px": 14.161905373580343,
+            "p99_error_px": 22.282991748081574,
+            "max_error_px": 27.70761052018164,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 131,
+            "predictions": 127,
+            "coverage": 0.9694656488549618,
+            "mean_error_px": 4.552520585382555,
+            "p95_error_px": 11.40175425099138,
+            "p99_error_px": 59.70681593303642,
+            "max_error_px": 221.8650503029327,
+            "fraction_better_than_hold": 0.17557251908396945
+          }
+        }
+      }
+    },
+    {
+      "id": 20,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 280,
+            "predictions": 275,
+            "coverage": 0.9821428571428571,
+            "mean_error_px": 13.2736899082015,
+            "p95_error_px": 29.32367142769276,
+            "p99_error_px": 37.88478978161518,
+            "max_error_px": 52.25035869850493,
+            "fraction_better_than_hold": 0.9821428571428571
+          },
+          "aosp_raw": {
+            "targets": 280,
+            "predictions": 275,
+            "coverage": 0.9821428571428571,
+            "mean_error_px": 14.947075306732707,
+            "p95_error_px": 33.31613216719566,
+            "p99_error_px": 46.07092465196399,
+            "max_error_px": 52.25035869850493,
+            "fraction_better_than_hold": 0.9678571428571429
+          },
+          "existing_predictor": {
+            "targets": 280,
+            "predictions": 276,
+            "coverage": 0.9857142857142858,
+            "mean_error_px": 12.94850777807719,
+            "p95_error_px": 24.911640754050925,
+            "p99_error_px": 30.83731325477228,
+            "max_error_px": 46.49254667765163,
+            "fraction_better_than_hold": 0.9821428571428571
+          },
+          "existing_stabilized": {
+            "targets": 280,
+            "predictions": 276,
+            "coverage": 0.9857142857142858,
+            "mean_error_px": 70.52556900781086,
+            "p95_error_px": 127.83635259454535,
+            "p99_error_px": 148.53046001134186,
+            "max_error_px": 159.76924639467376,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 280,
+            "predictions": 280,
+            "coverage": 1.0,
+            "mean_error_px": 38.96168892515412,
+            "p95_error_px": 60.32198758429339,
+            "p99_error_px": 75.30157183276597,
+            "max_error_px": 79.88734814533278,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 280,
+            "predictions": 279,
+            "coverage": 0.9964285714285714,
+            "mean_error_px": 17.182664966831165,
+            "p95_error_px": 30.603838285675018,
+            "p99_error_px": 45.81610754003488,
+            "max_error_px": 63.0657232498534,
+            "fraction_better_than_hold": 0.9642857142857143
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 280,
+            "predictions": 275,
+            "coverage": 0.9821428571428571,
+            "mean_error_px": 15.019070647656365,
+            "p95_error_px": 34.36857737240336,
+            "p99_error_px": 46.33025228027893,
+            "max_error_px": 57.99926504633953,
+            "fraction_better_than_hold": 0.9821428571428571
+          },
+          "aosp_raw": {
+            "targets": 280,
+            "predictions": 275,
+            "coverage": 0.9821428571428571,
+            "mean_error_px": 16.759093611610187,
+            "p95_error_px": 36.76820506474106,
+            "p99_error_px": 50.37055022717492,
+            "max_error_px": 57.99926504633953,
+            "fraction_better_than_hold": 0.975
+          },
+          "existing_predictor": {
+            "targets": 280,
+            "predictions": 276,
+            "coverage": 0.9857142857142858,
+            "mean_error_px": 13.79823653353929,
+            "p95_error_px": 28.866273160078514,
+            "p99_error_px": 41.55018206144466,
+            "max_error_px": 50.93944018341609,
+            "fraction_better_than_hold": 0.9821428571428571
+          },
+          "existing_stabilized": {
+            "targets": 280,
+            "predictions": 276,
+            "coverage": 0.9857142857142858,
+            "mean_error_px": 73.56811340852019,
+            "p95_error_px": 134.36865263508705,
+            "p99_error_px": 165.6020928444093,
+            "max_error_px": 170.4441416479024,
+            "fraction_better_than_hold": 0.0
+          },
+          "hold": {
+            "targets": 280,
+            "predictions": 280,
+            "coverage": 1.0,
+            "mean_error_px": 45.86783840074153,
+            "p95_error_px": 70.95876486053972,
+            "p99_error_px": 84.48688914726208,
+            "max_error_px": 89.58492657064681,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 280,
+            "predictions": 279,
+            "coverage": 0.9964285714285714,
+            "mean_error_px": 18.983693083671312,
+            "p95_error_px": 35.190722652855065,
+            "p99_error_px": 48.495643522977495,
+            "max_error_px": 74.68525340644364,
+            "fraction_better_than_hold": 0.9785714285714285
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 280,
+            "predictions": 275,
+            "coverage": 0.9821428571428571,
+            "mean_error_px": 18.513974327203396,
+            "p95_error_px": 39.7616985395091,
+            "p99_error_px": 54.98559138669962,
+            "max_error_px": 63.92136446297649,
+            "fraction_better_than_hold": 0.9821428571428571
+          },
+          "aosp_raw": {
+            "targets": 280,
+            "predictions": 275,
+            "coverage": 0.9821428571428571,
+            "mean_error_px": 19.004067009286814,
+            "p95_error_px": 40.64733942420425,
+            "p99_error_px": 55.0177244454861,
+            "max_error_px": 67.53739323217498,
+            "fraction_better_than_hold": 0.975
+          },
+          "existing_predictor": {
+            "targets": 280,
+            "predictions": 276,
+            "coverage": 0.9857142857142858,
+            "mean_error_px": 16.78209568812126,
+            "p95_error_px": 32.72078821991961,
+            "p99_error_px": 51.78734320146633,
+            "max_error_px": 55.447515248338426,
+            "fraction_better_than_hold": 0.9821428571428571
+          },
+          "existing_stabilized": {
+            "targets": 280,
+            "predictions": 276,
+            "coverage": 0.9857142857142858,
+            "mean_error_px": 78.20305160247283,
+            "p95_error_px": 142.1953661895744,
+            "p99_error_px": 170.49398479888995,
+            "max_error_px": 182.34939121268087,
+            "fraction_better_than_hold": 0.014285714285714285
+          },
+          "hold": {
+            "targets": 280,
+            "predictions": 280,
+            "coverage": 1.0,
+            "mean_error_px": 53.10810752250604,
+            "p95_error_px": 80.20594097781863,
+            "p99_error_px": 99.06007483745019,
+            "max_error_px": 100.26093278146527,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 280,
+            "predictions": 279,
+            "coverage": 0.9964285714285714,
+            "mean_error_px": 20.80477335027251,
+            "p95_error_px": 39.02940392671857,
+            "p99_error_px": 55.715235084408825,
+            "max_error_px": 86.30577872011793,
+            "fraction_better_than_hold": 0.9785714285714285
+          }
+        }
+      }
+    },
+    {
+      "id": 21,
+      "scenario": "Unlabelled",
+      "horizons": {
+        "12": {
+          "aosp_guarded": {
+            "targets": 96,
+            "predictions": 91,
+            "coverage": 0.9479166666666666,
+            "mean_error_px": 16.343148639294824,
+            "p95_error_px": 48.732470645784296,
+            "p99_error_px": 64.10287543214514,
+            "max_error_px": 64.10287543214514,
+            "fraction_better_than_hold": 0.9479166666666666
+          },
+          "aosp_raw": {
+            "targets": 96,
+            "predictions": 91,
+            "coverage": 0.9479166666666666,
+            "mean_error_px": 18.007816019648182,
+            "p95_error_px": 48.732470645784296,
+            "p99_error_px": 64.10287543214514,
+            "max_error_px": 64.10287543214514,
+            "fraction_better_than_hold": 0.9479166666666666
+          },
+          "existing_predictor": {
+            "targets": 96,
+            "predictions": 94,
+            "coverage": 0.9791666666666666,
+            "mean_error_px": 14.464617767284679,
+            "p95_error_px": 31.648563337509312,
+            "p99_error_px": 50.24076035260394,
+            "max_error_px": 50.24076035260394,
+            "fraction_better_than_hold": 0.9791666666666666
+          },
+          "existing_stabilized": {
+            "targets": 96,
+            "predictions": 94,
+            "coverage": 0.9791666666666666,
+            "mean_error_px": 74.24665804608811,
+            "p95_error_px": 116.90666536544015,
+            "p99_error_px": 120.66626811187936,
+            "max_error_px": 120.66626811187936,
+            "fraction_better_than_hold": 0.010416666666666666
+          },
+          "hold": {
+            "targets": 96,
+            "predictions": 96,
+            "coverage": 1.0,
+            "mean_error_px": 42.84255988636236,
+            "p95_error_px": 67.98660331464514,
+            "p99_error_px": 75.45163895878098,
+            "max_error_px": 75.45163895878098,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 96,
+            "predictions": 95,
+            "coverage": 0.9895833333333334,
+            "mean_error_px": 19.75316934629586,
+            "p95_error_px": 40.020260574418984,
+            "p99_error_px": 50.24076035260394,
+            "max_error_px": 50.24076035260394,
+            "fraction_better_than_hold": 0.9791666666666666
+          }
+        },
+        "14": {
+          "aosp_guarded": {
+            "targets": 96,
+            "predictions": 91,
+            "coverage": 0.9479166666666666,
+            "mean_error_px": 19.206475081083827,
+            "p95_error_px": 56.71225856825919,
+            "p99_error_px": 70.43525352981739,
+            "max_error_px": 70.43525352981739,
+            "fraction_better_than_hold": 0.9479166666666666
+          },
+          "aosp_raw": {
+            "targets": 96,
+            "predictions": 91,
+            "coverage": 0.9479166666666666,
+            "mean_error_px": 20.110608250604205,
+            "p95_error_px": 56.71225856825919,
+            "p99_error_px": 70.43525352981739,
+            "max_error_px": 70.43525352981739,
+            "fraction_better_than_hold": 0.9479166666666666
+          },
+          "existing_predictor": {
+            "targets": 96,
+            "predictions": 94,
+            "coverage": 0.9791666666666666,
+            "mean_error_px": 16.12608190472641,
+            "p95_error_px": 32.10958096920211,
+            "p99_error_px": 60.933950516768476,
+            "max_error_px": 60.933950516768476,
+            "fraction_better_than_hold": 0.9791666666666666
+          },
+          "existing_stabilized": {
+            "targets": 96,
+            "predictions": 94,
+            "coverage": 0.9791666666666666,
+            "mean_error_px": 78.46325416926847,
+            "p95_error_px": 126.8272777015746,
+            "p99_error_px": 130.80312883649395,
+            "max_error_px": 130.80312883649395,
+            "fraction_better_than_hold": 0.10416666666666667
+          },
+          "hold": {
+            "targets": 96,
+            "predictions": 96,
+            "coverage": 1.0,
+            "mean_error_px": 50.41203539907631,
+            "p95_error_px": 76.30333885480343,
+            "p99_error_px": 83.1956240545337,
+            "max_error_px": 83.1956240545337,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 96,
+            "predictions": 95,
+            "coverage": 0.9895833333333334,
+            "mean_error_px": 21.69689978206785,
+            "p95_error_px": 45.123080566858874,
+            "p99_error_px": 56.71225856825919,
+            "max_error_px": 56.71225856825919,
+            "fraction_better_than_hold": 0.9895833333333334
+          }
+        },
+        "16": {
+          "aosp_guarded": {
+            "targets": 95,
+            "predictions": 90,
+            "coverage": 0.9473684210526315,
+            "mean_error_px": 23.08621649270676,
+            "p95_error_px": 63.18729645909853,
+            "p99_error_px": 79.85826839488202,
+            "max_error_px": 79.85826839488202,
+            "fraction_better_than_hold": 0.9473684210526315
+          },
+          "aosp_raw": {
+            "targets": 95,
+            "predictions": 90,
+            "coverage": 0.9473684210526315,
+            "mean_error_px": 22.746087372893353,
+            "p95_error_px": 63.18729645909853,
+            "p99_error_px": 79.85826839488202,
+            "max_error_px": 79.85826839488202,
+            "fraction_better_than_hold": 0.9473684210526315
+          },
+          "existing_predictor": {
+            "targets": 95,
+            "predictions": 93,
+            "coverage": 0.9789473684210527,
+            "mean_error_px": 19.657374879411083,
+            "p95_error_px": 39.52238438644137,
+            "p99_error_px": 73.30338020879417,
+            "max_error_px": 73.30338020879417,
+            "fraction_better_than_hold": 0.9789473684210527
+          },
+          "existing_stabilized": {
+            "targets": 95,
+            "predictions": 93,
+            "coverage": 0.9789473684210527,
+            "mean_error_px": 83.2596461861753,
+            "p95_error_px": 133.88800845538353,
+            "p99_error_px": 142.2158968205745,
+            "max_error_px": 142.2158968205745,
+            "fraction_better_than_hold": 0.14736842105263157
+          },
+          "hold": {
+            "targets": 95,
+            "predictions": 95,
+            "coverage": 1.0,
+            "mean_error_px": 58.131023896000166,
+            "p95_error_px": 85.56380765541986,
+            "p99_error_px": 91.69680492093427,
+            "max_error_px": 91.69680492093427,
+            "fraction_better_than_hold": 0.0
+          },
+          "last_velocity": {
+            "targets": 95,
+            "predictions": 94,
+            "coverage": 0.9894736842105263,
+            "mean_error_px": 23.5548698674223,
+            "p95_error_px": 47.52263623750687,
+            "p99_error_px": 63.18729645909853,
+            "max_error_px": 63.18729645909853,
+            "fraction_better_than_hold": 0.9894736842105263
+          }
+        }
+      }
+    }
+  ]
+}
