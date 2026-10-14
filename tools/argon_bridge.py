@@ -122,9 +122,9 @@ def cmd_package(args: argparse.Namespace) -> int:
 
     git_hash, commit_msg, commit_count = get_git_info()
     now_str = datetime.datetime.now().strftime("%Y-%m-%d_%H%M")
-    build_id = f"Build-{commit_count:03d}"
-
-    unique_filename = f"VectorCraft-2.0_{build_id}_{now_str}_{git_hash}_{tag}.exe"
+    build_id = f"b{commit_count:03d}"
+    tag_short = tag[:16]
+    unique_filename = f"VC2_{build_id}_{tag_short}.exe"
     file_size_bytes = os.path.getsize(RELEASE_EXE)
     file_size_mb = file_size_bytes / (1024 * 1024)
     sha256 = calculate_sha256(RELEASE_EXE)

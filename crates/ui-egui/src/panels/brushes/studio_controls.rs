@@ -182,8 +182,41 @@ pub(super) fn show(ui: &mut Ui, studio: &mut Studio) {
             ui.add_space(10.0);
         });
     }
-    if count == 0 {
-        ui.label("This brush engine does not expose settings in this section.");
+    if studio.page == 3 {
+        super_studio_ext::show_embedded(ui, &mut studio.draft);
+    }
+    if count == 0 && studio.page != 3 {
+        let btype = studio.draft.get("type").and_then(Value::as_str).unwrap_or("this");
+        ui.vertical(|ui| {
+            ui.add_space(8.0);
+            match (btype, studio.page) {
+                ("calligraphic", 1) => {
+                    ui.label(egui::RichText::new("Continuous Vector Nib (No Stamp Spacing)").strong());
+                    ui.add_space(4.0);
+                    ui.label("Calligraphic brushes generate an unbroken, smooth mathematical envelope around the path.");
+                    ui.add_space(4.0);
+                    ui.label("• To customize nib diameter, angle, and roundness, open 'Shape & nib'.");
+                    ui.label("• To configure pen pressure & tilt response, open 'Variation'.");
+                    ui.label("• For adjustable stamp spacing, select a Scatter or Pattern brush from the library.");
+                }
+                ("calligraphic", 2) => {
+                    ui.label(egui::RichText::new("Pure Vector Ribbon (No Substrate Grain)").strong());
+                    ui.add_space(4.0);
+                    ui.label("Calligraphic nibs render smooth vector paths without simulated paper tooth.");
+                    ui.label("• For fibrous paper tooth and grain, use a Natural Media brush (e.g. Rainee Pencil).");
+                }
+                ("art", 2) => {
+                    ui.label(egui::RichText::new("Vector Art Mesh").strong());
+                    ui.add_space(4.0);
+                    ui.label("Art brushes deform vector geometry along the path.");
+                    ui.label("• Scale, stretch guides, and fitting controls are located in 'Stroke & spacing'.");
+                }
+                _ => {
+                    ui.label(format!("The {} engine does not require parameters in this section.", btype));
+                    ui.label("Active controls for this brush type are located in the other tabs.");
+                }
+            }
+        });
     }
 }
 

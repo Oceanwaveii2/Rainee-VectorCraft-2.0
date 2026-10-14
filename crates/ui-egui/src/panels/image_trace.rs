@@ -345,6 +345,7 @@ pub fn show(app: &mut VectorcraftApp, ui: &mut Ui) {
                 retrace = true;
             }
         }
+        super::super_trace_ext::show_embedded(ui, &mut st.params, &mut retrace);
     }
     widgets::divider(ui);
     if let Some((p, a, c)) = st.info {
