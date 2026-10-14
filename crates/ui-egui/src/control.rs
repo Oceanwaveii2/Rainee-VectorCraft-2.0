@@ -99,6 +99,11 @@ pub fn inspect(app: &VectorcraftApp, ctx: &egui::Context) -> Value {
         "activeDocument": app.session.active_index(),
         "perf": {"frameMs": app.perf.frame_ms, "renderMs": app.perf.render_ms, "fps": app.perf.fps},
         "graphicsAdapter": app.graphics_adapter,
+        "glass": crate::glass::telemetry(ctx),
+        "brushStudio": crate::panels::brushes::studio_inspect(ctx),
+        "touchInputDetected": ctx.input(|i| i.has_touch_screen()),
+        "syntheticInputPending": app.synthetic.len(),
+        "pointerPrimaryDown": ctx.input(|i| i.pointer.primary_down()),
         "gpuNavigation": {
             "enabled": app.ui.gpu_navigation,
             "available": app.graphics_adapter.as_ref().is_some_and(|name| !name.contains("OpenGL") && !name.contains("Cpu")),
@@ -151,6 +156,7 @@ pub fn handle(app: &mut VectorcraftApp, ctx: &egui::Context, req: &ControlReques
         "engine.commands" => ok(all_commands(app)),
         "document.inspect" => wrap(app.run("document.inspect", p.clone())),
         "ui.inspect" => ok(inspect(app, ctx)),
+        "ui.brushStudio.open" => wrap(crate::panels::brushes::studio_open(app, ctx, s("name").unwrap_or(""))),
         "ui.menu.list" => ok(serde_json::to_value(crate::menus::menu_entries(app)).unwrap_or_default()),
         "ui.contextMenu.list" => ok(serde_json::to_value(crate::menus::context_entries(app)).unwrap_or_default()),
         "ui.tool.select" => wrap(app.run("tool.select", json!({"tool": s("tool").unwrap_or("")}))),
@@ -217,6 +223,36 @@ pub fn handle(app: &mut VectorcraftApp, ctx: &egui::Context, req: &ControlReques
         "ui.move" => {
             let pos = egui::pos2(p.get("x").and_then(Value::as_f64).unwrap_or(0.0) as f32, p.get("y").and_then(Value::as_f64).unwrap_or(0.0) as f32);
             app.synthetic.push(egui::Event::PointerMoved(pos));
+            ctx.request_repaint();
+            ok(Value::Null)
+        }
+        "ui.touch" => {
+            let phase = match s("phase").unwrap_or("") {
+                "start" => egui::TouchPhase::Start,
+                "move" => egui::TouchPhase::Move,
+                "end" => egui::TouchPhase::End,
+                "cancel" => egui::TouchPhase::Cancel,
+                _ => return err("touch phase must be start, move, end or cancel"),
+            };
+            let coordinate = |key| p.get(key).and_then(Value::as_f64).filter(|v| v.is_finite()).map(|v| v as f32).filter(|v| v.is_finite());
+            let (Some(x), Some(y)) = (coordinate("x"), coordinate("y")) else { return err("touch coordinates must be finite") };
+            let pos = egui::pos2(x, y);
+            app.synthetic.push(egui::Event::PointerMoved(pos));
+            app.synthetic.push(egui::Event::Touch {
+                device_id: egui::TouchDeviceId(9001),
+                id: egui::TouchId(1),
+                phase,
+                pos,
+                force: p.get("force").and_then(Value::as_f64).filter(|v| v.is_finite()).map(|v| v.clamp(0.0, 1.0) as f32),
+            });
+            if phase != egui::TouchPhase::Move {
+                app.synthetic.push(egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed: phase == egui::TouchPhase::Start,
+                    modifiers: modifiers(p),
+                });
+            }
             ctx.request_repaint();
             ok(Value::Null)
         }

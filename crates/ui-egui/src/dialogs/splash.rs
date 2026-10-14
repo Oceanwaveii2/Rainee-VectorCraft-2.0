@@ -155,7 +155,7 @@ pub fn show(app: &mut VectorcraftApp, ctx: &egui::Context) {
             ui.painter().rect_filled(ticker_rect, CornerRadius { nw: 0, ne: 0, sw: 10, se: 10 }, Color32::from_rgb(16, 18, 24));
 
             // Determine ticker step
-            let current_stage = INIT_STAGES.iter().filter(|(time, _)| elapsed >= *time).last().map(|(_, text)| *text).unwrap_or("Starting engine...");
+            let current_stage = INIT_STAGES.iter().rfind(|(time, _)| elapsed >= *time).map(|(_, text)| *text).unwrap_or("Starting engine...");
 
             let progress = (elapsed / SPLASH_DURATION_SECS).clamp(0.0, 1.0) as f32;
 

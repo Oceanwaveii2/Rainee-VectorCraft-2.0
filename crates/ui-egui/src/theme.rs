@@ -313,6 +313,8 @@ pub fn apply(ctx: &egui::Context, b: Brightness) {
 
 /// Workspace appearance never writes document/artboard colours or the 1.0 brightness preference.
 pub fn apply_workspace(ctx: &egui::Context, b: Brightness, rainee: bool, darkness: f64, glass: f64, opaque: bool) {
+    ctx.data_mut(|d| d.insert_temp(egui::Id::new("rainee-material-style"), rainee));
+    crate::glass::configure(ctx, rainee && !opaque, glass);
     let mut t = Tokens::for_brightness(b);
     if rainee {
         t = Tokens::rainee();
@@ -402,6 +404,10 @@ pub fn apply_workspace(ctx: &egui::Context, b: Brightness, rainee: bool, darknes
         .into();
         s.animation_time = 0.08;
     });
+}
+
+pub fn is_rainee(ctx: &egui::Context) -> bool {
+    ctx.data(|d| d.get_temp::<bool>(egui::Id::new("rainee-material-style"))).unwrap_or(false)
 }
 
 #[cfg(test)]

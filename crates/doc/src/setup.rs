@@ -314,12 +314,11 @@ impl DocSetup {
                 return [24, 26, 32];
             } else if key.eq_ignore_ascii_case("stageBlue") || key.eq_ignore_ascii_case("blue") {
                 return [25, 60, 90]; // #193C5A 3D Multiplane Stage Blue
-            } else if let Some(hex) = key.strip_prefix('#').or(Some(key)) {
-                if let Ok(v) = u32::from_str_radix(hex, 16) {
-                    if hex.len() == 6 {
-                        return [((v >> 16) & 0xff) as u8, ((v >> 8) & 0xff) as u8, (v & 0xff) as u8];
-                    }
-                }
+            } else if let Some(hex) = key.strip_prefix('#').or(Some(key))
+                && let Ok(v) = u32::from_str_radix(hex, 16)
+                && hex.len() == 6
+            {
+                return [((v >> 16) & 0xff) as u8, ((v >> 8) & 0xff) as u8, (v & 0xff) as u8];
             }
         }
         if self.infinite_canvas {
@@ -345,13 +344,16 @@ impl DocSetup {
                 return Some([128, 128, 128]); // Neutral 18% Gray
             } else if key.eq_ignore_ascii_case("black") || key.eq_ignore_ascii_case("dark") {
                 return Some([20, 20, 24]);
-            } else if let Some(hex) = key.strip_prefix('#').or(Some(key)) {
-                if let Ok(v) = u32::from_str_radix(hex, 16) {
-                    if hex.len() == 6 {
-                        return Some([((v >> 16) & 0xff) as u8, ((v >> 8) & 0xff) as u8, (v & 0xff) as u8]);
-                    }
-                }
+            } else if let Some(hex) = key.strip_prefix('#').or(Some(key))
+                && let Ok(v) = u32::from_str_radix(hex, 16)
+                && hex.len() == 6
+            {
+                return Some([((v >> 16) & 0xff) as u8, ((v >> 8) & 0xff) as u8, (v & 0xff) as u8]);
             }
+        }
+        if self.simulate_paper {
+            let [r, g, b, _] = self.paper().to_rgba8(1.0);
+            return Some([r, g, b]);
         }
         match self.background {
             Background::Transparent | Background::DisneyCel => None,
@@ -387,6 +389,19 @@ impl DocSetup {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn paper_simulation_respects_explicit_sheet_and_backdrop_colors() {
+        let mut s = DocSetup { simulate_paper: true, ..Default::default() };
+        s.grid_colors[0] = Color::from_hex("#ffeecc").unwrap();
+        let backdrop = s.resolved_backdrop_rgb();
+        assert_eq!(s.resolved_artboard_color(), Some([255, 238, 204]));
+        s.artboard_color = Some("blue".into());
+        assert_eq!(s.resolved_artboard_color(), Some([25, 60, 90]));
+        s.artboard_color = Some("transparent".into());
+        assert_eq!(s.resolved_artboard_color(), None);
+        assert_eq!(s.resolved_backdrop_rgb(), backdrop);
+    }
 
     #[test]
     fn quotes_open_and_close_by_context() {

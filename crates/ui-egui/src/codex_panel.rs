@@ -83,6 +83,7 @@ pub fn show(app: &mut VectorcraftApp, ctx: &egui::Context) {
     let mut open = app.codex.open;
     let mut send = false;
     egui::Window::new("MCP UI Designer · Vector Work Edition")
+        .drag_area(egui::WindowDrag::TitleBar)
         .open(&mut open)
         .default_pos(egui::pos2(480.0, 90.0))
         .default_width(420.0)

@@ -1,4 +1,157 @@
 # Spanish (es) catalog. Same format as zh-hant.tsv:  context <TAB> source <TAB> translation
+	All shortcuts reset to defaults.	Todos los atajos se restablecieron.
+	Back to document	Volver al documento
+	Click, then press the new shortcut (Esc cancels)	Haz clic y pulsa el nuevo atajo (Esc cancela)
+	Command	Comando
+	Go to Conflict	Ir al conflicto
+	Imported. Press OK to keep the imported set.	Importado. Pulsa OK para conservar el conjunto.
+	Keyboard Shortcuts	Atajos de teclado
+	More Presets	Más ajustes preestablecidos
+	Open a document to get started.	Abre un documento para comenzar.
+	Press keys…	Pulsa las teclas…
+	Remove the shortcut	Eliminar atajo
+	Reset to Defaults	Restablecer valores predeterminados
+	Set:	Conjunto:
+	Shortcut	Atajo
+	Tool	Herramienta
+	Use Default	Usar valor predeterminado
+	Warning: {chord} was already used by {names} — it has been removed there.	Aviso: {chord} ya se usaba en {names}; se ha eliminado allí.
+@msg	A model request is running	Hay una solicitud al modelo en curso
+@msg	Answered by {_1}	Respondido por {_1}
+@msg	Awaiting owner approval	Esperando aprobación del propietario
+@msg	Bridge disconnected	Puente desconectado
+@msg	Bridge event exceeded budget	El evento del puente superó el límite
+@msg	Brush Studio belongs to another document	Brush Studio pertenece a otro documento
+@msg	Brush Studio draft discarded: active document changed	Borrador de Brush Studio descartado: cambió el documento activo
+@msg	Brush changed outside Studio; cancel and reopen to avoid overwriting it	El pincel cambió fuera de Studio; cancela y vuelve a abrir para no sobrescribirlo
+@msg	Cancelled	Cancelado
+@msg	Cancelled; completed edits remain undoable	Cancelado; las ediciones completadas se pueden deshacer
+@msg	Cancelled; no artwork changed	Cancelado; no se modificó la ilustración
+@msg	Cancelling; completed edits remain undoable	Cancelando; las ediciones completadas se pueden deshacer
+@msg	Cleanup timed out; no art changed	La limpieza agotó el tiempo; no se modificó la ilustración
+@msg	Codex reply exceeded the display limit	La respuesta de Codex superó el límite de visualización
+@msg	Connecting to signed-in Codex…	Conectando con Codex autenticado…
+@msg	Duplicate or unknown fitted group	Grupo ajustado duplicado o desconocido
+@msg	Duplicate proposal target	Destino de propuesta duplicado
+@msg	Empty source	Origen vacío
+@msg	Enter a prompt up to 16000 bytes	Introduce una instrucción de hasta 16000 bytes
+@msg	Executed {id}	Ejecutado {id}
+@msg	Files, clipboard and global settings need a separate owner workflow	Los archivos, el portapapeles y los ajustes globales requieren un flujo independiente del propietario
+@msg	Filesystem/URL parameters are outside canvas permission	Los parámetros de archivos/URL quedan fuera del permiso del lienzo
+@msg	Finish the active gesture first	Termina primero el gesto activo
+@msg	Finish the manual gesture first	Termina primero el gesto manual
+@msg	Fit discards part of an original stroke	El ajuste descarta parte de un trazo original
+@msg	Fitted stroke exceeds permitted deviation	El trazo ajustado supera la desviación permitida
+@msg	Gesture must be down, optional drags, up	El gesto debe ser pulsación, arrastres opcionales y liberación
+@msg	Invalid SCAP point count	Valor no válido: número de puntos SCAP
+@msg	Invalid SCAP stroke	Valor no válido: trazo SCAP
+@msg	Invalid SCAP stroke header	Valor no válido: cabecera de trazo SCAP
+@msg	Invalid candidate point	Valor no válido: punto candidato
+@msg	Invalid cleanup proposal limits	Valor no válido: límites de propuesta de limpieza
+@msg	Invalid confidence	Valor no válido: confianza
+@msg	Invalid endpoint	Valor no válido: extremo
+@msg	Invalid proposal size	Valor no válido: tamaño de propuesta
+@msg	Invalid source	Valor no válido: origen
+@msg	Invalid stroke ordinal	Valor no válido: índice de trazo
+@msg	Invalid target	Valor no válido: destino
+@msg	Invalid tool id	Valor no válido: identificador de herramienta
+@msg	Invalid worker suggestions	Valor no válido: sugerencias del proceso
+@msg	Invalid x	Valor no válido: x
+@msg	Invalid y	Valor no válido: y
+@msg	Invalid or oversized proposal segment	Segmento de propuesta no válido o demasiado grande
+@msg	Junction worker changed; rebuild/re-audit required	El proceso de uniones cambió; requiere recompilación y revisión
+@msg	Missing bridge stdin	Falta la entrada estándar del puente
+@msg	Missing bridge stdout	Falta la salida estándar del puente
+@msg	Missing fitted group	Falta el grupo ajustado
+@msg	Model job deadline exceeded	La tarea del modelo agotó el tiempo
+@msg	Nested SCAP stroke	Trazo SCAP anidado
+@msg	Neural raster dimensions differ from captured region	Las dimensiones del ráster neuronal difieren de la región capturada
+@msg	No active artboard	No hay mesa de trabajo activa
+@msg	No active document	No hay documento activo
+@msg	No document	No hay documento
+@msg	No pending operation	No hay operación pendiente
+@msg	Non-canvas UI action is not authorized	No se autoriza la acción de interfaz fuera del lienzo
+@msg	Nonfinite SCAP number	Número SCAP no finito
+@msg	Open a document before asking Codex	Abre un documento antes de consultar a Codex
+@msg	Operation expired or request cancelled	La operación caducó o se canceló la solicitud
+@msg	Optional StripMaker SCIP/OSQP research worker is not installed	No está instalado el proceso opcional de investigación StripMaker SCIP/OSQP
+@msg	Owner rejected operation	El propietario rechazó la operación
+@msg	Proposal exceeds interactive validation budget; clean a smaller selection	La propuesta supera el límite de validación interactiva; limpia una selección menor
+@msg	Proposal omits original strokes	La propuesta omite trazos originales
+@msg	Proposal sampling exceeds limits	El muestreo de la propuesta supera los límites
+@msg	Provide 2–4096 document-space samples	Proporciona entre 2 y 4096 muestras en el espacio del documento
+@msg	Requested document is no longer active	El documento solicitado ya no está activo
+@msg	Research assistants currently require the local Windows installations	Los asistentes de investigación requieren actualmente instalaciones locales de Windows
+@msg	Research job timed out; no artwork changed. Diagnostics: {_1}	La investigación agotó el tiempo; no se modificó la ilustración. Diagnóstico: {_1}
+@msg	Research output exceeds preview budget	La salida de investigación supera el límite de vista previa
+@msg	Research worker available on Windows only	Proceso de investigación disponible solo en Windows
+@msg	Research worker failed ({status}); no art changed. Diagnostics: {_1}	Falló el proceso de investigación ({status}); no se modificó la ilustración. Diagnóstico: {_1}
+@msg	Stale document or selection; inspect again before editing	Documento o selección desactualizados; inspecciona de nuevo antes de editar
+@msg	Truncated SCAP output	Salida SCAP truncada
+@msg	Unexpected SCAP close	Cierre SCAP inesperado
+@msg	Unexpected SCAP data	Datos SCAP inesperados
+@msg	Unknown model tool	Herramienta del modelo desconocida
+@msg	Unknown proposal target	Destino de propuesta desconocido
+@msg	Waiting for Codex…	Esperando a Codex…
+@msg	Windows worker unavailable	Proceso de Windows no disponible
+@msg	Worker binary changed: re-audit before use	El ejecutable del proceso cambió: revisa de nuevo antes de usar
+@msg	Worker changed source geometry	El proceso modificó la geometría de origen
+@msg	Worker changed source samples	El proceso modificó las muestras de origen
+@msg	Worker exceeded authorized gap distance	El proceso superó la distancia de separación autorizada
+@msg	Worker failed ({status}); diagnostics: {_1}	Falló el proceso ({status}); diagnóstico: {_1}
+@msg	Worker omitted strokes	El proceso omitió trazos
+@msg	Worker output too large	La salida del proceso es demasiado grande
+@msg	Worker returned invalid ordinal	El proceso devolvió un índice no válido
+@msg	curved reference grids do not support planar attachment	las cuadrículas de referencia curvas no admiten unión planar
+@msg	open must be a boolean	open debe ser booleano
+@msg	open must be boolean	open debe ser booleano
+	Accept Sketch Cleanup	Aceptar limpieza de bocetos
+	Cancel Sketch Cleanup	Cancelar limpieza de bocetos
+	Reject Sketch Cleanup	Rechazar limpieza de bocetos
+	Preview Sketch Cleanup	Previsualizar limpieza de bocetos
+	Inspect Cleanup Selection	Inspeccionar selección para limpieza
+	Sketch Cleanup Status	Estado de limpieza de bocetos
+	Accept research preview	Aceptar vista previa de investigación
+	Cancel research tool	Cancelar herramienta de investigación
+	Reject research preview	Rechazar vista previa de investigación
+	Research tool status	Estado de herramienta de investigación
+	Research tool telemetry	Telemetría de herramienta de investigación
+	Preview learned junction suggestions	Previsualizar sugerencias de uniones aprendidas
+	Preview neural natural brush	Previsualizar pincel natural neuronal
+	Release neural raster appearance	Liberar apariencia ráster neuronal
+	Embedded Codex Editor	Editor Codex integrado
+	Embedded Codex telemetry	Telemetría de Codex integrado
+	Approve embedded operation	Aprobar operación integrada
+	Reject embedded operation	Rechazar operación integrada
+	Cancel embedded request	Cancelar solicitud integrada
+	Request embedded Codex edit	Solicitar edición de Codex integrado
+	Complete tool gesture	Completar gesto de herramienta
+	Glass intensity	Intensidad del cristal
+	Interface darkness	Oscuridad de la interfaz
+	Rainee 2.0 Appearance	Apariencia de Rainee 2.0
+	Reduce transparency (opaque panels)	Reducir transparencia (paneles opacos)
+	Panel is floating	El panel es flotante
+	Custom Image Path	Ruta de imagen personalizada
+	Launch Screen Artwork	Ilustración de inicio
+	Replay Launch Screen	Volver a mostrar el inicio
+	Erase all editable paths, regardless of selection	Borrar todos los trazados editables, estén seleccionados o no
+	Pressure controls editable width	La presión controla la anchura editable
+	Pressure curve:	Curva de presión:
+	Fallback nib angle:	Ángulo de punta alternativo:
+	Minimum nib axis ratio:	Relación mínima de ejes de la punta:
+	Minimum width fraction:	Fracción mínima de anchura:
+	Tilt-controlled elliptical nib	Punta elíptica controlada por inclinación
+	Experimental learned AOSP prediction	Predicción aprendida de AOSP experimental
+	Hold Ctrl when starting a stroke to bypass expressive input. These strokes do not auto-extend existing paths.	Mantén Ctrl al iniciar un trazo para omitir la entrada expresiva. Estos trazos no prolongan automáticamente los trazados existentes.
+	Off: selected paths, or all paths when nothing is selected. Locked and hidden artwork is protected.	Desactivado: los trazados seleccionados, o todos si no hay selección. Se protege la ilustración bloqueada y oculta.
+	Requires measured native pen channels; missing data produces no predicted ink. Existing predictor remains the default.	Requiere canales medidos del lápiz nativo; sin datos no se predice tinta. El predictor existente sigue siendo el predeterminado.
+	Experimental	Experimental
+	GPU-assisted Navigation	Navegación asistida por GPU
+	Research Tools	Herramientas de investigación
+	Sketch Cleanup	Limpieza de bocetos
+	Wet Media Simulation…	Simulación de medios húmedos…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 # (empty context = a plain UI string; `@id` = a command id; `@plural` = "one|other" forms).
 #
 # Clean-room: written from the meaning of VectorCraft's English labels in neutral, international
@@ -3769,3 +3922,4 @@ axis	Both	Ambos
 	Detect button 2 key	Detectar tecla del botón 2
 	Driver setup and safety notes	Configuración del controlador y notas de seguridad
 @msg	`{key}` must be a registered tool ID or none	`{key}` debe ser un ID de herramienta registrado o none
+@msg	Give this brush a name before saving	Ponle un nombre al pincel antes de guardar

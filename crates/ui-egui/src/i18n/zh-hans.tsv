@@ -1,4 +1,55 @@
 # Simplified Chinese (zh-hans) catalog. Same format as zh-hant.tsv:  context <TAB> source <TAB> translation
+	Back to document	返回文档
+	More Presets	更多预设
+	Open a document to get started.	打开文档以开始。
+	Warning: {chord} was already used by {names} — it has been removed there.	注意: {chord} 已由 {names} 使用，现已移除原分配。
+	Accept Sketch Cleanup	接受草图清理
+	Cancel Sketch Cleanup	取消草图清理
+	Reject Sketch Cleanup	拒绝草图清理
+	Preview Sketch Cleanup	预览草图清理
+	Inspect Cleanup Selection	检查清理选区
+	Sketch Cleanup Status	草图清理状态
+	Accept research preview	接受研究预览
+	Cancel research tool	取消研究工具
+	Reject research preview	拒绝研究预览
+	Research tool status	研究工具状态
+	Research tool telemetry	研究工具遥测
+	Preview learned junction suggestions	预览学习生成的连接建议
+	Preview neural natural brush	预览神经自然画笔
+	Release neural raster appearance	释放神经栅格外观
+	Embedded Codex Editor	内嵌 Codex 编辑器
+	Embedded Codex telemetry	内嵌 Codex 遥测
+	Approve embedded operation	批准内嵌操作
+	Reject embedded operation	拒绝内嵌操作
+	Cancel embedded request	取消内嵌请求
+	Request embedded Codex edit	请求内嵌 Codex 编辑
+	Complete tool gesture	完成工具手势
+	Glass intensity	玻璃效果强度
+	Interface darkness	界面暗度
+	Rainee 2.0 Appearance	Rainee 2.0 外观
+	Reduce transparency (opaque panels)	降低透明度（不透明面板）
+	Panel is floating	面板已浮动
+	Custom Image Path	自定义图像路径
+	Launch Screen Artwork	启动画面插图
+	Replay Launch Screen	重新显示启动画面
+	Erase all editable paths, regardless of selection	擦除所有可编辑路径，无论是否选中
+	Pressure controls editable width	压力控制可编辑宽度
+	Pressure curve:	压力曲线:
+	Fallback nib angle:	备用笔尖角度:
+	Minimum nib axis ratio:	笔尖最小轴比:
+	Minimum width fraction:	最小宽度比例:
+	Tilt-controlled elliptical nib	倾斜控制的椭圆笔尖
+	Experimental learned AOSP prediction	实验性 AOSP 学习预测
+	Hold Ctrl when starting a stroke to bypass expressive input. These strokes do not auto-extend existing paths.	开始笔画时按住 Ctrl 可绕过表现性输入。这些笔画不会自动延长现有路径。
+	Off: selected paths, or all paths when nothing is selected. Locked and hidden artwork is protected.	关闭时：擦除选中路径，未选择时擦除所有路径。锁定和隐藏的图稿受保护。
+	Requires measured native pen channels; missing data produces no predicted ink. Existing predictor remains the default.	需要原生笔的实测通道；缺少数据时不生成预测墨迹。现有预测器仍为默认。
+	Experimental	实验功能
+	GPU-assisted Navigation	GPU 辅助导航
+	Research Tools	研究工具
+	Sketch Cleanup	草图清理
+	Wet Media Simulation…	湿性媒材模拟…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 # (empty context = a plain UI string; `@id` = a command id; `@plural` = "one|other" forms, Chinese
 # has one). `{name}` placeholders must appear in both columns; the trailing "…" is kept.
 #
@@ -3449,3 +3500,4 @@ axis	Both	两者
 	Detect button 2 key	检测按钮 2 的按键
 	Driver setup and safety notes	驱动程序设置与安全说明
 @msg	`{key}` must be a registered tool ID or none	`{key}` 必须是已注册的工具 ID 或 none
+@msg	Give this brush a name before saving	保存前请为画笔命名

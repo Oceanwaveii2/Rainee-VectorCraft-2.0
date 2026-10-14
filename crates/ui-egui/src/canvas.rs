@@ -298,7 +298,7 @@ pub fn show(app: &mut VectorcraftApp, ui: &mut Ui) {
     if deferred {
         ui.ctx().request_repaint_after(std::time::Duration::from_millis(16));
     }
-    if !deferred && (app.canvas.key.as_ref() != Some(&key) || app.canvas.texture.is_none()) {
+    if !deferred && (app.canvas.key.as_ref() != Some(&key) || app.canvas.texture.is_none() || crate::glass::needs_source(ui.ctx())) {
         let (w, h, view) = match pixel {
             Some([x0, y0, x1, y1]) => ((x1 - x0) as u32, (y1 - y0) as u32, Affine::translate((-x0 as f64, -y0 as f64))),
             None => (
@@ -2041,6 +2041,7 @@ fn kurbo_flatten(p: &BezPath, tol: f64, f: &mut impl FnMut(PathEl)) {
 
 /// Upload the art's raster; Pixel Preview's document pixels keep hard edges when magnified.
 fn upload(app: &mut VectorcraftApp, ctx: &egui::Context, img: &vectorcraft_render::Rendered, pixel: bool) {
+    crate::glass::capture(ctx, img);
     app.canvas.navigation.uploads += 1;
     let color = egui::ColorImage::from_rgba_premultiplied([img.width as usize, img.height as usize], &img.pixels);
     let options = if pixel { egui::TextureOptions::NEAREST } else { egui::TextureOptions::LINEAR };

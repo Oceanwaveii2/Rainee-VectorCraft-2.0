@@ -19,6 +19,8 @@ use crate::theme::Tokens;
 use crate::widgets::{self, Live, menu_item};
 use crate::{VectorcraftApp, icons};
 
+mod rainee_disc;
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum Mode {
     Grayscale,
@@ -648,17 +650,36 @@ fn show_rainee(app: &mut VectorcraftApp, ui: &mut Ui) {
     let tgt = target(app, ui);
     super::proxy(app, ui, 40.0);
     let c = tgt.color().unwrap_or(Color::BLACK);
-    let mut hs = components(Mode::Hsb, &c);
+    let mut hs = match pstate::<Option<(String, Vec<f32>)>>(ui.ctx(), "rainee-hsb") {
+        Some((hex, hs)) if hex == c.to_hex() => hs,
+        _ => components(Mode::Hsb, &c),
+    };
     let old = hs.clone();
     let mut phase = Live::Released;
     let mut end_gesture = false;
+    let mut harmony: usize = pstate(ui.ctx(), "rainee-harmony-mode");
+    let harmony_modes = ["Complementary", "Split complementary", "Analogous", "Triadic", "Tetradic"];
+    if mode == 2 {
+        egui::ComboBox::from_id_salt("rainee-harmony-mode")
+            .selected_text(harmony_modes.get(harmony).copied().unwrap_or("Complementary"))
+            .width(ui.available_width())
+            .show_ui(ui, |ui| {
+                for (i, label) in harmony_modes.iter().enumerate() {
+                    ui.selectable_value(&mut harmony, i, *label);
+                }
+            });
+        set_pstate(ui.ctx(), "rainee-harmony-mode", harmony);
+    }
     if mode == 0 || mode == 2 {
         let size = ui.available_width().min(190.0);
         let (r, response) = ui.allocate_exact_size(vec2(size, size), Sense::click_and_drag());
         let center = r.center();
         let radius = size * 0.48;
-        let field = Rect::from_center_size(center, vec2(size * 0.48, size * 0.48));
-        ui.painter().add(widgets::color_mesh(field, (24, 24), &|x, y| to32(&from_components(Mode::Hsb, &[hs[0], x * 100.0, (1.0 - y) * 100.0]))));
+        let inner = size * 0.34;
+        ui.painter().add(rainee_disc::mesh(center, inner, hs[0]));
+        let marker = center + rainee_disc::to_disc(vec2(hs[1] / 50.0 - 1.0, 1.0 - hs[2] / 50.0)) * inner;
+        ui.painter().circle_stroke(marker, 5.0, Stroke::new(2.0, Color32::WHITE));
+        ui.painter().circle_stroke(marker, 6.0, Stroke::new(1.0, Color32::from_black_alpha(150)));
         for i in 0..120 {
             let a = i as f32 / 120.0 * std::f32::consts::TAU;
             let b = (i + 1) as f32 / 120.0 * std::f32::consts::TAU;
@@ -676,20 +697,28 @@ fn show_rainee(app: &mut VectorcraftApp, ui: &mut Ui) {
             phase = live;
             end_gesture = matches!(live, Live::Released);
             let d = p - center;
-            if field.contains(p) {
-                hs[1] = ((p.x - field.left()) / field.width()).clamp(0.0, 1.0) * 100.0;
-                hs[2] = (1.0 - (p.y - field.top()) / field.height()).clamp(0.0, 1.0) * 100.0;
-            } else if d.length() >= radius - 24.0 {
-                if let Some(h) = hs.first_mut() {
-                    *h = d.y.atan2(d.x).to_degrees().rem_euclid(360.0);
-                }
+            if d.length() <= inner {
+                let square = rainee_disc::to_square(d / inner);
+                hs[1] = ((square.x + 1.0) * 50.0).clamp(0.0, 100.0);
+                hs[2] = ((1.0 - square.y) * 50.0).clamp(0.0, 100.0);
+            } else if d.length() >= radius - 24.0
+                && let Some(h) = hs.first_mut()
+            {
+                *h = d.y.atan2(d.x).to_degrees().rem_euclid(360.0);
             }
         }
         ui.add(egui::Slider::new(&mut hs[1], 0.0..=100.0).text("Saturation"));
         ui.add(egui::Slider::new(&mut hs[2], 0.0..=100.0).text("Brightness"));
         if mode == 2 {
             ui.horizontal(|ui| {
-                for offset in [0.0, 120.0, 180.0, 240.0] {
+                let offsets: &[f32] = match harmony {
+                    1 => &[0.0, 150.0, 210.0],
+                    2 => &[0.0, 30.0, 330.0],
+                    3 => &[0.0, 120.0, 240.0],
+                    4 => &[0.0, 90.0, 180.0, 270.0],
+                    _ => &[0.0, 180.0],
+                };
+                for offset in offsets {
                     let candidate = from_components(Mode::Hsb, &[(hs[0] + offset) % 360.0, hs[1], hs[2]]);
                     if ui.add(egui::Button::new("   ").fill(to32(&candidate))).on_hover_text("Apply harmony color").clicked() {
                         apply(app, &tgt, candidate, Live::Released, false);
@@ -702,20 +731,42 @@ fn show_rainee(app: &mut VectorcraftApp, ui: &mut Ui) {
             apply(app, &tgt, c, phase, false);
         }
     } else {
-        let mut hex = hex_digits(&c);
-        if ui.text_edit_singleline(&mut hex).changed()
-            && let Some(c) = parse_hex(&hex)
-        {
-            apply(app, &tgt, c, Live::Released, false);
-        }
-        for (i, label) in ["Hue", "Saturation", "Brightness"].iter().enumerate() {
-            ui.add(egui::Slider::new(&mut hs[i], 0.0..=if i == 0 { 360.0 } else { 100.0 }).text(*label));
-        }
+        rainee_values(app, ui, &tgt, c);
     }
     if hs != old || end_gesture {
+        set_pstate(ui.ctx(), "rainee-hsb", Some((from_components(Mode::Hsb, &hs).to_hex(), hs.clone())));
         apply(app, &tgt, from_components(Mode::Hsb, &hs), phase, false);
     }
     super::recent_colors_row(app, ui);
+}
+
+fn rainee_values(app: &mut VectorcraftApp, ui: &mut Ui, tgt: &Target, c: Color) {
+    let mut mode: Option<Mode> = pstate(ui.ctx(), "rainee-value-mode");
+    ui.horizontal_wrapped(|ui| {
+        for m in [Mode::Rgb, Mode::Hsb, Mode::Cmyk, Mode::Lab] {
+            if ui.selectable_label(mode.unwrap_or(Mode::of(&c)) == m, m.label()).clicked() {
+                mode = Some(m);
+            }
+        }
+    });
+    set_pstate(ui.ctx(), "rainee-value-mode", mode);
+    let mode = mode.unwrap_or(Mode::of(&c));
+    let mut values = components(mode, &c);
+    for i in 0..values.len() {
+        let response = ui.add(
+            egui::Slider::new(&mut values[i], mode.min(i)..=mode.max(i)).text(mode.labels().get(i).copied().unwrap_or("")).suffix(mode.suffix(i)),
+        );
+        if response.changed() || response.drag_stopped() {
+            apply(app, tgt, from_components(mode, &values), if response.dragged() { Live::Dragging } else { Live::Released }, false);
+        }
+    }
+    let hex = hex_digits(&c);
+    ui.horizontal(|ui| {
+        ui.label("Hex");
+        if let Some(c) = widgets::hex_field(ui, "rainee-value-hex", &hex).as_deref().and_then(parse_hex) {
+            apply(app, tgt, c, Live::Released, false);
+        }
+    });
 }
 
 pub fn menu(app: &mut VectorcraftApp, ui: &mut Ui) {

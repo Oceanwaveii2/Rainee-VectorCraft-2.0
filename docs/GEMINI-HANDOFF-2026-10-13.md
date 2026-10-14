@@ -1,12 +1,22 @@
-# Rainee 2.0 Gemini handoff for October 13 2026
+# Rainee 2.0 Gemini handoff — updated October 14, 2026
 
 Gemini, continue the Rainee 2.0 UI work. We are keeping the normal Rainee 1.0 toolbar and its icons. Use the supplied Procreate images to improve the colors, panels, blue active sections and overall presentation. This is a desktop drawing app, not a tablet-only redesign.
+
+## October 14 Studio repair continuation
+
+The owner reported that changing Studio subsections moves/resizes the window. Continue from the b008 Optics source without discarding its experimental modules. Studio now has bounded desktop columns and an explicit header-only drag grip; its native whole-window/touch drag is disabled. Fixed rows and clipped child regions prevent long settings labels from enlarging it. Standard floating windows use title-bar-only drag. Nine engine-backed sections, preview Undo/Clear, undoable brush rename, stale-draft guards and amber Done are implemented. Fluid controls are disabled and honestly labelled until they affect rendering.
+
+Color refinements include a circular inner saturation/value field, five harmony modes, RGB/HSB/CMYK/Lab Value editing and a buffered Hex commit field. Layer names truncate with tooltips and visibility uses compact checkboxes. Brush Recent respects saved ordering. 2.0 preference booleans use blue pill switches; 1.0 keeps checkboxes. Glass has a denser charcoal tint so white artboards do not wash floating surfaces into gray.
+
+See `docs/verification/RAINEE-2-STUDIO-2026-10-14.md` for this continuation's evidence and concrete missing-items checklist. Its results supersede the historical October 13 descriptions below where they differ. Final native/build verification is in progress, not yet a release-completion claim.
+
+Always preserve Artboard/transparent-sheet and Backdrop controls in **both** workspaces, even with selected art. Keep the existing desktop toolbar and stock icons. Never describe the per-brush pressure/tilt graphs, taper/source editors, experimental wet simulation, full layer-selection semantics or stacked-window glass as implemented when they are still gaps. Targeted 1.0 smoke does not prove full 1.0 acceptance or full brush-style coverage.
 
 ## First task tomorrow
 
 Mandatory owner correction: always keep both **Artboard color / transparent sheet** and **Canvas / board backdrop color** controls in Rainee 1.0 and 2.0, including when artwork is selected. These are independent document colors, not the UI darkness setting. Never remove, hide or replace them while changing themes, workspaces or panel layouts. Keep the existing presets and transparent artboard option. The quick controls live in crates/ui-egui/src/chrome.rs; the October 12 correction makes them visible whenever left_working_dock is enabled and labels them Artboard and Backdrop. Preserve this condition in future work. Do not change toolbar icons. This narrow correction is separate from the still-pending overall theme task.
 
-October 13 implementation update: Rainee 2.0 now uses a workspace-wide charcoal/blue palette through `theme::apply_workspace`, including desktop chrome and shared menu/dialog styles. Preferences → User Interface adds `raineeDarkness`, `uiGlassIntensity`, and `uiReduceTransparency`. Darkness and glass preview while editing Preferences; Cancel restores saved settings. These are separate from the four legacy brightness values used by 1.0. Native review and regression evidence for this pass will be recorded below when complete.
+October 13 implementation update: Rainee 2.0 now uses a workspace-wide charcoal/blue palette through `theme::apply_workspace`, including desktop chrome and shared menu/dialog styles. Preferences → User Interface adds `raineeDarkness`, `uiGlassIntensity`, and `uiReduceTransparency`. Darkness and glass preview while editing Preferences; Cancel restores saved settings. These are separate from the four legacy brightness values used by 1.0. Native review and regression evidence are recorded below.
 
 The existing theme still has Dark, Medium Dark, Medium Light and Light for legacy workspaces. Rainee 2.0 applies its own darkness without overwriting that choice. Panel skins now read the effective global tokens. Toolbar icon geometry, assets, tool order and behavior are unchanged. Preserve 1.0 as a selectable workspace. Do not silently recolor the artwork or replace document backdrop/artboard settings.
 
@@ -16,29 +26,40 @@ Layers now places opacity/blend controls directly after the expanded row using a
 
 Brush Studio now has six desktop sections, definition-backed sliders and enum/range controls, editable neutral natural-ink defaults, Reset draft, Done and Cancel. The disposable preview remains position-only. This does not implement Procreate's complete brush physics, pressure graph editor, wet mixing or Apple Pencil barrel roll.
 
-Glass is currently a portable translucent surface treatment on shared floating-window/menu frames, with outlines, shadows and an opaque fallback. It is NOT Apple's Liquid Glass compositor: backdrop blur, optical lensing/refraction, adaptive tint and morphing are not implemented. Docked surfaces stay opaque for legibility.
+Glass now has a portable canvas-backed scattering and lensing implementation in `crates/ui-egui/src/glass.rs`. It retains a maximum 384-by-384-pixel canvas copy, builds a blurred background texture when content/view/colors change, and composites refractive meshes below floating-window, menu and submenu controls. Existing shadows are preserved and a light rim defines each surface. Idle frames reuse the texture. Reduce Transparency and Rainee 1.0 disable the material and release its cache. Docked surfaces remain opaque; toolbar icons and both document-color controls are unchanged.
+
+This is not Apple's proprietary compositor. Blur preparation runs on the CPU; mesh compositing uses the existing graphics backend. It samples canvas artwork and document background colors, not text or controls in other overlapping windows. Full stacked-window compositing, physically accurate optics and morphing animations remain outside this implementation. The design reference is Apple's public [Meet Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/) presentation.
+
+Native verification uses `integrations/Test-RaineeGlass.ps1` in a fresh process with `VECTORCRAFT_NO_PREFS=1`. The first native pass passed glass rendering, unchanged idle rebuild counts, opaque preview, legacy-workspace isolation and unchanged artwork. Screenshots of Preferences, Brush Studio, Window/Workspace menus and both workspaces are under `D:\DevData\Rainee\verification\rainee-theme-2026-10-13\glass-native`. Initial scattering preparation measured about 9.6–11.3 ms on the small synthetic test document; this is not a sustained large-document benchmark.
 
 Design references: [Procreate Brush Studio](https://help.procreate.com/procreate/handbook/brushes/brush-studio) establishes the attributes/settings/drawing-pad structure and reversible editing; [Layers interface](https://help.procreate.com/procreate/handbook/layers/layers-interface) informs thumbnail rows and blend/opacity access. [Apple Meet Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/) describes adaptive floating control materials and optical lensing; use it as a design reference, not a claim that the current egui treatment reproduces it.
 
 Use the existing preference and command routes. Inspect these locations before changing them:
 
 - `crates/ui-egui/src/theme.rs`: `apply_workspace` selects the effective workspace palette. Default 2.0 panel color is #1E1E1E, app bar #191919, selection #2F70F1. `style_rainee` reads these effective tokens.
-- `crates/engine/src/cmd/prefscmds.rs`: uiBrightness choice list, around line 262. Include the new preset here so Preferences can save it.
-- `crates/ui-egui/src/menus.rs`: window.brightness capability description, handler, checked state and menu built from Brightness::ALL. Update the accepted values and error text.
+- `crates/engine/src/cmd/prefscmds.rs`: preference command validation. Keep legacy `uiBrightness` separate from the Rainee darkness/glass controls.
+- `crates/ui-egui/src/menus.rs`: legacy brightness and workspace menu routes. Do not merge Rainee 2.0 darkness into `Brightness::ALL`.
 - `crates/ui-egui/src/prefs_dialog.rs`: engine/UI preference synchronization and live preview/cancel behavior.
 - `crates/ui-egui/src/lib.rs`: theme application at frame setup.
+- `crates/ui-egui/src/glass.rs`: bounded scattering texture, refractive surface meshes, cache lifecycle and telemetry. Native evidence is generated by `integrations/Test-RaineeGlass.ps1`.
 
-Check serialization, old preferences, menu selection, preference cancellation, restarting and switching between 1.0 and 2.0. Decide whether the new preset is selected automatically on entering 2.0 or remains a user choice; do not accidentally change all existing workspaces through a global theme default. Keep artwork colors unchanged.
+Keep testing serialization, old preferences, menu selection, preference cancellation, restarting and switching between 1.0 and 2.0. The implemented policy is workspace-scoped: entering 2.0 uses its saved darkness/glass values without changing legacy brightness. Keep artwork colors unchanged.
 
 ## Workspace and current build
 
 Repository: `D:\0\Rainee drawing app\ArtCraft-Foundation\VectorCraft - Gemini Edition`.
 
-October 13 theme preview: `D:\DevData\Rainee\build\VectorCraft-Rainee-Theme-2026-10-13`. Launch with `Launch.ps1`; choose Rainee 2.0. Executable SHA256: `84E0AD5B9AC18705667940181B30577CD5B4E15A086DFDE962337AAF05118888`. This supersedes the October 12 editor for previewing the new theme, but does not delete or alter that build.
+Current October 13 glass preview: `D:\DevData\Rainee\build\VectorCraft-Rainee-Glass-2026-10-13`. Launch with `Launch.ps1`; choose Rainee 2.0. Executable SHA256: `CFCAAAC836B525333D022A612C59D408048A10287BB8679D41BAEA78B4B6B335`. The launcher checks this hash. It supersedes the earlier theme-only preview for testing, without deleting or replacing that build or the October 12 editor.
+
+The packaged executable passed `Test-RaineeGlass.ps1` through its own launcher on an unused control port, in a fresh no-preferences process. Evidence is in `glass-packaged/`: real blur/lensing surface, idle texture-cache reuse, Reduce Transparency disabling the material, 1.0 isolation, unchanged artwork, and screenshots showing both document-color controls with selected artwork. The disposable test process was closed; owner app windows were not touched.
 
 Verification: Windows build and wasm32 UI check passed. Native smoke passed in an isolated no-preferences process, including workspace order and unchanged artwork across switches. Two visual passes inspected the workspace, inline Layers controls, Brush Studio, Preferences, Window menu and Workspace submenu. Selected-art screenshots confirm Artboard and Backdrop remain visible in both 1.0 and 2.0. Darkness 100 and Reduce Transparency were previewed; Cancel restored darkness 65, glass 55 and transparency enabled. Save/reopen of the disposable review document passed.
 
-Final UI suite: **861 passed, 10 failed, 2 ignored** out of 873. Focused Rainee tests (5), theme tests (2) and brush-panel tests (3) passed. Unresolved failures: two cursor tests, preview-cache key expectation, five localization catalog tests, simulated-paper artboard color assertion, and titlebar overlap at 800 points. The suite is not green; do not call 1.0 or the entire app fully finished. No pre-change baseline was run to classify these as new versus existing regressions.
+The earlier theme-only suite reported 861 passed, 10 failed and 2 ignored. This glass/fix pass addresses those failures: simulated paper again affects the resolved sheet unless an explicit color/transparent override wins; narrow titlebars compact the MCP Designer label; cursor tests dismiss the launch splash; preview-key tests include the tone flag; localization extraction no longer truncates at an out-of-line test module, and missing catalog translations are supplied. Existing coverage assertions remain strict. The full document suite now passes **146/146**, including the new independent artboard/backdrop regression. Latest UI results are recorded in `ui-glass-final.log`.
+
+Two Cintiq replay tests require `VECTORCRAFT_CINTIQ_FIXTURES` and remain ignored in the default UI run. No new physical pressure/tilt trial, full workspace CI, or sustained large-document benchmark is claimed. A green UI suite alone does not establish that the entire application or every 1.0 interaction is finished.
+
+Final glass/fix validation: **875 UI tests passed, 0 failed, 2 ignored**; **146 document tests passed, 0 failed**. Windows build, wasm32 UI check, scoped formatting and `git diff --check` passed. The glass unit test supplies a deterministic completed canvas upload and disables window fade-in; native integration independently exercises the real renderer and Preferences. The packaged launcher passed both the glass harness and `Test-Rainee2UI.ps1` (workspace ordering, native presentation and unchanged artwork). Latest evidence: `ui-glass-final.log`, `doc-glass-final.log`, `glass-final-build.log`, `glass-wasm.log`, `glass-packaged/`, and `glass-package-workspaces/`. These results supersede the earlier failing theme-only run.
 
 Evidence: `D:\DevData\Rainee\verification\rainee-theme-2026-10-13`, especially `ui-regression-final.log`, `native-ui-final.json`, `studio-pass1.png`, `studio-pass2.png`, `workspace-submenu.png`, `dark-opaque-preview.png`, and the selected-art workspace images. The packaged launcher also passed a fresh native smoke run. The owner's already-open October 12 app was not closed or modified.
 
@@ -93,7 +114,7 @@ HTML/CSS concept: `D:\0\Rainee drawing app\05-REFERENCE-UI\Rainee-Procreate-Mock
 
 The user supplied Procreate Brush Library, Actions/Preferences, Color, Brush Studio and Layers screenshots in this chat. Their common direction is charcoal surfaces, white previews, blue active rows and controls, readable thumbnails, clear headings and simpler hierarchy. Use all as visual guidance; do not import their artwork, proprietary brush assets or toolbar icons. If temporary clipboard references disappear, use the bundle's local reference/mockup files or request the originals again.
 
-Remaining polish: circular inner color field, custom switches, cleaner brush cards, long layer-name elision, full primary/secondary layer semantics, and true backdrop blur/refraction. Keep unsupported controls clearly unavailable rather than adding decorative fake functionality. Verify each visual pass in the native app before claiming fidelity.
+Remaining polish: circular inner color field, custom switches, cleaner brush cards, long layer-name elision, full primary/secondary layer semantics, and glass compositing of overlapping UI surfaces rather than canvas alone. Keep unsupported controls clearly unavailable rather than adding decorative fake functionality. Verify each visual pass in the native app before claiming fidelity.
 
 ## October 12 visual concepts and session package
 

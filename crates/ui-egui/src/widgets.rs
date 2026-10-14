@@ -7,6 +7,36 @@ use vectorcraft_doc::Unit;
 use crate::theme::{self, Tokens};
 use crate::{icons, scrub};
 
+/// Labelled pill switch with native keyboard focus and checkbox accessibility.
+pub fn toggle_switch(ui: &mut Ui, label: &str, value: &mut bool) -> Response {
+    let t = Tokens::get(ui.ctx());
+    let width = ui.available_width().max(64.0);
+    let (r, mut response) = ui.allocate_exact_size(vec2(width, 28.0), Sense::click());
+    if response.clicked() {
+        *value = !*value;
+        response.mark_changed();
+    }
+    response.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Checkbox, ui.is_enabled(), *value, label));
+    let pill = Rect::from_center_size(pos2(r.right() - 19.0, r.center().y), vec2(36.0, 21.0));
+    let painter = ui.painter_at(r);
+    painter.rect_filled(pill, 11.0, if *value { t.row_selected } else { t.button_border });
+    let x = if *value { pill.right() - 10.5 } else { pill.left() + 10.5 };
+    painter.circle_filled(pos2(x, pill.center().y), 8.5, if ui.is_enabled() { Color32::from_gray(225) } else { t.text_dim });
+    if response.has_focus() {
+        painter.rect_stroke(pill.expand(2.0), 12.0, Stroke::new(1.0, t.accent), StrokeKind::Outside);
+    }
+    let text_rect = Rect::from_min_max(r.min, pos2(pill.left() - 8.0, r.bottom()));
+    let mut text_ui = ui.new_child(egui::UiBuilder::new().max_rect(text_rect));
+    text_ui.add_sized(
+        text_rect.size(),
+        egui::Label::new(egui::RichText::new(label).color(if ui.is_enabled() { t.text } else { t.text_dim }))
+            .truncate()
+            .selectable(false)
+            .sense(Sense::hover()),
+    );
+    response.on_hover_text(label)
+}
+
 /// Square icon button; `selected` draws the pressed well.
 pub fn icon_button(ui: &mut Ui, icon: &str, tip: &str, selected: bool, size: f32) -> Response {
     let (_, resp) = ui.allocate_exact_size(Vec2::splat(size), Sense::click());
@@ -1537,11 +1567,22 @@ pub fn doc_preview(ui: &Ui, key: &str, size: Vec2, build: impl FnOnce(f64, f64) 
 }
 
 /// Neutral light-on-dark brush silhouette; does not change document colors or resources.
-pub(crate) fn doc_preview_light(ui: &Ui, key: &str, size: Vec2, build: impl FnOnce(f64, f64) -> Option<vectorcraft_doc::Document>) -> Option<egui::TextureHandle> {
+pub(crate) fn doc_preview_light(
+    ui: &Ui,
+    key: &str,
+    size: Vec2,
+    build: impl FnOnce(f64, f64) -> Option<vectorcraft_doc::Document>,
+) -> Option<egui::TextureHandle> {
     doc_preview_tone(ui, key, size, true, build)
 }
 
-fn doc_preview_tone(ui: &Ui, key: &str, size: Vec2, light: bool, build: impl FnOnce(f64, f64) -> Option<vectorcraft_doc::Document>) -> Option<egui::TextureHandle> {
+fn doc_preview_tone(
+    ui: &Ui,
+    key: &str,
+    size: Vec2,
+    light: bool,
+    build: impl FnOnce(f64, f64) -> Option<vectorcraft_doc::Document>,
+) -> Option<egui::TextureHandle> {
     use std::cell::RefCell;
     use std::collections::HashMap;
     thread_local! {
@@ -1557,7 +1598,7 @@ fn doc_preview_tone(ui: &Ui, key: &str, size: Vec2, light: bool, build: impl FnO
     let doc = build(w, h)?;
     let mut img = RENDERER.with(|r| r.borrow_mut().render_region(&doc, vectorcraft_geom::Rect::new(0.0, 0.0, w, h), ppp, false));
     if light {
-        for px in img.pixels.chunks_exact_mut(4) {
+        for px in img.pixels.as_chunks_mut::<4>().0 {
             let luminance = (u16::from(px[0]) + u16::from(px[1]) + u16::from(px[2])) / 3;
             let ink = px[3].saturating_sub(luminance as u8);
             px.copy_from_slice(&[ink, ink, ink, ink]);

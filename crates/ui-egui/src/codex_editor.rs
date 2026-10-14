@@ -456,42 +456,47 @@ pub fn show(app: &mut VectorcraftApp, ctx: &egui::Context) {
     }
     let mut open = true;
     let (mut send, mut approve, mut reject, mut cancel) = (false, false, false, false);
-    egui::Window::new("MCP UI Designer · Vector Work Edition").open(&mut open).default_width(510.0).default_height(580.0).show(ctx, |ui| {
-        ui.label("Requests share the active document with signed-in Codex. Files and remote actions remain blocked.");
-        ui.horizontal(|ui| {
-            ui.label("Model (optional)");
-            ui.text_edit_singleline(&mut app.codex.model);
-        });
-        ui.add(egui::TextEdit::multiline(&mut app.codex.prompt).desired_rows(3));
-        ui.add_enabled_ui(app.codex.pending.is_none(), |ui| {
-            ui.checkbox(&mut app.codex.trusted, "Trust ordinary canvas edits for this request/document");
-        });
-        ui.horizontal(|ui| {
-            send = ui.add_enabled(app.codex.pending.is_none(), egui::Button::new("Send editing request")).clicked();
-            cancel = ui.add_enabled(app.codex.pending.is_some(), egui::Button::new("Cancel")).clicked();
-        });
-        ui.label(&app.codex.status);
-        if let Some(p) = &app.codex.proposal {
-            ui.separator();
-            ui.label(format!("Proposed: {}", p.args["command"]));
+    egui::Window::new("MCP UI Designer · Vector Work Edition")
+        .drag_area(egui::WindowDrag::TitleBar)
+        .open(&mut open)
+        .default_width(510.0)
+        .default_height(580.0)
+        .show(ctx, |ui| {
+            ui.label("Requests share the active document with signed-in Codex. Files and remote actions remain blocked.");
             ui.horizontal(|ui| {
-                approve = ui.button("Approve operation").clicked();
-                reject = ui.button("Reject operation").clicked();
+                ui.label("Model (optional)");
+                ui.text_edit_singleline(&mut app.codex.model);
             });
-            ui.small(format!("Approval expires in {} seconds", 110_u64.saturating_sub(p.created.elapsed().as_secs())));
-            egui::ScrollArea::vertical().id_salt("codex-proposal").max_height(100.0).show(ui, |ui| {
-                ui.label(p.args["params"].to_string().chars().take(4000).collect::<String>());
+            ui.add(egui::TextEdit::multiline(&mut app.codex.prompt).desired_rows(3));
+            ui.add_enabled_ui(app.codex.pending.is_none(), |ui| {
+                ui.checkbox(&mut app.codex.trusted, "Trust ordinary canvas edits for this request/document");
             });
-        }
-        egui::ScrollArea::vertical().max_height(280.0).show(ui, |ui| {
-            ui.label(&app.codex.reply);
-            ui.separator();
-            for row in app.codex.history.iter().rev().take(12) {
-                ui.small(row.to_string());
+            ui.horizontal(|ui| {
+                send = ui.add_enabled(app.codex.pending.is_none(), egui::Button::new("Send editing request")).clicked();
+                cancel = ui.add_enabled(app.codex.pending.is_some(), egui::Button::new("Cancel")).clicked();
+            });
+            ui.label(&app.codex.status);
+            if let Some(p) = &app.codex.proposal {
+                ui.separator();
+                ui.label(format!("Proposed: {}", p.args["command"]));
+                ui.horizontal(|ui| {
+                    approve = ui.button("Approve operation").clicked();
+                    reject = ui.button("Reject operation").clicked();
+                });
+                ui.small(format!("Approval expires in {} seconds", 110_u64.saturating_sub(p.created.elapsed().as_secs())));
+                egui::ScrollArea::vertical().id_salt("codex-proposal").max_height(100.0).show(ui, |ui| {
+                    ui.label(p.args["params"].to_string().chars().take(4000).collect::<String>());
+                });
             }
+            egui::ScrollArea::vertical().max_height(280.0).show(ui, |ui| {
+                ui.label(&app.codex.reply);
+                ui.separator();
+                for row in app.codex.history.iter().rev().take(12) {
+                    ui.small(row.to_string());
+                }
+            });
+            ui.small("Cancellation stops future work; completed edits remain undoable where supported.");
         });
-        ui.small("Cancellation stops future work; completed edits remain undoable where supported.");
-    });
     app.codex.open = open;
     if send && let Err(e) = start(app) {
         app.codex.status = e;

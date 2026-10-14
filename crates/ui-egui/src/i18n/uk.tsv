@@ -1,4 +1,157 @@
 # Ukrainian (uk) catalog. Same format as zh-hant.tsv: context <TAB> source <TAB> translation.
+	All shortcuts reset to defaults.	Усі сполучення клавіш скинуто.
+	Back to document	Повернутися до документа
+	Click, then press the new shortcut (Esc cancels)	Натисніть і введіть нове сполучення (Esc — скасування)
+	Command	Команда
+	Go to Conflict	Перейти до конфлікту
+	Imported. Press OK to keep the imported set.	Імпортовано. Натисніть OK, щоб зберегти набір.
+	Keyboard Shortcuts	Сполучення клавіш
+	More Presets	Інші набори
+	Open a document to get started.	Відкрийте документ, щоб почати.
+	Press keys…	Натисніть клавіші…
+	Remove the shortcut	Видалити сполучення
+	Reset to Defaults	Скинути налаштування
+	Set:	Набір:
+	Shortcut	Сполучення клавіш
+	Tool	Інструмент
+	Use Default	Використати типове
+	Warning: {chord} was already used by {names} — it has been removed there.	Увага: {chord} вже використовувалося для {names} — попереднє призначення видалено.
+@msg	A model request is running	Виконується запит до моделі
+@msg	Answered by {_1}	Відповідь від {_1}
+@msg	Awaiting owner approval	Очікування схвалення власника
+@msg	Bridge disconnected	Міст від’єднано
+@msg	Bridge event exceeded budget	Подія мосту перевищила ліміт
+@msg	Brush Studio belongs to another document	Brush Studio належить іншому документу
+@msg	Brush Studio draft discarded: active document changed	Чернетку Brush Studio відкинуто: активний документ змінився
+@msg	Brush changed outside Studio; cancel and reopen to avoid overwriting it	Пензель змінено поза Studio; скасуйте та відкрийте знову, щоб не перезаписати його
+@msg	Cancelled	Скасовано
+@msg	Cancelled; completed edits remain undoable	Скасовано; завершені зміни можна скасувати
+@msg	Cancelled; no artwork changed	Скасовано; малюнок не змінено
+@msg	Cancelling; completed edits remain undoable	Скасування; завершені зміни можна скасувати
+@msg	Cleanup timed out; no art changed	Час очищення вичерпано; малюнок не змінено
+@msg	Codex reply exceeded the display limit	Відповідь Codex перевищила ліміт відображення
+@msg	Connecting to signed-in Codex…	Підключення до авторизованого Codex…
+@msg	Duplicate or unknown fitted group	Повторна або невідома апроксимована група
+@msg	Duplicate proposal target	Повторна ціль пропозиції
+@msg	Empty source	Порожнє джерело
+@msg	Enter a prompt up to 16000 bytes	Введіть запит не довший за 16000 байтів
+@msg	Executed {id}	Виконано: {id}
+@msg	Files, clipboard and global settings need a separate owner workflow	Для файлів, буфера обміну та загальних налаштувань потрібна окрема процедура власника
+@msg	Filesystem/URL parameters are outside canvas permission	Параметри файлової системи та URL поза дозволами полотна
+@msg	Finish the active gesture first	Спочатку завершіть активний жест
+@msg	Finish the manual gesture first	Спочатку завершіть ручний жест
+@msg	Fit discards part of an original stroke	Апроксимація видаляє частину початкового штриха
+@msg	Fitted stroke exceeds permitted deviation	Апроксимований штрих перевищує допустиме відхилення
+@msg	Gesture must be down, optional drags, up	Жест має складатися з натискання, необов’язкових переміщень і відпускання
+@msg	Invalid SCAP point count	Неприпустиме значення: кількість точок SCAP
+@msg	Invalid SCAP stroke	Неприпустиме значення: штрих SCAP
+@msg	Invalid SCAP stroke header	Неприпустиме значення: заголовок штриха SCAP
+@msg	Invalid candidate point	Неприпустиме значення: кандидатна точка
+@msg	Invalid cleanup proposal limits	Неприпустиме значення: межі пропозиції очищення
+@msg	Invalid confidence	Неприпустиме значення: достовірність
+@msg	Invalid endpoint	Неприпустиме значення: кінцева точка
+@msg	Invalid proposal size	Неприпустиме значення: розмір пропозиції
+@msg	Invalid source	Неприпустиме значення: джерело
+@msg	Invalid stroke ordinal	Неприпустиме значення: номер штриха
+@msg	Invalid target	Неприпустиме значення: ціль
+@msg	Invalid tool id	Неприпустиме значення: ідентифікатор інструмента
+@msg	Invalid worker suggestions	Неприпустиме значення: пропозиції обробника
+@msg	Invalid x	Неприпустиме значення: x
+@msg	Invalid y	Неприпустиме значення: y
+@msg	Invalid or oversized proposal segment	Неприпустимий або завеликий сегмент пропозиції
+@msg	Junction worker changed; rebuild/re-audit required	Обробник з’єднань змінено; потрібна перебудова та повторна перевірка
+@msg	Missing bridge stdin	Немає стандартного вводу мосту
+@msg	Missing bridge stdout	Немає стандартного виводу мосту
+@msg	Missing fitted group	Немає апроксимованої групи
+@msg	Model job deadline exceeded	Час завдання моделі вичерпано
+@msg	Nested SCAP stroke	Вкладений штрих SCAP
+@msg	Neural raster dimensions differ from captured region	Розміри нейронного растра відрізняються від захопленої області
+@msg	No active artboard	Немає активної монтажної області
+@msg	No active document	Немає активного документа
+@msg	No document	Немає документа
+@msg	No pending operation	Немає операції в очікуванні
+@msg	Non-canvas UI action is not authorized	Дія інтерфейсу поза полотном не дозволена
+@msg	Nonfinite SCAP number	Нескінченне або невизначене число SCAP
+@msg	Open a document before asking Codex	Відкрийте документ перед запитом до Codex
+@msg	Operation expired or request cancelled	Термін операції минув або запит скасовано
+@msg	Optional StripMaker SCIP/OSQP research worker is not installed	Не встановлено необов’язковий дослідницький обробник StripMaker SCIP/OSQP
+@msg	Owner rejected operation	Власник відхилив операцію
+@msg	Proposal exceeds interactive validation budget; clean a smaller selection	Пропозиція перевищує ліміт інтерактивної перевірки; зменште виділення
+@msg	Proposal omits original strokes	У пропозиції пропущено початкові штрихи
+@msg	Proposal sampling exceeds limits	Вибірка пропозиції перевищує межі
+@msg	Provide 2–4096 document-space samples	Надайте від 2 до 4096 відліків у просторі документа
+@msg	Requested document is no longer active	Запитаний документ більше не активний
+@msg	Research assistants currently require the local Windows installations	Дослідницьким помічникам наразі потрібні локальні встановлення Windows
+@msg	Research job timed out; no artwork changed. Diagnostics: {_1}	Час дослідження вичерпано; малюнок не змінено. Діагностика: {_1}
+@msg	Research output exceeds preview budget	Результат дослідження перевищує ліміт перегляду
+@msg	Research worker available on Windows only	Дослідницький обробник доступний лише у Windows
+@msg	Research worker failed ({status}); no art changed. Diagnostics: {_1}	Помилка дослідницького обробника ({status}); малюнок не змінено. Діагностика: {_1}
+@msg	Stale document or selection; inspect again before editing	Документ або виділення застаріли; перевірте знову перед редагуванням
+@msg	Truncated SCAP output	Обрізаний вивід SCAP
+@msg	Unexpected SCAP close	Неочікуване закриття SCAP
+@msg	Unexpected SCAP data	Неочікувані дані SCAP
+@msg	Unknown model tool	Невідомий інструмент моделі
+@msg	Unknown proposal target	Невідома ціль пропозиції
+@msg	Waiting for Codex…	Очікування Codex…
+@msg	Windows worker unavailable	Обробник Windows недоступний
+@msg	Worker binary changed: re-audit before use	Файл обробника змінено: повторіть перевірку перед використанням
+@msg	Worker changed source geometry	Обробник змінив початкову геометрію
+@msg	Worker changed source samples	Обробник змінив початкові відліки
+@msg	Worker exceeded authorized gap distance	Обробник перевищив дозволену відстань проміжку
+@msg	Worker failed ({status}); diagnostics: {_1}	Помилка обробника ({status}); діагностика: {_1}
+@msg	Worker omitted strokes	Обробник пропустив штрихи
+@msg	Worker output too large	Вивід обробника завеликий
+@msg	Worker returned invalid ordinal	Обробник повернув неприпустимий номер
+@msg	curved reference grids do not support planar attachment	вигнуті опорні сітки не підтримують пласку прив’язку
+@msg	open must be a boolean	open має бути логічним значенням
+@msg	open must be boolean	open має бути логічним значенням
+	Accept Sketch Cleanup	Прийняти очищення ескізу
+	Cancel Sketch Cleanup	Скасувати очищення ескізу
+	Reject Sketch Cleanup	Відхилити очищення ескізу
+	Preview Sketch Cleanup	Перегляд очищення ескізу
+	Inspect Cleanup Selection	Перевірити виділення для очищення
+	Sketch Cleanup Status	Стан очищення ескізу
+	Accept research preview	Прийняти дослідницький перегляд
+	Cancel research tool	Скасувати дослідницький інструмент
+	Reject research preview	Відхилити дослідницький перегляд
+	Research tool status	Стан дослідницького інструмента
+	Research tool telemetry	Телеметрія дослідницького інструмента
+	Preview learned junction suggestions	Перегляд навчених пропозицій з’єднань
+	Preview neural natural brush	Перегляд нейронного природного пензля
+	Release neural raster appearance	Зняти нейронне растрове оформлення
+	Embedded Codex Editor	Вбудований редактор Codex
+	Embedded Codex telemetry	Телеметрія вбудованого Codex
+	Approve embedded operation	Схвалити вбудовану операцію
+	Reject embedded operation	Відхилити вбудовану операцію
+	Cancel embedded request	Скасувати вбудований запит
+	Request embedded Codex edit	Запросити зміну у вбудованого Codex
+	Complete tool gesture	Завершити жест інструмента
+	Glass intensity	Інтенсивність скла
+	Interface darkness	Затемнення інтерфейсу
+	Rainee 2.0 Appearance	Оформлення Rainee 2.0
+	Reduce transparency (opaque panels)	Зменшити прозорість (непрозорі панелі)
+	Panel is floating	Плаваюча панель
+	Custom Image Path	Шлях до власного зображення
+	Launch Screen Artwork	Зображення екрана запуску
+	Replay Launch Screen	Повторити екран запуску
+	Erase all editable paths, regardless of selection	Стирати всі редаговані контури незалежно від виділення
+	Pressure controls editable width	Натиск керує редагованою шириною
+	Pressure curve:	Крива натиску:
+	Fallback nib angle:	Резервний кут пера:
+	Minimum nib axis ratio:	Мінімальне співвідношення осей пера:
+	Minimum width fraction:	Мінімальна частка ширини:
+	Tilt-controlled elliptical nib	Еліптичне перо з керуванням нахилом
+	Experimental learned AOSP prediction	Експериментальне навчене передбачення AOSP
+	Hold Ctrl when starting a stroke to bypass expressive input. These strokes do not auto-extend existing paths.	Утримуйте Ctrl на початку штриха, щоб вимкнути виразне введення. Такі штрихи не продовжують наявні контури автоматично.
+	Off: selected paths, or all paths when nothing is selected. Locked and hidden artwork is protected.	Вимкнено: виділені контури або всі за відсутності виділення. Заблоковані та приховані об’єкти захищені.
+	Requires measured native pen channels; missing data produces no predicted ink. Existing predictor remains the default.	Потрібні виміряні канали нативного пера; без даних передбачене чорнило не відображається. Типовим залишається попередній предиктор.
+	Experimental	Експериментальне
+	GPU-assisted Navigation	Навігація з прискоренням GPU
+	Research Tools	Дослідницькі інструменти
+	Sketch Cleanup	Очищення ескізу
+	Wet Media Simulation…	Імітація вологих матеріалів…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 # Empty context = a plain UI string; @plural = one|few|many; @msg = a status/error template.
 #
 # Clean-room: translations of VectorCraft's labels, reviewed against their English meaning.
@@ -3752,3 +3905,4 @@ axis	Both	Обидві
 	Detect button 2 key	Визначити клавішу кнопки 2
 	Driver setup and safety notes	Налаштування драйвера та заходи безпеки
 @msg	`{key}` must be a registered tool ID or none	`{key}` має бути зареєстрованим ID інструмента або none
+@msg	Give this brush a name before saving	Назвіть пензель перед збереженням

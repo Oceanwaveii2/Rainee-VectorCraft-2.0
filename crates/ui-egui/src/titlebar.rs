@@ -276,7 +276,9 @@ mod tests {
             // Wide windows show the whole group; narrow ones drop Discord and shorten the search.
             let texts: Vec<String> = texts(&out).into_iter().map(|(t, _)| t).collect();
             let has = |s: &str| texts.iter().any(|t| t == s);
-            assert_eq!((has("Discord"), has("Search commands and tools")), (width > 1000.0, width > 1000.0), "{width}: {texts:?}");
+            // MCP Designer is another real title-bar action. At 1100 points the
+            // search still fits, but Discord moves to Help before widgets overlap.
+            assert_eq!((has("Discord"), has("Search commands and tools")), (width > 1200.0, width > 1000.0), "{width}: {texts:?}");
         }
     }
 

@@ -1,16 +1,20 @@
 //! Definition-backed desktop Brush Studio controls. Never synthesizes unsupported effects.
 use super::*;
 
-pub(super) const PAGES: [&str; 6] = ["Shape & nib", "Stroke & spacing", "Grain & fibers", "Ink & rendering", "Variation", "About this brush"];
+pub(super) const PAGES: [&str; 9] =
+    ["Shape", "Stroke path", "Grain", "Rendering", "Dynamics", "Color dynamics", "Properties", "Pen input", "About this brush"];
+pub(super) const ICONS: [&str; 9] = ["brush", "spline", "grid-3x3", "paintbrush", "waves", "palette", "settings", "pen-tool", "info"];
 
 fn section(key: &str) -> usize {
     match key {
-        "shape" | "size" | "width" | "roundness" | "angle" | "direction" | "flip_along" | "flip_across" => 0,
-        "scale" | "spacing" | "fit" | "rotation_relative_to_path" => 1,
-        "grain" | "fibers" | "paperScale" | "density" | "thickness" | "length" | "seed" => 2,
-        "media" | "inkLoad" | "edgePooling" | "breakup" | "opacity" | "stiffness" | "colorization" => 3,
+        "shape" | "size" | "roundness" | "angle" | "direction" => 0,
+        "scale" | "spacing" | "fit" | "rotation_relative_to_path" | "flip_along" | "flip_across" => 1,
+        "grain" | "fibers" | "paperScale" | "density" | "thickness" | "length" => 2,
+        "media" | "inkLoad" | "edgePooling" | "breakup" | "opacity" | "stiffness" => 3,
         "variation" | "scatter" | "rotation" => 4,
-        _ => 5,
+        "colorization" => 5,
+        "seed" | "width" => 6,
+        _ => 8,
     }
 }
 
@@ -37,6 +41,27 @@ fn title(key: &str) -> &str {
         "inkLoad" => "Ink load",
         "edgePooling" => "Edge pooling",
         "paperScale" => "Paper scale",
+        "shape" => "Nib shape",
+        "size" => "Size",
+        "width" => "Width",
+        "roundness" => "Roundness",
+        "angle" => "Angle",
+        "direction" => "Direction",
+        "scale" => "Scaling",
+        "spacing" => "Spacing",
+        "fit" => "Fitting",
+        "grain" => "Grain strength",
+        "fibers" => "Fibers",
+        "density" => "Density",
+        "thickness" => "Thickness",
+        "length" => "Bristle length",
+        "media" => "Medium",
+        "breakup" => "Dry breakup",
+        "opacity" => "Opacity",
+        "stiffness" => "Stiffness",
+        "scatter" => "Scatter",
+        "rotation" => "Rotation",
+        "variation" => "Random variation",
         "flip_along" => "Flip along path",
         "flip_across" => "Flip across path",
         "rotation_relative_to_path" => "Rotate relative to path",
@@ -57,12 +82,14 @@ fn number(ui: &mut Ui, key: &str, value: &mut Value, natural: bool) {
     }
     let Some(mut n) = value.as_f64() else { return };
     let (min, max, suffix) = limits(key, natural);
-    ui.label(title(key));
+    ui.label(egui::RichText::new(title(key)).strong());
     let mut slider = egui::Slider::new(&mut n, min..=max).suffix(suffix).clamping(egui::SliderClamping::Never);
     if key == "fibers" {
         slider = slider.integer();
     }
-    if ui.add(slider).changed() && n.is_finite() {
+    let response = ui.add(slider);
+    remember(ui, key, response.rect);
+    if response.changed() && n.is_finite() {
         let n = n.clamp(min, max);
         *value = if key == "fibers" { json!(n.round() as u64) } else { json!(n) };
     }
@@ -81,16 +108,31 @@ fn choice(ui: &mut Ui, key: &str, value: &mut Value, choices: &[&str]) {
     }
 }
 
-pub(super) fn show(ui: &mut Ui, studio: &mut Studio) {
+pub(super) fn show(app: &mut VectorcraftApp, ui: &mut Ui, studio: &mut Studio) {
+    set_pstate(ui.ctx(), "studio-control-rects", std::collections::BTreeMap::<String, [f32; 4]>::new());
     let natural = studio.draft.get("type").and_then(Value::as_str) == Some("natural");
-    ui.heading(PAGES[studio.page.min(5)]);
+    ui.heading(PAGES[studio.page.min(PAGES.len() - 1)]);
     ui.add_space(12.0);
-    if studio.page == 5 {
-        ui.label(&studio.name);
-        ui.label(format!("Engine: {}", studio.draft.get("type").and_then(Value::as_str).unwrap_or("unknown")));
+    if studio.page == 8 {
+        ui.label("Brush name");
+        let mut name = studio.draft.get("name").and_then(Value::as_str).unwrap_or(&studio.name).to_owned();
+        let edit = ui.text_edit_singleline(&mut name);
+        remember(ui, "name", edit.rect);
+        if edit.changed() {
+            studio.draft["name"] = json!(name);
+        }
+        ui.label(format!("Brush type: {}", studio.draft.get("type").and_then(Value::as_str).unwrap_or("unknown")));
         ui.separator();
         ui.label("The original vector path stays editable. Done updates the document's brush definition in one undoable operation; Cancel discards this draft.");
-        ui.label("Pressure and tilt belong to document stroke input. This drawing pad previews position only. Procedural ink pooling is not a wet-fluid simulation.");
+        ui.label("Reset draft restores your starting settings. Preview strokes never enter the document.");
+        return;
+    }
+    if studio.page == 7 {
+        ui.label(egui::RichText::new("Pressure & tilt").strong());
+        ui.label("Pen response, stabilization and button assignments are configured for drawing tools in Preferences. The preview pad uses pointer position.");
+        if ui.button("Pen settings…").clicked() {
+            app.run("edit.preferences", json!({"category":"Pen & Wacom Buttons"})).ok();
+        }
         return;
     }
     let Some(fields) = studio.draft.as_object_mut() else { return };
@@ -111,21 +153,22 @@ pub(super) fn show(ui: &mut Ui, studio: &mut Studio) {
             if value.is_number() {
                 number(ui, key, value, natural);
             } else if let Some(mut b) = value.as_bool() {
-                if ui.checkbox(&mut b, title(key)).changed() {
+                if widgets::toggle_switch(ui, title(key), &mut b).changed() {
                     *value = json!(b);
                 }
             } else if let Some(values) = value.as_array_mut() {
                 ui.label(title(key));
                 for (i, v) in values.iter_mut().enumerate() {
                     ui.push_id(i, |ui| {
+                        let component = if key == "variation" { ["angle", "roundness", "size"].get(i).copied().unwrap_or("variation") } else { key };
                         ui.small(if key == "variation" {
-                            ["Angle", "Roundness", "Size"].get(i).copied().unwrap_or("Variation")
+                            "Variation per stroke"
                         } else if i == 0 {
                             "Minimum"
                         } else {
                             "Maximum"
                         });
-                        number(ui, key, v, natural);
+                        number(ui, component, v, natural);
                     });
                 }
             } else {
@@ -195,8 +238,8 @@ pub(super) fn show(ui: &mut Ui, studio: &mut Studio) {
                     ui.add_space(4.0);
                     ui.label("Calligraphic brushes generate an unbroken, smooth mathematical envelope around the path.");
                     ui.add_space(4.0);
-                    ui.label("• To customize nib diameter, angle, and roundness, open 'Shape & nib'.");
-                    ui.label("• To configure pen pressure & tilt response, open 'Variation'.");
+                    ui.label("Nib diameter, angle and roundness are in Shape.");
+                    ui.label("Random variation is in Dynamics; pressure and tilt settings are in Pen input.");
                     ui.label("• For adjustable stamp spacing, select a Scatter or Pattern brush from the library.");
                 }
                 ("calligraphic", 2) => {
@@ -209,7 +252,7 @@ pub(super) fn show(ui: &mut Ui, studio: &mut Studio) {
                     ui.label(egui::RichText::new("Vector Art Mesh").strong());
                     ui.add_space(4.0);
                     ui.label("Art brushes deform vector geometry along the path.");
-                    ui.label("• Scale, stretch guides, and fitting controls are located in 'Stroke & spacing'.");
+                    ui.label("Scale, stretch guides and fitting controls are in Stroke path.");
                 }
                 _ => {
                     ui.label(format!("The {} engine does not require parameters in this section.", btype));
@@ -220,9 +263,19 @@ pub(super) fn show(ui: &mut Ui, studio: &mut Studio) {
     }
 }
 
+fn remember(ui: &Ui, key: &str, r: egui::Rect) {
+    let mut fields = pstate::<std::collections::BTreeMap<String, [f32; 4]>>(ui.ctx(), "studio-control-rects");
+    fields.insert(key.into(), [r.left(), r.top(), r.width(), r.height()]);
+    set_pstate(ui.ctx(), "studio-control-rects", fields);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn every_studio_section_uses_an_existing_stock_icon() {
+        assert!(ICONS.into_iter().all(crate::icons::exists));
+    }
     #[test]
     fn rainee_studio_pages_preserve_definitions_and_expose_neutral_ink_defaults() {
         let mut app = VectorcraftApp::new(vectorcraft_engine::Session::new(), Default::default());
@@ -235,7 +288,7 @@ mod tests {
         let mut studio = Studio { name: "Ink test".into(), draft: original.clone(), original, ..Default::default() };
         for page in 0..PAGES.len() {
             studio.page = page;
-            ctx.run_ui(egui::RawInput::default(), |ui| show(ui, &mut studio)).textures_delta.clear();
+            ctx.run_ui(egui::RawInput::default(), |ui| show(&mut app, ui, &mut studio)).textures_delta.clear();
         }
         assert_eq!(studio.draft["inkLoad"], json!(1.0));
         assert_eq!(studio.draft["grain"], json!(0.0));

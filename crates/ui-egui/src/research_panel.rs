@@ -13,7 +13,7 @@ pub fn show(app: &mut VectorcraftApp, ctx: &egui::Context) {
     }
     let mut open = true;
     let status = app.session.research_tools.status();
-    egui::Window::new("Research Tools · Experimental").open(&mut open).default_width(460.0).default_height(600.0).show(ctx,|ui|{
+    egui::Window::new("Research Tools · Experimental").drag_area(egui::WindowDrag::TitleBar).open(&mut open).default_width(460.0).default_height(600.0).show(ctx,|ui|{
         let mut tab=ctx.data(|d|d.get_temp::<usize>(egui::Id::new("research-tab"))).unwrap_or(if status["kind"]=="junction"{1}else{2});
         ui.horizontal(|ui|{ui.selectable_value(&mut tab,0,"Prediction");ui.selectable_value(&mut tab,1,"Junctions");ui.selectable_value(&mut tab,2,"Natural brushes");});
         ctx.data_mut(|d|{d.insert_temp(egui::Id::new("research-tab"),tab);});

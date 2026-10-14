@@ -7,14 +7,10 @@ use serde_json::{Value, json};
 
 pub fn show_embedded(ui: &mut Ui, draft: &mut Value) {
     ui.add_space(8.0);
-    ui.collapsing("Rebelle Vector-Controlled Fluid, Bristles & Vector Outliner", |ui| {
-        let current_media = draft
-            .get("rebelleMedia")
-            .and_then(Value::as_str)
-            .unwrap_or("watercolorWash")
-            .to_string();
+    ui.collapsing("Rebelle Vector-Controlled Fluid & Natural Media", |ui| {
+        let current_media = draft.get("rebelleMedia").and_then(Value::as_str).unwrap_or("watercolorWash").to_string();
 
-        ui.label("Rebelle Natural Media Mode (Live Vector Spine):");
+        ui.label(egui::RichText::new("Rebelle Natural Media Mode (Live Vector Spine):").strong());
         ui.horizontal_wrapped(|ui| {
             for (id, label) in [
                 ("watercolorWash", "Watercolor Wash"),

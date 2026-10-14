@@ -33,7 +33,8 @@ pub fn app_bar(app: &mut VectorcraftApp, ui: &mut Ui) {
             if widgets::icon_button(ui, "house", tl!("Home"), on_home, 24.0).clicked() {
                 app.run("app.home", json!({})).ok();
             }
-            if ui.button("MCP Designer").on_hover_text("MCP UI Designer · Vector Work Edition").clicked() {
+            let designer = if ui.max_rect().width() < 1250.0 { "MCP" } else { "MCP Designer" };
+            if ui.button(designer).on_hover_text("MCP UI Designer · Vector Work Edition").clicked() {
                 app.codex.open = !app.codex.open;
             }
             ui.add_space(2.0);
@@ -301,10 +302,10 @@ pub fn control_bar(app: &mut VectorcraftApp, ui: &mut Ui) {
                             ui.close();
                         }
                     });
-                    if let Some(ac) = change_ab_color {
-                        if let Some(st_mut) = app.session.active_mut() {
-                            std::sync::Arc::make_mut(&mut st_mut.doc).setup.artboard_color = Some(ac);
-                        }
+                    if let Some(ac) = change_ab_color
+                        && let Some(st_mut) = app.session.active_mut()
+                    {
+                        std::sync::Arc::make_mut(&mut st_mut.doc).setup.artboard_color = Some(ac);
                     }
 
                     // 2. Canvas Desk Backdrop Quick Selector
@@ -340,10 +341,10 @@ pub fn control_bar(app: &mut VectorcraftApp, ui: &mut Ui) {
                             ui.close();
                         }
                     });
-                    if let Some(bd) = change_backdrop {
-                        if let Some(st_mut) = app.session.active_mut() {
-                            std::sync::Arc::make_mut(&mut st_mut.doc).setup.backdrop = Some(bd);
-                        }
+                    if let Some(bd) = change_backdrop
+                        && let Some(st_mut) = app.session.active_mut()
+                    {
+                        std::sync::Arc::make_mut(&mut st_mut.doc).setup.backdrop = Some(bd);
                     }
                     if widgets::flat_button(ui, tl!("Document Setup"), 112.0).clicked() {
                         app.run("file.documentSetup", json!({})).ok();

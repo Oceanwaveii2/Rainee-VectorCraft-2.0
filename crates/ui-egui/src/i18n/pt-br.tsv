@@ -1,4 +1,11 @@
 # Brazilian Portuguese (pt-br) catalog. Columns, separated by a TAB:  context <TAB> source <TAB> translation
+	Experimental	Experimental
+	GPU-assisted Navigation	Navegação assistida por GPU
+	Research Tools	Ferramentas de pesquisa
+	Sketch Cleanup	Limpeza de esboços
+	Wet Media Simulation…	Simulação de materiais úmidos…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 #
 #   context  empty                a plain UI string; `source` is the English text in the code
 #            @id                  a command id (e.g. file.saveAs): wins over the English text for
@@ -2712,3 +2719,4 @@
 	Detect button 1 key	Detectar tecla do botão 1
 	Detect button 2 key	Detectar tecla do botão 2
 	Driver setup and safety notes	Configuração do driver e notas de segurança
+@msg	Give this brush a name before saving	Dê um nome ao pincel antes de salvar

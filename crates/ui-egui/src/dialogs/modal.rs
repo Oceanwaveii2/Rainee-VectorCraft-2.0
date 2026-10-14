@@ -22,6 +22,7 @@ pub(crate) fn show<R>(ctx: &egui::Context, title: &str, id: Id, nudge: f32, marg
         .collapsible(false)
         .resizable(false)
         .title_bar(false)
+        .movable(false)
         .anchor(egui::Align2::CENTER_CENTER, offset(ctx, id, nudge))
         .frame(egui::Frame::window(&ctx.global_style()).inner_margin(egui::Margin::same(margin)))
         .show(ctx, add)

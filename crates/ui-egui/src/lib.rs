@@ -32,6 +32,7 @@ pub mod floating;
 pub mod font_menu;
 mod free_transform;
 pub mod graphics;
+mod glass;
 pub mod i18n;
 pub mod icon_data;
 pub mod icons;
@@ -1086,6 +1087,7 @@ impl VectorcraftApp {
         self.ui_fonts.frame(&ctx);
         scrub::end_frame(self, &ctx);
         native_menu::sync(self, &ctx);
+        glass::finish(self, &ctx);
         self.perf.frame_ms = now_ms() - t0;
         let _ = json!(null);
     }

@@ -201,7 +201,7 @@ mod tests {
             .clear();
             tex.expect("a preview").id()
         };
-        assert_eq!(texture_name(&old, preview(&old)).as_deref(), Some("preview-8x8@1:loss"));
+        assert_eq!(texture_name(&old, preview(&old)).as_deref(), Some("preview-8x8@1:light=false:loss"));
 
         // The host lost its graphics and started again: same app, new context.
         let new = egui::Context::default();
@@ -210,7 +210,7 @@ mod tests {
         }
         let canvas = app.canvas.texture.as_ref().map(egui::TextureHandle::id).expect("the canvas is drawn again");
         assert_eq!(texture_name(&new, canvas).as_deref(), Some("canvas"), "uploaded to the new context");
-        assert_eq!(texture_name(&new, preview(&new)).as_deref(), Some("preview-8x8@1:loss"), "cached previews are made again");
+        assert_eq!(texture_name(&new, preview(&new)).as_deref(), Some("preview-8x8@1:light=false:loss"), "cached previews are made again");
         assert_eq!(new.global_style().visuals.panel_fill, old.global_style().visuals.panel_fill, "the theme is applied again");
         assert!(new.fonts(|f| f.definitions().font_data.contains_key("SourceSans3")), "and the fonts installed");
     }

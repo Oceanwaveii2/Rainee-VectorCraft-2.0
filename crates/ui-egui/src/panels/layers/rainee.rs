@@ -60,10 +60,10 @@ pub(super) fn inline_blend(app: &mut VectorcraftApp, ui: &mut Ui) {
                     if group != 0 && mode.group() != group {
                         continue;
                     }
-                    if ui.selectable_label(node.blend == mode, mode.label()).clicked() {
-                        if let Err(e) = app.run("transparency.set", json!({"ids":[id.0],"item":null,"blend":mode.label()})) {
-                            app.status(e);
-                        }
+                    if ui.selectable_label(node.blend == mode, mode.label()).clicked()
+                        && let Err(e) = app.run("transparency.set", json!({"ids":[id.0],"item":null,"blend":mode.label()}))
+                    {
+                        app.status(e);
                     }
                 }
             });
@@ -122,31 +122,45 @@ pub(super) fn row(ui: &mut Ui, view: &View, item: &Row, out: &mut Out) {
             ui.data_mut(|d| d.insert_temp(rename_id(), (id, name)));
         }
     } else {
-        ui.painter().with_clip_rect(name_r).text(
-            egui::pos2(x, r.center().y),
-            egui::Align2::LEFT_CENTER,
-            n.display_name(),
-            egui::FontId::proportional(14.5),
-            if item.dim { view.t.text_dim } else { view.t.text },
-        );
+        let mut child = ui.new_child(egui::UiBuilder::new().max_rect(name_r).layout(egui::Layout::left_to_right(egui::Align::Center)));
+        child
+            .add_sized(
+                name_r.size(),
+                egui::Label::new(egui::RichText::new(n.display_name()).size(14.5).color(if item.dim { view.t.text_dim } else { view.t.text }))
+                    .truncate()
+                    .selectable(false)
+                    .sense(Sense::hover()),
+            )
+            .on_hover_text(n.display_name());
     }
     let badge_r = egui::Rect::from_center_size(egui::pos2(r.right() - 41.0, r.center().y), vec2(22.0, 24.0));
     let badge = ui.interact(badge_r, ui.id().with(("rainee-blend", n.id.0)), Sense::click());
     let label = blend_badge(n.blend);
     ui.painter().text(badge_r.center(), egui::Align2::CENTER_CENTER, label, egui::FontId::proportional(12.0), view.t.text);
-    if badge.on_hover_text(format!("{} · {:.0}% opacity", n.blend.label(), n.opacity * 100.0)).clicked() {
-        if let Some(uid) = ui.data(|d| d.get_temp::<u64>(egui::Id::new("layers-doc"))) {
-            ui.data_mut(|d| {
-                if d.get_temp::<(u64, NodeId)>(target_key()) == Some((uid, n.id)) {
-                    d.remove::<(u64, NodeId)>(target_key());
-                } else {
-                    d.insert_temp(target_key(), (uid, n.id));
-                }
-            });
-        }
+    if badge.on_hover_text(format!("{} · {:.0}% opacity", n.blend.label(), n.opacity * 100.0)).clicked()
+        && let Some(uid) = ui.data(|d| d.get_temp::<u64>(egui::Id::new("layers-doc")))
+    {
+        ui.data_mut(|d| {
+            if d.get_temp::<(u64, NodeId)>(target_key()) == Some((uid, n.id)) {
+                d.remove::<(u64, NodeId)>(target_key());
+            } else {
+                d.insert_temp(target_key(), (uid, n.id));
+            }
+        });
     }
     let eye_r = egui::Rect::from_center_size(egui::pos2(r.right() - 14.0, r.center().y), vec2(20.0, 24.0));
-    icons::paint(ui, if n.visible { "eye" } else { "eye-off" }, eye_r, view.t.text_dim);
+    let check = egui::Rect::from_center_size(eye_r.center(), vec2(12.0, 12.0));
+    ui.painter().rect(
+        check,
+        2.0,
+        if n.visible { view.t.text } else { egui::Color32::TRANSPARENT },
+        egui::Stroke::new(1.0, view.t.text_dim),
+        egui::StrokeKind::Inside,
+    );
+    if n.visible {
+        let points = [check.min + vec2(2.0, 6.0), check.min + vec2(5.0, 9.0), check.min + vec2(10.0, 3.0)];
+        ui.painter().add(egui::Shape::line(points.to_vec(), egui::Stroke::new(1.5, view.t.panel)));
+    }
     let eye = ui.interact(eye_r, ui.id().with(("rainee-visible", n.id.0)), Sense::click());
     if eye.on_hover_text(if n.visible { "Hide layer / object" } else { "Show layer / object" }).clicked() {
         out.actions.push(("layer.setProps".into(), json!({"ids":[n.id.0],"visible":!n.visible})));

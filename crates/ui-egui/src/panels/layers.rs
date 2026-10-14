@@ -335,8 +335,10 @@ pub fn show(app: &mut VectorcraftApp, ui: &mut Ui) {
         ui.painter().rect_filled(ui.max_rect(), 8.0, Tokens::get(ui.ctx()).panel);
         ui.horizontal(|ui| {
             ui.label(egui::RichText::new("Layers").size(20.0).strong());
-            if ui.small_button("＋").on_hover_text("Create layer").clicked() {
-                if let Err(e) = app.run("layer.new", json!({})) { app.status(e); }
+            if ui.small_button("＋").on_hover_text("Create layer").clicked()
+                && let Err(e) = app.run("layer.new", json!({}))
+            {
+                app.status(e);
             }
         });
     }
@@ -373,11 +375,12 @@ pub fn show(app: &mut VectorcraftApp, ui: &mut Ui) {
     let query = crate::widgets::search_field(ui, egui::Id::new("layers-search"), tl!("Search All")).trim().to_lowercase();
     let Some(st) = app.session.active() else { return };
     let mut opts = app.ui.layers_panel.clone();
-    if app.ui.procreate_panels { opts.row_size = opts.row_size.clamp(56.0, 80.0); }
+    if app.ui.procreate_panels {
+        opts.row_size = opts.row_size.clamp(56.0, 80.0);
+    }
     let list = rows_of_doc(ui, st, &opts, &query);
-    let expanded = if app.ui.procreate_panels {
-        rainee::expanded_target(ui, st.uid).and_then(|id| list.iter().position(|r| r.node.id == id))
-    } else { None };
+    let expanded =
+        if app.ui.procreate_panels { rainee::expanded_target(ui, st.uid).and_then(|id| list.iter().position(|r| r.node.id == id)) } else { None };
     let view = View {
         rainee: app.ui.procreate_panels,
         doc: &doc,
@@ -402,42 +405,53 @@ pub fn show(app: &mut VectorcraftApp, ui: &mut Ui) {
             // Virtualized variable-height list: reserve one inline editor after its own row,
             // without laying out thousands of offscreen vector objects.
             const EDITOR_HEIGHT: f32 = 300.0;
-            egui::ScrollArea::vertical().max_height(list_h).auto_shrink([false, false]).show_viewport(ui, |ui, viewport| {
-                let origin = ui.cursor().min;
-                let width = ui.available_width();
-                let split = (expanded + 1) as f32 * view.h;
-                let total = list.len() as f32 * view.h + EDITOR_HEIGHT;
-                ui.set_min_height(total);
-                let logical_y = |y: f32| if y > split { (y - EDITOR_HEIGHT).max(split) } else { y };
-                let start = (logical_y(viewport.top()) / view.h).floor().max(0.0) as usize;
-                let end = ((logical_y(viewport.bottom()) / view.h).ceil() as usize + 1).min(list.len());
-                for i in start..end {
-                    let y = i as f32 * view.h + if i > expanded { EDITOR_HEIGHT } else { 0.0 };
-                    let rect = egui::Rect::from_min_size(origin + vec2(0.0, y), vec2(width, view.h));
-                    let mut child = ui.new_child(egui::UiBuilder::new().id_salt(("layer-row", i)).max_rect(rect));
-                    row(&mut child, &view, &list[i], &mut out);
-                }
-                if viewport.bottom() >= split && viewport.top() <= split + EDITOR_HEIGHT {
-                    let rect = egui::Rect::from_min_size(origin + vec2(0.0, split), vec2(width, EDITOR_HEIGHT));
-                    let mut child = ui.new_child(egui::UiBuilder::new().id_salt("inline-layer-editor").max_rect(rect));
-                    child.set_clip_rect(child.clip_rect().intersect(rect));
-                    rainee::inline_blend(app, &mut child);
-                }
-                if let Some(i) = revealed {
-                    let y = i as f32 * view.h + if i > expanded { EDITOR_HEIGHT } else { 0.0 };
-                    ui.scroll_to_rect(egui::Rect::from_min_size(origin + vec2(0.0, y), vec2(width, view.h)), None);
-                }
-            }).inner_rect
+            egui::ScrollArea::vertical()
+                .max_height(list_h)
+                .auto_shrink([false, false])
+                .show_viewport(ui, |ui, viewport| {
+                    let origin = ui.cursor().min;
+                    let width = ui.available_width();
+                    let split = (expanded + 1) as f32 * view.h;
+                    let total = list.len() as f32 * view.h + EDITOR_HEIGHT;
+                    ui.set_min_height(total);
+                    let logical_y = |y: f32| if y > split { (y - EDITOR_HEIGHT).max(split) } else { y };
+                    let start = (logical_y(viewport.top()) / view.h).floor().max(0.0) as usize;
+                    let end = ((logical_y(viewport.bottom()) / view.h).ceil() as usize + 1).min(list.len());
+                    for i in start..end {
+                        let y = i as f32 * view.h + if i > expanded { EDITOR_HEIGHT } else { 0.0 };
+                        let rect = egui::Rect::from_min_size(origin + vec2(0.0, y), vec2(width, view.h));
+                        let mut child = ui.new_child(egui::UiBuilder::new().id_salt(("layer-row", i)).max_rect(rect));
+                        row(&mut child, &view, &list[i], &mut out);
+                    }
+                    if viewport.bottom() >= split && viewport.top() <= split + EDITOR_HEIGHT {
+                        let rect = egui::Rect::from_min_size(origin + vec2(0.0, split), vec2(width, EDITOR_HEIGHT));
+                        let mut child = ui.new_child(egui::UiBuilder::new().id_salt("inline-layer-editor").max_rect(rect));
+                        child.set_clip_rect(child.clip_rect().intersect(rect));
+                        rainee::inline_blend(app, &mut child);
+                    }
+                    if let Some(i) = revealed {
+                        let y = i as f32 * view.h + if i > expanded { EDITOR_HEIGHT } else { 0.0 };
+                        ui.scroll_to_rect(egui::Rect::from_min_size(origin + vec2(0.0, y), vec2(width, view.h)), None);
+                    }
+                })
+                .inner_rect
         } else {
-        egui::ScrollArea::vertical().max_height(list_h).auto_shrink([false, false]).show_rows(ui, view.h, list.len(), |ui, range| {
-            if let Some(i) = revealed.filter(|i| !range.contains(i)) {
-                let top = ui.max_rect().top() + (i as f32 - range.start as f32) * view.h;
-                ui.scroll_to_rect(egui::Rect::from_min_size(egui::pos2(ui.max_rect().left(), top), vec2(ui.max_rect().width(), view.h)), None);
-            }
-            for r in list.get(range).unwrap_or_default() {
-                row(ui, &view, r, &mut out);
-            }
-        }).inner_rect
+            egui::ScrollArea::vertical()
+                .max_height(list_h)
+                .auto_shrink([false, false])
+                .show_rows(ui, view.h, list.len(), |ui, range| {
+                    if let Some(i) = revealed.filter(|i| !range.contains(i)) {
+                        let top = ui.max_rect().top() + (i as f32 - range.start as f32) * view.h;
+                        ui.scroll_to_rect(
+                            egui::Rect::from_min_size(egui::pos2(ui.max_rect().left(), top), vec2(ui.max_rect().width(), view.h)),
+                            None,
+                        );
+                    }
+                    for r in list.get(range).unwrap_or_default() {
+                        row(ui, &view, r, &mut out);
+                    }
+                })
+                .inner_rect
         }
     });
     let list_rect = scrolled.inner;
@@ -596,7 +610,10 @@ fn takes(n: &Node, drag: &LayersDrag, doc: &Document) -> bool {
 
 /// The widgets of row `item`.
 fn row(ui: &mut Ui, view: &View, item: &Row, out: &mut Out) {
-    if view.rainee { rainee::row(ui, view, item, out); return; }
+    if view.rainee {
+        rainee::row(ui, view, item, out);
+        return;
+    }
     let n = &*item.node;
     let (depth, clip_path, has_children, open, color) = (item.depth, item.clip_path, item.opens, item.open, item.colour);
     let doc = view.doc;

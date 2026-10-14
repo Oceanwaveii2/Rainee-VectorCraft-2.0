@@ -493,7 +493,9 @@ fn picas_in_use(d: &Dialog) -> bool {
 
 fn bool_row(ui: &mut egui::Ui, d: &mut Dialog, key: &str, label: &str) {
     let mut b = d.bool(key);
-    if ui.checkbox(&mut b, tl!(label)).changed() {
+    let response =
+        if crate::theme::is_rainee(ui.ctx()) { crate::widgets::toggle_switch(ui, tl!(label), &mut b) } else { ui.checkbox(&mut b, tl!(label)) };
+    if response.changed() {
         d.fields.insert(key.into(), json!(b));
     }
 }

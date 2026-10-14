@@ -10,6 +10,7 @@ pub(super) fn show(app: &mut VectorcraftApp, ctx: &egui::Context) {
     }
     let mut open = true;
     egui::Window::new(tl!("About VectorCraft"))
+        .drag_area(egui::WindowDrag::TitleBar)
         .collapsible(false)
         .resizable(false)
         .open(&mut open)

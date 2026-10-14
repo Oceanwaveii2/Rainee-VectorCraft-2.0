@@ -1,4 +1,157 @@
 # Japanese (ja) catalog. Same format as zh-hant.tsv:  context <TAB> source <TAB> translation
+	All shortcuts reset to defaults.	すべてのショートカットを既定値に戻しました。
+	Back to document	ドキュメントに戻る
+	Click, then press the new shortcut (Esc cancels)	クリックして新しいキーを押してください（Esc でキャンセル）
+	Command	コマンド
+	Go to Conflict	競合箇所へ移動
+	Imported. Press OK to keep the imported set.	読み込みました。OK を押してセットを保存してください。
+	Keyboard Shortcuts	キーボードショートカット
+	More Presets	その他のプリセット
+	Open a document to get started.	ドキュメントを開いて開始してください。
+	Press keys…	キーを押してください…
+	Remove the shortcut	ショートカットを削除
+	Reset to Defaults	既定値に戻す
+	Set:	セット:
+	Shortcut	ショートカット
+	Tool	ツール
+	Use Default	既定値を使用
+	Warning: {chord} was already used by {names} — it has been removed there.	注意: {chord} は {names} で使用済みのため、その割り当てを解除しました。
+@msg	A model request is running	モデルへのリクエストを実行中です
+@msg	Answered by {_1}	{_1} による回答
+@msg	Awaiting owner approval	所有者の承認待ち
+@msg	Bridge disconnected	ブリッジが切断されました
+@msg	Bridge event exceeded budget	ブリッジイベントが上限を超えました
+@msg	Brush Studio belongs to another document	Brush Studio は別のドキュメントに属しています
+@msg	Brush Studio draft discarded: active document changed	アクティブドキュメントの変更により Brush Studio の下書きを破棄しました
+@msg	Brush changed outside Studio; cancel and reopen to avoid overwriting it	ブラシが Studio 外で変更されました。上書きを避けるためキャンセルして開き直してください
+@msg	Cancelled	キャンセルしました
+@msg	Cancelled; completed edits remain undoable	キャンセルしました。完了した編集は元に戻せます
+@msg	Cancelled; no artwork changed	キャンセルしました。アートワークは変更されていません
+@msg	Cancelling; completed edits remain undoable	キャンセル中です。完了した編集は元に戻せます
+@msg	Cleanup timed out; no art changed	クリーンアップがタイムアウトしました。アートワークは変更されていません
+@msg	Codex reply exceeded the display limit	Codex の回答が表示上限を超えました
+@msg	Connecting to signed-in Codex…	ログイン済みの Codex に接続中…
+@msg	Duplicate or unknown fitted group	重複または不明なフィット済みグループ
+@msg	Duplicate proposal target	提案の対象が重複しています
+@msg	Empty source	ソースが空です
+@msg	Enter a prompt up to 16000 bytes	16000 バイト以内のプロンプトを入力してください
+@msg	Executed {id}	{id} を実行しました
+@msg	Files, clipboard and global settings need a separate owner workflow	ファイル、クリップボード、全体設定には別の所有者ワークフローが必要です
+@msg	Filesystem/URL parameters are outside canvas permission	ファイルシステムと URL のパラメーターはキャンバス権限の対象外です
+@msg	Finish the active gesture first	先にアクティブなジェスチャーを完了してください
+@msg	Finish the manual gesture first	先に手動のジェスチャーを完了してください
+@msg	Fit discards part of an original stroke	フィットにより元のストロークの一部が失われます
+@msg	Fitted stroke exceeds permitted deviation	フィットしたストロークが許容偏差を超えています
+@msg	Gesture must be down, optional drags, up	ジェスチャーは押下、任意のドラッグ、解放の順である必要があります
+@msg	Invalid SCAP point count	無効な値: SCAP ポイント数
+@msg	Invalid SCAP stroke	無効な値: SCAP ストローク
+@msg	Invalid SCAP stroke header	無効な値: SCAP ストロークヘッダー
+@msg	Invalid candidate point	無効な値: 候補ポイント
+@msg	Invalid cleanup proposal limits	無効な値: クリーンアップ提案の上限
+@msg	Invalid confidence	無効な値: 信頼度
+@msg	Invalid endpoint	無効な値: 端点
+@msg	Invalid proposal size	無効な値: 提案サイズ
+@msg	Invalid source	無効な値: ソース
+@msg	Invalid stroke ordinal	無効な値: ストローク番号
+@msg	Invalid target	無効な値: 対象
+@msg	Invalid tool id	無効な値: ツール ID
+@msg	Invalid worker suggestions	無効な値: ワーカーの候補
+@msg	Invalid x	無効な値: x
+@msg	Invalid y	無効な値: y
+@msg	Invalid or oversized proposal segment	提案セグメントが無効または大きすぎます
+@msg	Junction worker changed; rebuild/re-audit required	接合ワーカーが変更されました。再ビルドと再監査が必要です
+@msg	Missing bridge stdin	ブリッジの標準入力がありません
+@msg	Missing bridge stdout	ブリッジの標準出力がありません
+@msg	Missing fitted group	フィット済みグループがありません
+@msg	Model job deadline exceeded	モデルジョブの期限を超えました
+@msg	Nested SCAP stroke	SCAP ストロークが入れ子です
+@msg	Neural raster dimensions differ from captured region	ニューラルラスターの寸法が取得領域と異なります
+@msg	No active artboard	アクティブなアートボードがありません
+@msg	No active document	アクティブなドキュメントがありません
+@msg	No document	ドキュメントがありません
+@msg	No pending operation	保留中の操作がありません
+@msg	Non-canvas UI action is not authorized	キャンバス以外の UI 操作は許可されていません
+@msg	Nonfinite SCAP number	SCAP の数値が有限ではありません
+@msg	Open a document before asking Codex	Codex に依頼する前にドキュメントを開いてください
+@msg	Operation expired or request cancelled	操作の期限が切れたかリクエストがキャンセルされました
+@msg	Optional StripMaker SCIP/OSQP research worker is not installed	任意の StripMaker SCIP/OSQP 研究ワーカーがインストールされていません
+@msg	Owner rejected operation	所有者が操作を拒否しました
+@msg	Proposal exceeds interactive validation budget; clean a smaller selection	提案が対話的検証の上限を超えています。選択範囲を小さくしてください
+@msg	Proposal omits original strokes	提案で元のストロークが欠落しています
+@msg	Proposal sampling exceeds limits	提案のサンプリングが上限を超えています
+@msg	Provide 2–4096 document-space samples	ドキュメント空間のサンプルを 2～4096 個指定してください
+@msg	Requested document is no longer active	指定されたドキュメントはアクティブではありません
+@msg	Research assistants currently require the local Windows installations	研究アシスタントには現在ローカルの Windows インストールが必要です
+@msg	Research job timed out; no artwork changed. Diagnostics: {_1}	研究ジョブがタイムアウトしました。アートワークは変更されていません。診断: {_1}
+@msg	Research output exceeds preview budget	研究出力がプレビューの上限を超えています
+@msg	Research worker available on Windows only	研究ワーカーは Windows でのみ利用可能です
+@msg	Research worker failed ({status}); no art changed. Diagnostics: {_1}	研究ワーカーが失敗しました（{status}）。アートワークは変更されていません。診断: {_1}
+@msg	Stale document or selection; inspect again before editing	ドキュメントまたは選択が古くなっています。編集前に再検査してください
+@msg	Truncated SCAP output	SCAP 出力が途中で切れています
+@msg	Unexpected SCAP close	予期しない SCAP の終了
+@msg	Unexpected SCAP data	予期しない SCAP データ
+@msg	Unknown model tool	不明なモデルツール
+@msg	Unknown proposal target	不明な提案対象
+@msg	Waiting for Codex…	Codex を待機中…
+@msg	Windows worker unavailable	Windows ワーカーが利用できません
+@msg	Worker binary changed: re-audit before use	ワーカーのバイナリが変更されました。使用前に再監査してください
+@msg	Worker changed source geometry	ワーカーが元の形状を変更しました
+@msg	Worker changed source samples	ワーカーが元のサンプルを変更しました
+@msg	Worker exceeded authorized gap distance	ワーカーが許可された隙間の距離を超えました
+@msg	Worker failed ({status}); diagnostics: {_1}	ワーカーが失敗しました（{status}）。診断: {_1}
+@msg	Worker omitted strokes	ワーカーがストロークを欠落させました
+@msg	Worker output too large	ワーカーの出力が大きすぎます
+@msg	Worker returned invalid ordinal	ワーカーが無効な番号を返しました
+@msg	curved reference grids do not support planar attachment	曲面の参照グリッドは平面への配置に対応していません
+@msg	open must be a boolean	open は真偽値である必要があります
+@msg	open must be boolean	open は真偽値である必要があります
+	Accept Sketch Cleanup	スケッチのクリーンアップを適用
+	Cancel Sketch Cleanup	スケッチのクリーンアップを中止
+	Reject Sketch Cleanup	スケッチのクリーンアップを拒否
+	Preview Sketch Cleanup	スケッチのクリーンアップをプレビュー
+	Inspect Cleanup Selection	クリーンアップ対象の選択を検査
+	Sketch Cleanup Status	スケッチのクリーンアップ状態
+	Accept research preview	研究プレビューを適用
+	Cancel research tool	研究ツールを中止
+	Reject research preview	研究プレビューを拒否
+	Research tool status	研究ツールの状態
+	Research tool telemetry	研究ツールのテレメトリ
+	Preview learned junction suggestions	学習による接合候補をプレビュー
+	Preview neural natural brush	ニューラル自然ブラシをプレビュー
+	Release neural raster appearance	ニューラルラスター外観を解除
+	Embedded Codex Editor	組み込み Codex エディター
+	Embedded Codex telemetry	組み込み Codex のテレメトリ
+	Approve embedded operation	組み込み操作を承認
+	Reject embedded operation	組み込み操作を拒否
+	Cancel embedded request	組み込みリクエストを中止
+	Request embedded Codex edit	組み込み Codex に編集を依頼
+	Complete tool gesture	ツールジェスチャーを完了
+	Glass intensity	ガラス効果の強さ
+	Interface darkness	インターフェイスの暗さ
+	Rainee 2.0 Appearance	Rainee 2.0 の外観
+	Reduce transparency (opaque panels)	透明度を下げる（不透明パネル）
+	Panel is floating	パネルはフローティング表示です
+	Custom Image Path	カスタム画像のパス
+	Launch Screen Artwork	起動画面のアートワーク
+	Replay Launch Screen	起動画面を再表示
+	Erase all editable paths, regardless of selection	選択状態に関係なく編集可能なすべてのパスを消去
+	Pressure controls editable width	筆圧で編集可能な幅を制御
+	Pressure curve:	筆圧カーブ:
+	Fallback nib angle:	代替のペン先角度:
+	Minimum nib axis ratio:	ペン先の最小軸比:
+	Minimum width fraction:	最小幅の割合:
+	Tilt-controlled elliptical nib	傾きで制御する楕円形ペン先
+	Experimental learned AOSP prediction	実験的な学習型 AOSP 予測
+	Hold Ctrl when starting a stroke to bypass expressive input. These strokes do not auto-extend existing paths.	ストローク開始時に Ctrl を押すと表現入力を無効にします。これらのストロークは既存のパスを自動延長しません。
+	Off: selected paths, or all paths when nothing is selected. Locked and hidden artwork is protected.	オフ: 選択されたパス、未選択の場合はすべてのパスが対象です。ロックまたは非表示のアートワークは保護されます。
+	Requires measured native pen channels; missing data produces no predicted ink. Existing predictor remains the default.	ネイティブペンの実測チャネルが必要です。データがない場合はインクを予測しません。既存の予測器が既定のままです。
+	Experimental	実験的機能
+	GPU-assisted Navigation	GPU 支援ナビゲーション
+	Research Tools	研究ツール
+	Sketch Cleanup	スケッチのクリーンアップ
+	Wet Media Simulation…	ウェットメディアシミュレーション…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 # (empty context = a plain UI string; `@id` = a command id; `@plural` = "one|other" forms).
 #
 # Clean-room: menu and feature names follow the names Japanese users of vector illustration
@@ -3761,3 +3914,4 @@ theme	Appearance	外観
 	Detect button 2 key	ボタン 2 のキーを検出
 	Driver setup and safety notes	ドライバー設定と安全上の注意
 @msg	`{key}` must be a registered tool ID or none	`{key}` は登録済みのツール ID または none である必要があります
+@msg	Give this brush a name before saving	保存する前にブラシに名前を付けてください

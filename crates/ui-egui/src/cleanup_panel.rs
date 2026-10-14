@@ -39,7 +39,7 @@ pub fn show(app: &mut VectorcraftApp, ctx: &egui::Context) {
         ctx.data_mut(|d| d.insert_temp(cache_id, (stamp, result.clone())));
         result
     };
-    egui::Window::new("Editable Sketch Cleanup · Experimental").open(&mut open).default_width(380.0).show(ctx, |ui| {
+    egui::Window::new("Editable Sketch Cleanup · Experimental").drag_area(egui::WindowDrag::TitleBar).open(&mut open).default_width(380.0).show(ctx, |ui| {
         ui.label("Select consecutive uniform open strokes with the same appearance.");
         ui.label("Cyan overlay = proposed centerlines. Originals stay untouched until Accept.");
         ui.small("Uniform Art/Natural brush centerlines are supported. Pressure/nib strokes, scatter/pattern/bristle effects, fills and masks remain protected. This is not Smart Inker.");

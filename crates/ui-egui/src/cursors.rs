@@ -530,6 +530,9 @@ mod tests {
 
     /// One headless 800×600 frame of the whole window, a tenth of a second after the last.
     fn frame(app: &mut VectorcraftApp, ctx: &egui::Context, events: Vec<egui::Event>) -> egui::FullOutput {
+        // These are editor interaction tests, not launch-screen tests. The modal launch
+        // screen correctly owns the pointer until dismissed in a real application.
+        app.splash.open = false;
         let time = Some(ctx.input(|i| i.time) + 0.1);
         let raw = egui::RawInput { screen_rect: Some(egui::Rect::from_min_size(Pos2::ZERO, vec2(800.0, 600.0))), time, events, ..Default::default() };
         let mut out = ctx.run_ui(raw, |ui| {

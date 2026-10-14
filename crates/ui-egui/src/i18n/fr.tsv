@@ -1,4 +1,157 @@
 # French (fr) catalog. Same format as zh-hant.tsv:  context <TAB> source <TAB> translation
+	All shortcuts reset to defaults.	Tous les raccourcis ont été réinitialisés.
+	Back to document	Retour au document
+	Click, then press the new shortcut (Esc cancels)	Cliquez puis saisissez le raccourci (Échap annule)
+	Command	Commande
+	Go to Conflict	Aller au conflit
+	Imported. Press OK to keep the imported set.	Importé. Cliquez sur OK pour conserver l’ensemble.
+	Keyboard Shortcuts	Raccourcis clavier
+	More Presets	Autres préréglages
+	Open a document to get started.	Ouvrez un document pour commencer.
+	Press keys…	Appuyez sur les touches…
+	Remove the shortcut	Supprimer le raccourci
+	Reset to Defaults	Rétablir les valeurs par défaut
+	Set:	Ensemble :
+	Shortcut	Raccourci
+	Tool	Outil
+	Use Default	Utiliser la valeur par défaut
+	Warning: {chord} was already used by {names} — it has been removed there.	Avertissement : {chord} était déjà utilisé par {names} ; il en a été retiré.
+@msg	A model request is running	Une requête au modèle est en cours
+@msg	Answered by {_1}	Réponse de {_1}
+@msg	Awaiting owner approval	En attente de l’approbation du propriétaire
+@msg	Bridge disconnected	Pont déconnecté
+@msg	Bridge event exceeded budget	L’événement du pont dépasse la limite
+@msg	Brush Studio belongs to another document	Brush Studio appartient à un autre document
+@msg	Brush Studio draft discarded: active document changed	Brouillon de Brush Studio abandonné : document actif changé
+@msg	Brush changed outside Studio; cancel and reopen to avoid overwriting it	Pinceau modifié hors de Studio ; annulez puis rouvrez pour éviter de l’écraser
+@msg	Cancelled	Annulé
+@msg	Cancelled; completed edits remain undoable	Annulé ; les modifications terminées restent annulables
+@msg	Cancelled; no artwork changed	Annulé ; aucune illustration modifiée
+@msg	Cancelling; completed edits remain undoable	Annulation ; les modifications terminées restent annulables
+@msg	Cleanup timed out; no art changed	Délai de nettoyage dépassé ; aucune illustration modifiée
+@msg	Codex reply exceeded the display limit	La réponse de Codex dépasse la limite d’affichage
+@msg	Connecting to signed-in Codex…	Connexion à Codex authentifié…
+@msg	Duplicate or unknown fitted group	Groupe ajusté dupliqué ou inconnu
+@msg	Duplicate proposal target	Cible de proposition dupliquée
+@msg	Empty source	Source vide
+@msg	Enter a prompt up to 16000 bytes	Saisissez une consigne de 16000 octets maximum
+@msg	Executed {id}	Exécuté : {id}
+@msg	Files, clipboard and global settings need a separate owner workflow	Les fichiers, le presse-papiers et les réglages globaux nécessitent une procédure distincte du propriétaire
+@msg	Filesystem/URL parameters are outside canvas permission	Les paramètres de fichiers/URL dépassent l’autorisation du canevas
+@msg	Finish the active gesture first	Terminez d’abord le geste actif
+@msg	Finish the manual gesture first	Terminez d’abord le geste manuel
+@msg	Fit discards part of an original stroke	L’ajustement supprime une partie d’un trait original
+@msg	Fitted stroke exceeds permitted deviation	Le trait ajusté dépasse l’écart autorisé
+@msg	Gesture must be down, optional drags, up	Le geste doit être une pression, des glissements facultatifs puis un relâchement
+@msg	Invalid SCAP point count	Valeur non valide : nombre de points SCAP
+@msg	Invalid SCAP stroke	Valeur non valide : trait SCAP
+@msg	Invalid SCAP stroke header	Valeur non valide : en-tête de trait SCAP
+@msg	Invalid candidate point	Valeur non valide : point candidat
+@msg	Invalid cleanup proposal limits	Valeur non valide : limites de proposition de nettoyage
+@msg	Invalid confidence	Valeur non valide : confiance
+@msg	Invalid endpoint	Valeur non valide : extrémité
+@msg	Invalid proposal size	Valeur non valide : taille de proposition
+@msg	Invalid source	Valeur non valide : source
+@msg	Invalid stroke ordinal	Valeur non valide : indice de trait
+@msg	Invalid target	Valeur non valide : cible
+@msg	Invalid tool id	Valeur non valide : identifiant d’outil
+@msg	Invalid worker suggestions	Valeur non valide : suggestions du processus
+@msg	Invalid x	Valeur non valide : x
+@msg	Invalid y	Valeur non valide : y
+@msg	Invalid or oversized proposal segment	Segment de proposition non valide ou trop grand
+@msg	Junction worker changed; rebuild/re-audit required	Le processus de jonctions a changé ; reconstruction et nouvel audit requis
+@msg	Missing bridge stdin	Entrée standard du pont absente
+@msg	Missing bridge stdout	Sortie standard du pont absente
+@msg	Missing fitted group	Groupe ajusté absent
+@msg	Model job deadline exceeded	Délai de la tâche du modèle dépassé
+@msg	Nested SCAP stroke	Trait SCAP imbriqué
+@msg	Neural raster dimensions differ from captured region	Les dimensions de l’image neuronale diffèrent de la zone capturée
+@msg	No active artboard	Aucun plan de travail actif
+@msg	No active document	Aucun document actif
+@msg	No document	Aucun document
+@msg	No pending operation	Aucune opération en attente
+@msg	Non-canvas UI action is not authorized	Action d’interface hors canevas non autorisée
+@msg	Nonfinite SCAP number	Nombre SCAP non fini
+@msg	Open a document before asking Codex	Ouvrez un document avant de solliciter Codex
+@msg	Operation expired or request cancelled	Opération expirée ou requête annulée
+@msg	Optional StripMaker SCIP/OSQP research worker is not installed	Le processus de recherche facultatif StripMaker SCIP/OSQP n’est pas installé
+@msg	Owner rejected operation	Le propriétaire a rejeté l’opération
+@msg	Proposal exceeds interactive validation budget; clean a smaller selection	La proposition dépasse la limite de validation interactive ; nettoyez une sélection plus petite
+@msg	Proposal omits original strokes	La proposition omet des traits originaux
+@msg	Proposal sampling exceeds limits	L’échantillonnage de la proposition dépasse les limites
+@msg	Provide 2–4096 document-space samples	Fournissez de 2 à 4096 échantillons dans l’espace du document
+@msg	Requested document is no longer active	Le document demandé n’est plus actif
+@msg	Research assistants currently require the local Windows installations	Les assistants de recherche nécessitent actuellement les installations Windows locales
+@msg	Research job timed out; no artwork changed. Diagnostics: {_1}	Délai de recherche dépassé ; aucune illustration modifiée. Diagnostic : {_1}
+@msg	Research output exceeds preview budget	Le résultat de recherche dépasse la limite d’aperçu
+@msg	Research worker available on Windows only	Processus de recherche disponible uniquement sous Windows
+@msg	Research worker failed ({status}); no art changed. Diagnostics: {_1}	Échec du processus de recherche ({status}) ; aucune illustration modifiée. Diagnostic : {_1}
+@msg	Stale document or selection; inspect again before editing	Document ou sélection obsolète ; inspectez à nouveau avant de modifier
+@msg	Truncated SCAP output	Sortie SCAP tronquée
+@msg	Unexpected SCAP close	Fermeture SCAP inattendue
+@msg	Unexpected SCAP data	Données SCAP inattendues
+@msg	Unknown model tool	Outil du modèle inconnu
+@msg	Unknown proposal target	Cible de proposition inconnue
+@msg	Waiting for Codex…	En attente de Codex…
+@msg	Windows worker unavailable	Processus Windows indisponible
+@msg	Worker binary changed: re-audit before use	Exécutable du processus modifié : refaire l’audit avant utilisation
+@msg	Worker changed source geometry	Le processus a modifié la géométrie source
+@msg	Worker changed source samples	Le processus a modifié les échantillons source
+@msg	Worker exceeded authorized gap distance	Le processus a dépassé la distance d’écart autorisée
+@msg	Worker failed ({status}); diagnostics: {_1}	Échec du processus ({status}) ; diagnostic : {_1}
+@msg	Worker omitted strokes	Le processus a omis des traits
+@msg	Worker output too large	Sortie du processus trop volumineuse
+@msg	Worker returned invalid ordinal	Le processus a renvoyé un indice non valide
+@msg	curved reference grids do not support planar attachment	les grilles de référence courbes ne prennent pas en charge l’attachement planaire
+@msg	open must be a boolean	open doit être un booléen
+@msg	open must be boolean	open doit être un booléen
+	Accept Sketch Cleanup	Accepter le nettoyage du croquis
+	Cancel Sketch Cleanup	Annuler le nettoyage du croquis
+	Reject Sketch Cleanup	Rejeter le nettoyage du croquis
+	Preview Sketch Cleanup	Aperçu du nettoyage du croquis
+	Inspect Cleanup Selection	Inspecter la sélection à nettoyer
+	Sketch Cleanup Status	État du nettoyage du croquis
+	Accept research preview	Accepter l’aperçu de recherche
+	Cancel research tool	Annuler l’outil de recherche
+	Reject research preview	Rejeter l’aperçu de recherche
+	Research tool status	État de l’outil de recherche
+	Research tool telemetry	Télémétrie de l’outil de recherche
+	Preview learned junction suggestions	Aperçu des jonctions suggérées par apprentissage
+	Preview neural natural brush	Aperçu du pinceau naturel neuronal
+	Release neural raster appearance	Libérer l’apparence matricielle neuronale
+	Embedded Codex Editor	Éditeur Codex intégré
+	Embedded Codex telemetry	Télémétrie de Codex intégré
+	Approve embedded operation	Approuver l’opération intégrée
+	Reject embedded operation	Rejeter l’opération intégrée
+	Cancel embedded request	Annuler la requête intégrée
+	Request embedded Codex edit	Demander une modification à Codex intégré
+	Complete tool gesture	Terminer le geste de l’outil
+	Glass intensity	Intensité du verre
+	Interface darkness	Obscurité de l’interface
+	Rainee 2.0 Appearance	Apparence de Rainee 2.0
+	Reduce transparency (opaque panels)	Réduire la transparence (panneaux opaques)
+	Panel is floating	Le panneau est flottant
+	Custom Image Path	Chemin de l’image personnalisée
+	Launch Screen Artwork	Illustration de l’écran de démarrage
+	Replay Launch Screen	Revoir l’écran de démarrage
+	Erase all editable paths, regardless of selection	Effacer tous les tracés modifiables, sélectionnés ou non
+	Pressure controls editable width	La pression contrôle la largeur modifiable
+	Pressure curve:	Courbe de pression :
+	Fallback nib angle:	Angle de pointe de repli :
+	Minimum nib axis ratio:	Rapport minimal des axes de la pointe :
+	Minimum width fraction:	Fraction minimale de largeur :
+	Tilt-controlled elliptical nib	Pointe elliptique contrôlée par l’inclinaison
+	Experimental learned AOSP prediction	Prédiction AOSP apprise expérimentale
+	Hold Ctrl when starting a stroke to bypass expressive input. These strokes do not auto-extend existing paths.	Maintenez Ctrl au début du trait pour désactiver la saisie expressive. Ces traits ne prolongent pas automatiquement les tracés existants.
+	Off: selected paths, or all paths when nothing is selected. Locked and hidden artwork is protected.	Désactivé : les tracés sélectionnés, ou tous sans sélection. Les éléments verrouillés et masqués sont protégés.
+	Requires measured native pen channels; missing data produces no predicted ink. Existing predictor remains the default.	Nécessite les mesures natives du stylet ; sans données, aucune encre n’est prédite. Le prédicteur existant reste celui par défaut.
+	Experimental	Expérimental
+	GPU-assisted Navigation	Navigation assistée par GPU
+	Research Tools	Outils de recherche
+	Sketch Cleanup	Nettoyage des croquis
+	Wet Media Simulation…	Simulation de médiums humides…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 # (empty context = a plain UI string; `@id` = a command id; `@plural` = "one|other" forms).
 #
 # Clean-room: written from the meaning of VectorCraft's English labels in standard French, using the
@@ -3780,3 +3933,4 @@ axis	Both	Les deux
 	Detect button 2 key	Détecter la touche du bouton 2
 	Driver setup and safety notes	Configuration du pilote et consignes de sécurité
 @msg	`{key}` must be a registered tool ID or none	`{key}` doit être un identifiant d’outil enregistré ou none
+@msg	Give this brush a name before saving	Donnez un nom à ce pinceau avant d’enregistrer

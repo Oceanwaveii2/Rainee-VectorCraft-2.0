@@ -1,4 +1,11 @@
 # Czech (cs) catalog. Same format as zh-hant.tsv:  context <TAB> source <TAB> translation
+	Experimental	Experimentální
+	GPU-assisted Navigation	Navigace s podporou GPU
+	Research Tools	Výzkumné nástroje
+	Sketch Cleanup	Vyčištění skici
+	Wet Media Simulation…	Simulace mokrých médií…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 # (empty context = a plain UI string; `@id` = a command id; `@plural` = "one|few|other" forms).
 #
 # Clean-room: every entry is written from the meaning of VectorCraft's English label, following
@@ -674,3 +681,4 @@
 	Detect button 1 key	Rozpoznat klávesu tlačítka 1
 	Detect button 2 key	Rozpoznat klávesu tlačítka 2
 	Driver setup and safety notes	Nastavení ovladače a bezpečnostní poznámky
+@msg	Give this brush a name before saving	Před uložením pojmenujte štětec

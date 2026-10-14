@@ -1,4 +1,68 @@
 # Traditional Chinese (zh-hant) catalog. Columns, separated by a TAB:  context <TAB> source <TAB> translation
+	All shortcuts reset to defaults.	所有快捷鍵已恢復預設。
+	Back to document	返回文件
+	Click, then press the new shortcut (Esc cancels)	按一下後輸入新快捷鍵（Esc 取消）
+	Command	指令
+	Go to Conflict	前往衝突
+	Imported. Press OK to keep the imported set.	已匯入。按 OK 保留匯入的組合。
+	Keyboard Shortcuts	鍵盤快捷鍵
+	More Presets	更多預設
+	Open a document to get started.	開啟文件以開始。
+	Press keys…	按下按鍵…
+	Remove the shortcut	刪除快捷鍵
+	Reset to Defaults	恢復預設值
+	Set:	組合:
+	Shortcut	快捷鍵
+	Tool	工具
+	Use Default	使用預設值
+	Warning: {chord} was already used by {names} — it has been removed there.	注意: {chord} 已由 {names} 使用，現已移除原指派。
+	Accept Sketch Cleanup	接受草稿清理
+	Cancel Sketch Cleanup	取消草稿清理
+	Reject Sketch Cleanup	拒絕草稿清理
+	Preview Sketch Cleanup	預覽草稿清理
+	Inspect Cleanup Selection	檢查清理選取範圍
+	Sketch Cleanup Status	草稿清理狀態
+	Accept research preview	接受研究預覽
+	Cancel research tool	取消研究工具
+	Reject research preview	拒絕研究預覽
+	Research tool status	研究工具狀態
+	Research tool telemetry	研究工具遙測
+	Preview learned junction suggestions	預覽學習產生的連接建議
+	Preview neural natural brush	預覽神經自然筆刷
+	Release neural raster appearance	釋放神經點陣外觀
+	Embedded Codex Editor	內嵌 Codex 編輯器
+	Embedded Codex telemetry	內嵌 Codex 遙測
+	Approve embedded operation	核准內嵌操作
+	Reject embedded operation	拒絕內嵌操作
+	Cancel embedded request	取消內嵌請求
+	Request embedded Codex edit	請求內嵌 Codex 編輯
+	Complete tool gesture	完成工具手勢
+	Glass intensity	玻璃效果強度
+	Interface darkness	介面暗度
+	Rainee 2.0 Appearance	Rainee 2.0 外觀
+	Reduce transparency (opaque panels)	降低透明度（不透明面板）
+	Panel is floating	面板已浮動
+	Custom Image Path	自訂影像路徑
+	Launch Screen Artwork	啟動畫面插圖
+	Replay Launch Screen	重新顯示啟動畫面
+	Erase all editable paths, regardless of selection	擦除所有可編輯路徑，無論是否選取
+	Pressure controls editable width	壓力控制可編輯寬度
+	Pressure curve:	壓力曲線:
+	Fallback nib angle:	備用筆尖角度:
+	Minimum nib axis ratio:	筆尖最小軸比:
+	Minimum width fraction:	最小寬度比例:
+	Tilt-controlled elliptical nib	傾斜控制的橢圓筆尖
+	Experimental learned AOSP prediction	實驗性 AOSP 學習預測
+	Hold Ctrl when starting a stroke to bypass expressive input. These strokes do not auto-extend existing paths.	開始筆畫時按住 Ctrl 可略過表現性輸入。這些筆畫不會自動延長現有路徑。
+	Off: selected paths, or all paths when nothing is selected. Locked and hidden artwork is protected.	關閉時：擦除選取的路徑，未選取時擦除所有路徑。鎖定和隱藏的圖稿受保護。
+	Requires measured native pen channels; missing data produces no predicted ink. Existing predictor remains the default.	需要原生筆的實測通道；無資料時不產生預測墨跡。現有預測器仍為預設。
+	Experimental	實驗功能
+	GPU-assisted Navigation	GPU 輔助導覽
+	Research Tools	研究工具
+	Sketch Cleanup	草稿清理
+	Wet Media Simulation…	濕性媒材模擬…
+	Rainee 1.0	Rainee 1.0
+	Rainee 2.0	Rainee 2.0
 #
 #   context  empty                a plain UI string; `source` is the English text in the code
 #            @id                  a command id (e.g. file.saveAs): wins over the English text for
@@ -3227,3 +3291,4 @@ axis	Both	兩者
 	Detect button 2 key	偵測按鈕 2 的按鍵
 	Driver setup and safety notes	驅動程式設定與安全注意事項
 @msg	`{key}` must be a registered tool ID or none	`{key}` 必須是已註冊的工具 ID 或 none
+@msg	Give this brush a name before saving	儲存前請為筆刷命名

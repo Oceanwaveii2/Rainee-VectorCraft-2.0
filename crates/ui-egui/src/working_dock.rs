@@ -22,7 +22,9 @@ fn group(app: &mut VectorcraftApp, ui: &mut Ui, tabs: &[(&str, &str)], active: u
         }
         ui.horizontal(|ui| {
             for (i, (_, label)) in tabs.iter().enumerate() {
-                if ui.selectable_label(active == i, tl!(*label)).clicked() {
+                if upgraded && tabs.len() == 1 {
+                    ui.label(egui::RichText::new(tl!(*label)).size(17.0).strong());
+                } else if ui.selectable_label(active == i, tl!(*label)).clicked() {
                     active = i;
                 }
             }

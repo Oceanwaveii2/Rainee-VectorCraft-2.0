@@ -1,6 +1,31 @@
 use super::catalog::{Catalog, parse_entries, placeholders};
 use super::*;
 
+/// Export all gaps together for catalog maintenance; the coverage assertions below remain strict.
+#[test]
+fn catalog_maintenance_report() {
+    let Ok(path) = std::env::var("VECTORCRAFT_I18N_GAPS") else { return };
+    let menus = crate::menus::menu_strings();
+    let literals = tl_literals();
+    let messages = message_literals();
+    let known: std::collections::BTreeSet<_> = menus.iter().cloned().chain(literals.iter().cloned()).collect();
+    let mut report = serde_json::Map::new();
+    for l in LANGUAGES.iter().filter(|l| !l.source.is_empty()) {
+        let cat = l.catalog();
+        let (entries, _) = parse_entries(l.source);
+        let plain: Vec<_> = known
+            .iter()
+            .filter(|s| cat.plain(s).is_none() && !(KEEPS_MENU_NAMES.contains(&l.code) && MENU_KEEP_AS_IS.contains(&s.as_str())))
+            .filter(|s| l.complete_menus || menus.contains(s.as_str()))
+            .collect();
+        let msg: Vec<_> =
+            messages.iter().filter(|s| COMPLETE_MESSAGES.contains(&l.code) && !entries.iter().any(|(c, k, _)| c == "@msg" && k == *s)).collect();
+        let stale: Vec<_> = entries.iter().filter(|(c, s, _)| !l.complete_menus && c.is_empty() && !known.contains(s)).map(|(_, s, _)| s).collect();
+        report.insert(l.code.into(), serde_json::json!({"plain":plain,"messages":msg,"stale":stale}));
+    }
+    std::fs::write(path, serde_json::to_string_pretty(&report).unwrap()).unwrap();
+}
+
 const ZH: fn() -> Lang = || Lang::from_code("zh-hant").expect("zh-hant registered");
 
 #[test]
@@ -387,7 +412,7 @@ pub fn tl_literals() -> std::collections::BTreeSet<String> {
                 stack.push(path);
             } else if name.ends_with(".rs") && name != "lib.rs" && !name.starts_with("tests") {
                 let text = std::fs::read_to_string(&path).unwrap_or_default();
-                let code = text.split("#[cfg(test)]").next().unwrap_or("");
+                let code = without_test_module(&text);
                 let mut rest = code;
                 while let Some(at) = rest.find("tl!(\"") {
                     rest = &rest[at + 5..];
