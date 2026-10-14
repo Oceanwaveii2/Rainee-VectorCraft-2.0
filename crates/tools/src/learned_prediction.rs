@@ -1,6 +1,7 @@
 //! Opt-in AOSP inference. Bounded asynchronous jobs; physical pixels in, disposable delta out.
 #[cfg(not(target_arch = "wasm32"))]
 use crate::motion_model::Model;
+use crate::stylus::OneEuro1D;
 use serde::{Deserialize, Serialize};
 use std::sync::mpsc::{Receiver, SyncSender};
 use vectorcraft_geom::{Point, Vec2};
@@ -17,6 +18,41 @@ pub struct Sample {
     /// Document displacement of one physical screen pixel on each axis.
     pub basis: [Vec2; 2],
 }
+
+/// 1 Euro angular filter for 2-DOF stylus tilt (`tilt_x`, `tilt_y` in degrees) to eliminate
+/// high-frequency transducer jitter during Cosserat bristle and calligraphic nib evaluation.
+#[derive(Clone, Debug, Default)]
+pub struct StabilizedTilt {
+    tx: OneEuro1D,
+    ty: OneEuro1D,
+    last: Option<[f64; 2]>,
+}
+
+impl StabilizedTilt {
+    pub fn reset(&mut self) {
+        self.tx.reset();
+        self.ty.reset();
+        self.last = None;
+    }
+
+    /// Filters a `[tilt_x, tilt_y]` pair (degrees in `[-90, 90]`) at timestamp `t` (seconds).
+    pub fn sample(&mut self, tilt: [f64; 2], t: f64) -> [f64; 2] {
+        if !t.is_finite() || !tilt.iter().all(|a| a.is_finite() && (-90.0..=90.0).contains(a)) {
+            return self.last.unwrap_or([0.0, 0.0]);
+        }
+        let fx = self.tx.filter(tilt[0], t, 1.5, 0.02).clamp(-90.0, 90.0);
+        let fy = self.ty.filter(tilt[1], t, 1.5, 0.02).clamp(-90.0, 90.0);
+        let out = [fx, fy];
+        self.last = Some(out);
+        out
+    }
+
+    #[must_use]
+    pub fn current(&self) -> Option<[f64; 2]> {
+        self.last
+    }
+}
+
 #[cfg_attr(target_arch = "wasm32", allow(dead_code))]
 struct Work {
     epoch: u64,
@@ -32,6 +68,7 @@ enum Reply {
     Loaded,
     Error(String),
     Predicted(u64, u64, Vec2, f64),
+    PredictedWithPressure(u64, u64, Vec2, f32, f64),
 }
 struct Worker {
     tx: SyncSender<Work>,
@@ -47,6 +84,8 @@ pub struct Learned {
     sample_revision: u64,
     age: f64,
     delta: Option<Vec2>,
+    predicted_pressure: Option<f32>,
+    tilt_filter: StabilizedTilt,
     status: String,
     pub inferences: u64,
     pub skipped: u64,
@@ -70,6 +109,8 @@ impl Learned {
     pub fn reset(&mut self) {
         self.history.clear();
         self.delta = None;
+        self.predicted_pressure = None;
+        self.tilt_filter.reset();
         self.epoch = self.epoch.wrapping_add(1);
         self.age = 1.0;
     }
@@ -111,12 +152,21 @@ impl Learned {
                     let began = std::time::Instant::now();
                     match model
                         .infer(&w.features)
-                        .and_then(|out| decode(&out, w.from, w.to, w.horizon).ok_or_else(|| "Model abstained at a stop or short horizon".into()))
+                        .and_then(|out| {
+                            decode_with_pressure(&out, w.from, w.to, w.sample.pressure, w.horizon)
+                                .ok_or_else(|| "Model abstained at a stop or short horizon".into())
+                        })
                     {
-                        Ok(p) => {
+                        Ok((p, pred_p)) => {
                             let d = p - w.to;
                             let doc = w.sample.basis[0] * d.x + w.sample.basis[1] * d.y;
-                            let _ = responses.try_send(Reply::Predicted(w.epoch, w.sample_revision, doc, began.elapsed().as_secs_f64() * 1e6));
+                            let _ = responses.try_send(Reply::PredictedWithPressure(
+                                w.epoch,
+                                w.sample_revision,
+                                doc,
+                                pred_p,
+                                began.elapsed().as_secs_f64() * 1e6,
+                            ));
                         }
                         Err(_) => {
                             let _ = responses.try_send(Reply::Predicted(w.epoch, w.sample_revision, Vec2::ZERO, began.elapsed().as_secs_f64() * 1e6));
@@ -154,6 +204,7 @@ impl Learned {
         };
         // Actual input replaces speculative ink immediately, even if no new job is submitted.
         self.delta = None;
+        self.predicted_pressure = None;
         if let Some(revision) = self.sample_revision.checked_add(1) {
             self.sample_revision = revision;
         } else {
@@ -167,6 +218,7 @@ impl Learned {
         if self.history.last().is_some_and(|last| s.time <= last.time || s.time - last.time > 0.020 || s.basis != last.basis) {
             self.reset();
         }
+        let _ = self.tilt_filter.sample(s.tilt, s.time);
         self.history.push(s);
         if self.history.len() > 64 {
             self.history.remove(0);
@@ -217,6 +269,17 @@ impl Learned {
                             self.stale_results += 1;
                         }
                     }
+                    Reply::PredictedWithPressure(epoch, sample_revision, d, p, us) => {
+                        self.inferences += 1;
+                        self.last_us = us;
+                        self.max_us = self.max_us.max(us);
+                        if epoch == self.epoch && sample_revision == self.sample_revision && !self.history.is_empty() {
+                            self.delta = Some(d);
+                            self.predicted_pressure = Some(p.clamp(0.0, 1.0));
+                        } else {
+                            self.stale_results += 1;
+                        }
+                    }
                 }
             }
         }
@@ -228,6 +291,22 @@ impl Learned {
         let d = self.delta?;
         let max = 24.0 / zoom.max(1e-9);
         Some(d * (max / d.hypot().max(max)))
+    }
+    /// Returns the 5-DOF MLP predicted pressure (`out[2]`) at the current horizon when valid.
+    #[must_use]
+    pub fn predicted_pressure(&self) -> Option<f32> {
+        if !self.enabled || self.age > 0.025 {
+            return None;
+        }
+        self.predicted_pressure
+    }
+    /// Returns the 1 Euro stabilized stylus tilt `[tilt_x, tilt_y]` in degrees.
+    #[must_use]
+    pub fn stabilized_tilt(&self) -> Option<[f64; 2]> {
+        if !self.enabled {
+            return None;
+        }
+        self.tilt_filter.current()
     }
 }
 fn at(history: &[Sample], time: f64) -> Option<Sample> {
@@ -276,11 +355,12 @@ fn features(history: &[Sample]) -> Option<([Vec<f32>; 5], Point, Point)> {
     Some((channels, from?, to))
 }
 #[cfg(not(target_arch = "wasm32"))]
-fn decode(out: &[Vec<f32>; 3], from: Point, to: Point, ms: f64) -> Option<Point> {
+fn decode_with_pressure(out: &[Vec<f32>; 3], from: Point, to: Point, base_pressure: f32, ms: f64) -> Option<(Point, f32)> {
     let mut a = from;
     let mut b = to;
     let mut path = vec![to];
-    for (&r, &phi) in out[0].iter().zip(&out[1]) {
+    let mut pressures = vec![base_pressure.clamp(0.0, 1.0)];
+    for ((&r, &phi), &p) in out[0].iter().zip(&out[1]).zip(&out[2]) {
         if r < 0.2 || !r.is_finite() || !phi.is_finite() {
             break;
         }
@@ -289,10 +369,17 @@ fn decode(out: &[Vec<f32>; 3], from: Point, to: Point, ms: f64) -> Option<Point>
         a = b;
         b = next;
         path.push(next);
+        let clean_p = if p.is_finite() { p.clamp(0.0, 1.0) } else { base_pressure.clamp(0.0, 1.0) };
+        pressures.push(clean_p);
     }
     let t = ms / 1000.0 / STEP;
     let i = t.floor() as usize;
-    Some(path.get(i)?.lerp(*path.get(i + 1)?, t.fract()))
+    let fract = t.fract();
+    let pos = path.get(i)?.lerp(*path.get(i + 1)?, fract);
+    let p0 = *pressures.get(i)?;
+    let p1 = *pressures.get(i + 1)?;
+    let pred_p = (p0 + (p1 - p0) * (fract as f32)).clamp(0.0, 1.0);
+    Some((pos, pred_p))
 }
 #[cfg(test)]
 mod tests {
@@ -468,5 +555,17 @@ mod tests {
         l.sample(None, 14.0, false);
         assert!(l.history.is_empty());
         assert!(l.prediction(1.0).is_none());
+    }
+    #[test]
+    fn predicted_pressure_and_stabilized_tilt_track_5dof_state() {
+        let (mut l, requests, responses) = injected_worker();
+        let work = submit_head(&mut l, &requests);
+        responses
+            .try_send(Reply::PredictedWithPressure(work.epoch, work.sample_revision, Vec2::new(3.0, 1.0), 0.78, 9.0))
+            .unwrap();
+        l.tick(0.0);
+        assert_eq!(l.prediction(1.0), Some(Vec2::new(3.0, 1.0)));
+        assert_eq!(l.predicted_pressure(), Some(0.78));
+        assert!(l.stabilized_tilt().is_some());
     }
 }

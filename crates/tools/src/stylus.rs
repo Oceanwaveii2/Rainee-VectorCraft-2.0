@@ -4,7 +4,7 @@ use vectorcraft_geom::{Point, Vec2};
 
 #[path = "stylus_tracker.rs"]
 mod tracker;
-pub use tracker::Tracker;
+pub use tracker::{OneEuro1D, Tracker};
 
 /// Continuous attraction: its displacement tends to zero at the tolerance boundary.
 /// Shift explicitly locks an angle; ordinary freehand remains untouched by default.

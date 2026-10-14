@@ -127,7 +127,7 @@ fn release(s: &mut Session, p: &Value) -> Result<Value> {
         return Err(bad("assist.brush.release", "Group is not editable"));
     }
     let group = s.doc()?.doc.node(id).ok_or_else(|| bad("assist.brush.release", "Missing group"))?;
-    let attrs = group.attrs.as_ref().ok_or_else(|| bad("assist.brush.release", "Not a neural appearance group"))?;
+    let attrs = group.extras().attrs.as_ref().ok_or_else(|| bad("assist.brush.release", "Not a neural appearance group"))?;
     if !attrs.data.iter().any(|(k, v)| k == "rainee-neube" && v == "1") {
         return Err(bad("assist.brush.release", "Not a neural appearance group"));
     }

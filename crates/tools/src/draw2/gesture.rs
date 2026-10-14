@@ -19,6 +19,7 @@ use crate::{Action, Cursor, Mods, Overlay, PointerEvent, PointerKind, Tool, Tool
 pub struct GestureTool {
     id: &'static str,
     points: Vec<Point>,
+    pressures: Vec<f32>,
     active: bool,
     began: bool,
     /// Pencil/Paintbrush continuing a selected open path: (path, continue from its start).
@@ -74,6 +75,7 @@ impl GestureTool {
         Self {
             id,
             points: vec![],
+            pressures: vec![],
             active: false,
             began: false,
             extend: None,
@@ -116,6 +118,14 @@ impl GestureTool {
         matches!(self.id, "pencil" | "paintbrush")
     }
 
+    fn stroke_json(&self) -> Value {
+        if self.pressures.len() == self.points.len() && self.pressures.iter().any(|p| *p < 1.0) {
+            Value::Array(self.points.iter().zip(&self.pressures).map(|(p, f)| json!([p.x, p.y, (f64::from(*f) * 1000.0).round() / 1000.0])).collect())
+        } else {
+            points_json(&self.points)
+        }
+    }
+
     fn label(&self) -> &'static str {
         match self.id {
             "paintbrush" => "Paintbrush",
@@ -152,7 +162,7 @@ impl GestureTool {
     /// Parameters of `path.freehand` for the current stroke.
     pub fn freehand_params(&self, closed: bool) -> Value {
         let mut v = json!({
-            "points": points_json(&self.points),
+            "points": self.stroke_json(),
             "fidelity": self.fidelity,
             "closed": closed,
             "style": if self.id == "paintbrush" { "brush" } else { "pencil" },
@@ -258,6 +268,7 @@ impl Tool for GestureTool {
                 // A path continued starts at its end; a new one where it snaps.
                 let start = if self.snaps() && self.extend.is_none() { self.snap.press(cx, p, &[], None) } else { p };
                 self.points = vec![start];
+                self.pressures = if self.id == "paintbrush" { vec![ev.pressure] } else { vec![] };
                 self.pen_samples = vec![pen_sample(ev)];
                 vec![]
             }
@@ -283,6 +294,9 @@ impl Tool for GestureTool {
                     return vec![];
                 }
                 self.points.push(p);
+                if self.id == "paintbrush" {
+                    self.pressures.push(ev.pressure);
+                }
                 self.pen_samples.push(pen_sample(ev));
                 if !self.draws_path() {
                     return vec![];
@@ -305,6 +319,9 @@ impl Tool for GestureTool {
                 self.snap.clear();
                 if self.points.last().is_some_and(|l| l.distance(p) >= cx.tol(1.0)) {
                     self.points.push(end);
+                    if self.id == "paintbrush" {
+                        self.pressures.push(ev.pressure);
+                    }
                     self.pen_samples.push(pen_sample(ev));
                 } else if self.snaps()
                     && self.points.len() > 1
@@ -317,6 +334,7 @@ impl Tool for GestureTool {
                 self.active = false;
                 self.began = false;
                 self.points.clear();
+                self.pressures.clear();
                 self.pen_samples.clear();
                 self.tracker.reset();
                 self.learned.reset();
@@ -347,6 +365,7 @@ impl Tool for GestureTool {
                 self.active = false;
                 self.began = false;
                 self.points.clear();
+                self.pressures.clear();
                 self.pen_samples.clear();
                 self.tracker.reset();
                 self.learned.reset();
@@ -363,12 +382,16 @@ impl Tool for GestureTool {
             _ => vec![],
         }
     }
+    fn claims_key(&self, _cx: &ToolContext, key: ToolKey) -> bool {
+        matches!(key, ToolKey::BracketLeft | ToolKey::BracketRight) && matches!(self.id, "blobBrush" | "eraser")
+    }
     fn deactivate(&mut self, _cx: &ToolContext) -> Vec<Action> {
         let began = self.began;
         self.snap.clear();
         self.active = false;
         self.began = false;
         self.points.clear();
+        self.pressures.clear();
         self.pen_samples.clear();
         self.tracker.reset();
         self.learned.reset();
@@ -506,6 +529,29 @@ mod tests {
         let acts = drag(&mut t, &cx, &[(102.0, 98.0), (151.0, 300.0)], Mods::default());
         let Some(Action::Preview(_, v)) = acts.last().and_then(|a| a.first()) else { panic!("{acts:?}") };
         assert_eq!(v["points"][0], json!([102.0, 98.0]));
+    }
+
+    /// #852: the Paintbrush sends each point's pen pressure; a mouse (always fully pressed) and
+    /// the Pencil send plain points.
+    #[test]
+    fn paintbrush_sends_pen_pressure() {
+        let (d, _) = doc_with_rect();
+        let s = Selection::default();
+        let p = paint();
+        let cx = cx(&d, &s, &p);
+        let stroke = |id: &str, pressures: [f32; 3]| {
+            let mut t = GestureTool::new(id);
+            let kinds = [PointerKind::Down, PointerKind::Drag, PointerKind::Up];
+            let mut last = vec![];
+            for ((k, x), f) in kinds.into_iter().zip([0.0, 40.0, 80.0]).zip(pressures) {
+                last = t.pointer(&cx, &PointerEvent { pressure: f, ..PointerEvent::new(k, x, 0.0) });
+            }
+            let Some(Action::Preview(_, v)) = last.first() else { panic!("{last:?}") };
+            v["points"].clone()
+        };
+        assert_eq!(stroke("paintbrush", [0.25, 0.5, 1.0]), json!([[0.0, 0.0, 0.25], [40.0, 0.0, 0.5], [80.0, 0.0, 1.0]]));
+        assert_eq!(stroke("paintbrush", [1.0; 3]), json!([[0.0, 0.0], [40.0, 0.0], [80.0, 0.0]]));
+        assert_eq!(stroke("pencil", [0.25, 0.5, 1.0]), json!([[0.0, 0.0], [40.0, 0.0], [80.0, 0.0]]));
     }
 
     #[test]

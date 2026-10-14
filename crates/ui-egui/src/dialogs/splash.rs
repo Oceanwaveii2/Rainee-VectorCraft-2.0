@@ -13,7 +13,7 @@ pub struct SplashState {
 
 impl Default for SplashState {
     fn default() -> Self {
-        Self { open: true, start_time: 0.0, texture: None, loaded_path: None }
+        Self { open: !cfg!(test), start_time: 0.0, texture: None, loaded_path: None }
     }
 }
 

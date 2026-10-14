@@ -175,7 +175,7 @@ pub fn finish(app: &VectorcraftApp, ctx: &egui::Context) {
         let (w, h) = dimensions(screen.width(), screen.height());
         let mut rgba = image::RgbaImage::new(w as u32, h as u32);
         let source_rect = Rect::from_center_size(canvas.center(), vec2(k.w as f32 / k.ppp, k.h as f32 / k.ppp));
-        let old = Xf { rect: source_rect, zoom: k.zoom, center: vectorcraft_geom::Point::new(k.cx, k.cy), rot: k.rot };
+        let old = Xf { rect: source_rect, zoom: k.zoom, center: vectorcraft_geom::Point::new(k.cx, k.cy), rot: k.rot.to_radians() };
         for y in 0..h {
             for x in 0..w {
                 let p = screen.min + vec2((x as f32 + 0.5) * screen.width() / w as f32, (y as f32 + 0.5) * screen.height() / h as f32);

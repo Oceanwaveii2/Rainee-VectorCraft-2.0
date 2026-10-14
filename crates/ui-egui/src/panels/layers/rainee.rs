@@ -1,6 +1,7 @@
 //! Thumbnail-led desktop adaptation; editor hierarchy and commands stay authoritative.
 use super::*;
 use vectorcraft_color::BlendMode;
+use vectorcraft_doc::strata::{StrataState, layer_strata};
 
 fn target_key() -> egui::Id {
     key("rainee-blend-target")
@@ -22,6 +23,12 @@ pub(super) fn inline_blend(app: &mut VectorcraftApp, ui: &mut Ui) {
         ui.data_mut(|d| d.remove::<(u64, NodeId)>(target_key()));
         return;
     };
+    let current_strata = app
+        .session
+        .active()
+        .filter(|d| d.uid == uid)
+        .map(|d| layer_strata(&d.doc, id))
+        .unwrap_or_default();
     let tokens = Tokens::get(ui.ctx());
     egui::Frame::NONE.fill(tokens.input).corner_radius(8).inner_margin(10).show(ui, |ui| {
         ui.horizontal(|ui| {
@@ -45,6 +52,30 @@ pub(super) fn inline_blend(app: &mut VectorcraftApp, ui: &mut Ui) {
             if let Some(value) = value {
                 opacity = value * 100.0;
                 super::super::live_run(app, "Layer opacity", "transparency.set", json!({"ids":[id.0],"item":null,"opacity":opacity}), phase);
+            }
+            if node.is_layer() {
+                ui.horizontal_wrapped(|ui| {
+                    ui.label("Strata:");
+                    for (state, short) in [
+                        (StrataState::VectorDry, "Dry"),
+                        (StrataState::WetFluid, "Wet"),
+                        (StrataState::DampSet, "Damp"),
+                        (StrataState::DryGlaze, "Glaze"),
+                    ] {
+                        if ui.selectable_label(current_strata.state == state, short).clicked()
+                            && current_strata.state != state
+                            && let Err(e) = app.run("layer.setStrata", json!({"ids":[id.0],"state":state.id()}))
+                        {
+                            app.status(e);
+                        }
+                    }
+                    if matches!(current_strata.state, StrataState::WetFluid | StrataState::DampSet)
+                        && ui.small_button("Cure").on_hover_text("Advance wet strata drying stage").clicked()
+                        && let Err(e) = app.run("layer.cureWetStrata", json!({"ids":[id.0]}))
+                    {
+                        app.status(e);
+                    }
+                });
             }
             let mut group: u8 = super::super::pstate(ui.ctx(), "rainee-blend-group");
             ui.horizontal_wrapped(|ui| {
@@ -133,11 +164,21 @@ pub(super) fn row(ui: &mut Ui, view: &View, item: &Row, out: &mut Out) {
             )
             .on_hover_text(n.display_name());
     }
+    let strata_props = n.is_layer().then(|| layer_strata(view.doc, n.id)).unwrap_or_default();
     let badge_r = egui::Rect::from_center_size(egui::pos2(r.right() - 41.0, r.center().y), vec2(22.0, 24.0));
     let badge = ui.interact(badge_r, ui.id().with(("rainee-blend", n.id.0)), Sense::click());
-    let label = blend_badge(n.blend);
+    let label = if strata_props.is_active() && n.blend == BlendMode::Normal {
+        strata_props.state.badge()
+    } else {
+        blend_badge(n.blend)
+    };
     ui.painter().text(badge_r.center(), egui::Align2::CENTER_CENTER, label, egui::FontId::proportional(12.0), view.t.text);
-    if badge.on_hover_text(format!("{} · {:.0}% opacity", n.blend.label(), n.opacity * 100.0)).clicked()
+    let hover_txt = if strata_props.is_active() {
+        format!("{} · {:.0}% opacity · {}", n.blend.label(), n.opacity * 100.0, strata_props.state.label())
+    } else {
+        format!("{} · {:.0}% opacity", n.blend.label(), n.opacity * 100.0)
+    };
+    if badge.on_hover_text(hover_txt).clicked()
         && let Some(uid) = ui.data(|d| d.get_temp::<u64>(egui::Id::new("layers-doc")))
     {
         ui.data_mut(|d| {
@@ -183,6 +224,10 @@ pub(super) fn row(ui: &mut Ui, view: &View, item: &Row, out: &mut Out) {
         }
         if ui.button(if n.locked { "Unlock" } else { "Lock" }).clicked() {
             out.actions.push(("layer.setProps".into(), json!({"ids":[n.id.0],"locked":!n.locked})));
+            ui.close();
+        }
+        if n.is_layer() && matches!(strata_props.state, StrataState::WetFluid | StrataState::DampSet) && ui.button("Cure Wet Layer").clicked() {
+            out.actions.push(("layer.cureWetStrata".into(), json!({"ids":[n.id.0]})));
             ui.close();
         }
         if ui.button("Layer / Object Options").clicked() {

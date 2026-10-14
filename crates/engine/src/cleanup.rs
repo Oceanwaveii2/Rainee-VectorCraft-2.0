@@ -93,13 +93,13 @@ pub(crate) fn plain(node: &Node) -> bool {
         && !node.locked
         && node.opacity == 1.0
         && node.blend == vectorcraft_color::BlendMode::Normal
-        && node.mask.is_none()
-        && node.perspective.is_none()
-        && node.trace.is_none()
-        && node.wrap.is_none()
-        && node.graph.is_none()
-        && node.shaper.is_none()
-        && node.slice.is_none()
+        && node.extras().mask.is_none()
+        && node.extras().perspective.is_none()
+        && node.extras().trace.is_none()
+        && node.extras().wrap.is_none()
+        && node.extras().graph.is_none()
+        && node.extras().shaper.is_none()
+        && node.extras().slice.is_none()
         && node.appearance.is_basic()
         && node.appearance.fill_paint().is_none()
         && !st.paint.is_none()
@@ -149,7 +149,7 @@ pub(crate) fn capture(s: &Session, ids: &[NodeId], tolerance: f64, deviation: f6
         if let Some(ancestors) = doc.ancestry(*id) {
             for a in ancestors.into_iter().filter(|a| a != id) {
                 if let Some(n) = doc.node(a)
-                    && (n.mask.is_some()
+                    && (n.extras().mask.is_some()
                         || !n.appearance.effects.is_empty()
                         || matches!(n.kind, NodeKind::Group { clip: true, .. } | NodeKind::Layer { clip: true, .. }))
                 {
@@ -280,7 +280,7 @@ impl Session {
                 profiles::transfer(&mut fit, &group.points)?;
                 fit.id = doc.alloc_id();
                 fit.name = Some("Cleaned Stroke".into());
-                fit.kind = Node::path(fit.id, PathData::single(SubPath::polyline(&group.points, false)), fit.appearance.clone()).kind;
+                fit.kind = Node::path(fit.id, PathData::single(SubPath::polyline(&group.points, false)), (*fit.appearance).clone()).kind;
                 let id = doc.insert(parent, at + 1, fit)?;
                 selected.push(id);
             }

@@ -74,3 +74,44 @@ impl Tracker {
         Some((p, p + delta * (max / delta.hypot().max(max))))
     }
 }
+
+/// 1D 1 Euro filter for scalar values (e.g. pressure, tilt angle, azimuth).
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct OneEuro1D {
+    raw: Option<f64>,
+    filtered: Option<f64>,
+    derivative: f64,
+    time: Option<f64>,
+}
+
+impl OneEuro1D {
+    pub fn reset(&mut self) {
+        *self = Self::default();
+    }
+
+    pub fn filter(&mut self, val: f64, t: f64, min_cutoff: f64, beta: f64) -> f64 {
+        if !val.is_finite() || !t.is_finite() {
+            return self.filtered.unwrap_or(0.0);
+        }
+        let dt = self.time.map_or(1.0 / 120.0, |prev| (t - prev).clamp(1e-4, 0.1));
+        if self.raw.is_none() || !(0.0..=0.1).contains(&dt) || dt == 0.0 {
+            self.raw = Some(val);
+            self.filtered = Some(val);
+            self.time = Some(t);
+            self.derivative = 0.0;
+            return val;
+        }
+        let previous_raw = self.raw.unwrap_or(val);
+        let previous = self.filtered.unwrap_or(val);
+        let speed = (val - previous_raw) / dt;
+        let da = alpha(1.0, dt);
+        self.derivative = self.derivative * (1.0 - da) + speed * da;
+        let cutoff = min_cutoff.max(0.1) + beta.max(0.0) * self.derivative.abs();
+        let a = alpha(cutoff, dt);
+        let filtered = previous + a * (val - previous);
+        self.raw = Some(val);
+        self.filtered = Some(filtered);
+        self.time = Some(t);
+        filtered
+    }
+}

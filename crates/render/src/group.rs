@@ -1,16 +1,19 @@
 //! Transparency groups: groups with opacity or a blend mode, clip groups, opacity masks, the page
-//! group. Most are vello layers, which are isolated (their content starts from transparency). A
-//! non-isolated group whose content blends is drawn offscreen over a copy of its backdrop, so its
-//! children blend with the art below it, then mixed back in (backdrop-copy compositing).
+//! group, and Wet Strata optical glaze layers. Most are vello layers, which are isolated (their
+//! content starts from transparency). A non-isolated group whose content blends is drawn offscreen
+//! over a copy of its backdrop, so its children blend with the art below it, then mixed back in
+//! (backdrop-copy compositing).
 
 use std::sync::Arc;
 
 use vectorcraft_color::BlendMode as Blend;
 use vectorcraft_doc::Node;
+use vectorcraft_doc::strata::{LayerStrataProps, StrataState};
 use vectorcraft_geom::{Affine, BezPath, FillRule, Rect};
 use vello_cpu::peniko::{self, BlendMode, Compose, Mix};
 use vello_cpu::{Pixmap, RenderContext};
 
+use crate::km_optics::{kubelka_munk_glaze, subtractive_pigment_lerp};
 use crate::{Frame, Renderer, blend_mode, fill_rule};
 
 /// How a group composites onto what is below it.
@@ -27,11 +30,22 @@ pub(crate) struct Composite<'a> {
     pub blends: bool,
     /// Area the content covers (document space); `None` = anywhere.
     pub bounds: Option<Rect>,
+    /// Optional Wet Strata / Kubelka-Munk optical glazing state for a layer.
+    pub strata: Option<LayerStrataProps>,
 }
 
 impl Default for Composite<'_> {
     fn default() -> Self {
-        Self { clip: None, blend: Blend::Normal, opacity: 1.0, mask: None, isolated: false, blends: false, bounds: None }
+        Self {
+            clip: None,
+            blend: Blend::Normal,
+            opacity: 1.0,
+            mask: None,
+            isolated: false,
+            blends: false,
+            bounds: None,
+            strata: None,
+        }
     }
 }
 
@@ -54,7 +68,9 @@ impl Renderer {
     /// no layer open around it, else it is drawn isolated), from transparency when it is (so
     /// non-isolated groups inside can copy their backdrop).
     pub(crate) fn group(&mut self, ctx: &mut RenderContext, f: &Frame, c: Composite, draw: &mut Content) {
+        let strata_active = c.strata.as_ref().is_some_and(LayerStrataProps::is_active);
         if c.blends
+            && !strata_active
             && !c.isolated
             && c.opacity >= 1.0
             && c.blend == Blend::Normal
@@ -72,7 +88,7 @@ impl Renderer {
             ctx.pop_clip_path();
             return;
         }
-        if c.blends && (c.isolated || self.nested == 0) {
+        if (c.blends || strata_active) && (c.isolated || self.nested == 0) {
             return self.group_offscreen(ctx, f, c, draw);
         }
         ctx.set_transform(f.view);
@@ -90,13 +106,13 @@ impl Renderer {
     }
 
     fn group_offscreen(&mut self, ctx: &mut RenderContext, f: &Frame, c: Composite, draw: &mut Content) {
-        let Composite { clip, blend, opacity, mask, isolated, bounds, .. } = c;
+        let Composite { clip, blend, opacity, mask, isolated, bounds, strata, .. } = c;
         let Some(r) = region(ctx, f, bounds) else { return };
         let view = Affine::translate((-(r.x as f64), -(r.y as f64))) * f.view;
         let visible = view.inverse().transform_rect_bbox(Rect::new(0.0, 0.0, r.w as f64, r.h as f64));
         let sub = Frame { mt: false, view, visible, ..*f };
-        let backdrop = (!isolated).then(|| self.flatten(ctx, r));
-        let content = self.offscreen(r, &sub, backdrop.clone(), draw);
+        let strata_active = strata.filter(LayerStrataProps::is_active);
+        let backdrop = (!isolated || strata_active.is_some()).then(|| self.flatten(ctx, r));
         let at = (r.x as f64, r.y as f64);
         let push = |ctx: &mut RenderContext, mode: BlendMode, mask: Option<vello_cpu::Mask>| {
             ctx.set_transform(f.view);
@@ -105,6 +121,20 @@ impl Renderer {
             }
             ctx.push_layer(clip.map(|(p, _)| p), Some(mode), Some(opacity), mask, None);
         };
+        if let (Some(st), Some(b)) = (strata_active, &backdrop) {
+            let alone = self.offscreen(r, &sub, None, draw);
+            let glazed = composite_strata_pixmap(&alone, b, st);
+            push(ctx, BlendMode::new(Mix::Normal, Compose::DestOut), mask.clone());
+            ctx.set_transform(Affine::IDENTITY);
+            ctx.set_paint(peniko::Color::BLACK);
+            ctx.fill_rect(&Rect::new(at.0, at.1, at.0 + r.w as f64, at.1 + r.h as f64));
+            ctx.pop_layer();
+            push(ctx, BlendMode::new(Mix::Normal, Compose::Plus), mask);
+            draw_pixmap(ctx, Arc::new(glazed), at);
+            ctx.pop_layer();
+            return;
+        }
+        let content = self.offscreen(r, &sub, backdrop.clone(), draw);
         match backdrop {
             // The backdrop under the content, mixed with it by opacity, mask and clip: take that
             // share of the backdrop out, then add the same share of the content.
@@ -135,9 +165,7 @@ impl Renderer {
     /// Render what `ctx` holds so far, and start it again from that picture (so later drawing sees
     /// it unchanged). Returns the pixels of `r`.
     fn flatten(&mut self, ctx: &mut RenderContext, r: Region) -> Arc<Pixmap> {
-        ctx.flush();
-        let mut all = Pixmap::new(ctx.width(), ctx.height());
-        ctx.render(&mut all, &mut self.resources);
+        let all = self.finish(ctx, self.raster);
         ctx.reset();
         let crop = if (r.x, r.y, r.w, r.h) == (0, 0, all.width(), all.height()) {
             None
@@ -151,7 +179,14 @@ impl Renderer {
             Some(Arc::new(out))
         };
         let all = Arc::new(all);
-        draw_pixmap(ctx, all.clone(), (0.0, 0.0));
+        // With 8-bit compositing, rendering over the picture gives the pixels that drawing it back
+        // as an image gives: the context starts again empty, and `finish` renders what it draws
+        // next over the picture. With floating-point compositing the picture is drawn back.
+        if self.raster.render_mode == vello_cpu::RenderMode::OptimizeSpeed {
+            self.picture = Some(all.clone());
+        } else {
+            draw_pixmap(ctx, all.clone(), (0.0, 0.0));
+        }
         for (path, rule, xf) in &self.clip_paths {
             ctx.set_transform(*xf);
             ctx.set_fill_rule(fill_rule(*rule));
@@ -160,18 +195,36 @@ impl Renderer {
         crop.unwrap_or(all)
     }
 
+    /// Render what `ctx` holds into a pixmap of its size: over the picture [`Self::flatten`]
+    /// started it again from, if any, else over transparency.
+    pub(crate) fn finish(&mut self, ctx: &mut RenderContext, settings: vello_cpu::RasterizerSettings) -> Pixmap {
+        ctx.flush();
+        let Some(below) = self.picture.take() else {
+            let mut pm = Pixmap::new(ctx.width(), ctx.height());
+            ctx.render_with(&mut pm, &mut self.resources, settings);
+            return pm;
+        };
+        let mut pm = Arc::unwrap_or_clone(below);
+        let over = vello_cpu::RasterizerSettings { composite_mode: vello_cpu::CompositeMode::SrcOver, ..settings };
+        ctx.render_with(&mut pm, &mut self.resources, over);
+        pm
+    }
+
     /// `draw` rendered into a new context of region `r` (frame `sub`), over `backdrop` if any.
     fn offscreen(&mut self, r: Region, sub: &Frame, backdrop: Option<Arc<Pixmap>>, draw: &mut Content) -> Pixmap {
         let mut ctx = sub.offscreen_context(r.w, r.h);
         if let Some(b) = &backdrop {
             draw_pixmap(&mut ctx, b.clone(), (0.0, 0.0));
         }
-        let outer = (std::mem::replace(&mut self.nested, 0), std::mem::replace(&mut self.backdrop, backdrop), std::mem::take(&mut self.clip_paths));
+        let outer = (
+            std::mem::replace(&mut self.nested, 0),
+            std::mem::replace(&mut self.backdrop, backdrop),
+            std::mem::take(&mut self.clip_paths),
+            self.picture.take(),
+        );
         draw(self, &mut ctx, sub);
-        (self.nested, self.backdrop, self.clip_paths) = outer;
-        ctx.flush();
-        let mut pm = Pixmap::new(r.w, r.h);
-        ctx.render(&mut pm, &mut self.resources);
+        let pm = self.finish(&mut ctx, self.raster);
+        (self.nested, self.backdrop, self.clip_paths, self.picture) = outer;
         pm
     }
 
@@ -244,10 +297,18 @@ impl Renderer {
 /// Draw `pm` with its top-left corner at pixel `at` (whole pixels: copied exactly).
 pub(crate) fn draw_pixmap(ctx: &mut RenderContext, pm: Arc<Pixmap>, at: (f64, f64)) {
     let (w, h) = (pm.width() as f64, pm.height() as f64);
+    #[cfg(test)]
+    PIXELS_DRAWN.with(|n| n.set(n.get() + u64::from(pm.width()) * u64::from(pm.height())));
     ctx.set_transform(Affine::translate(at));
     ctx.set_paint(vello_cpu::Image { image: vello_cpu::ImageSource::Pixmap(pm), sampler: peniko::ImageSampler::default() });
     ctx.fill_rect(&Rect::new(0.0, 0.0, w, h));
     ctx.set_transform(Affine::IDENTITY);
+}
+
+#[cfg(test)]
+thread_local! {
+    /// The pixels [`draw_pixmap`] has drawn on this thread.
+    pub(crate) static PIXELS_DRAWN: std::cell::Cell<u64> = const { std::cell::Cell::new(0) };
 }
 
 /// The pixel region of `ctx` that `bounds` (document space) covers, with a margin for
@@ -272,4 +333,59 @@ fn remove_backdrop(mut content: Pixmap, alone: &Pixmap, backdrop: &Pixmap) -> Pi
         (c.r, c.g, c.b, c.a) = (sub(c.r, b.r), sub(c.g, b.g), sub(c.b, b.b), a.a);
     }
     content
+}
+
+/// Composites `alone` (the layer rendered over transparency) over `backdrop` using Kubelka-Munk
+/// optical glazing (`DryGlaze` / `DampSet`) or subtractive wet pigment mixing (`WetFluid`).
+fn composite_strata_pixmap(alone: &Pixmap, backdrop: &Pixmap, strata: LayerStrataProps) -> Pixmap {
+    let mut out = backdrop.clone();
+    let thickness_scale = strata.glaze_thickness.clamp(0.05, 4.0);
+    let wet_mix = strata.wetness_retention.clamp(0.0, 1.0) * 0.55;
+
+    for (dst, fg) in out.data_mut().iter_mut().zip(alone.data()) {
+        if fg.a == 0 {
+            continue;
+        }
+        let fg_a = f32::from(fg.a) / 255.0;
+        let unpremul = |c: u8, a: u8| -> u8 {
+            if a == 0 {
+                255
+            } else {
+                ((u32::from(c) * 255 + u32::from(a) / 2) / u32::from(a)).min(255) as u8
+            }
+        };
+        let fg_rgb = [unpremul(fg.r, fg.a), unpremul(fg.g, fg.a), unpremul(fg.b, fg.a)];
+        let bg_rgb = if dst.a == 0 {
+            [250, 248, 242]
+        } else {
+            [unpremul(dst.r, dst.a), unpremul(dst.g, dst.a), unpremul(dst.b, dst.a)]
+        };
+
+        let optical_rgb = match strata.state {
+            StrataState::WetFluid => {
+                let mixed = subtractive_pigment_lerp(bg_rgb, fg_rgb, (fg_a * (0.45 + wet_mix)).clamp(0.05, 0.95));
+                kubelka_munk_glaze(mixed, (fg_a * thickness_scale).max(0.05), bg_rgb)
+            }
+            StrataState::DampSet => {
+                let d = (fg_a * thickness_scale * 1.15).max(0.05);
+                kubelka_munk_glaze(fg_rgb, d, bg_rgb)
+            }
+            StrataState::DryGlaze | StrataState::VectorDry => {
+                let d = (fg_a * thickness_scale).max(0.05);
+                kubelka_munk_glaze(fg_rgb, d, bg_rgb)
+            }
+        };
+
+        let bg_a = f32::from(dst.a) / 255.0;
+        let out_a = (fg_a + bg_a * (1.0 - fg_a)).clamp(0.0, 1.0);
+        let blend_ch = |opt_c: u8, bg_c: u8| -> u8 {
+            let s = f32::from(opt_c) * fg_a + f32::from(bg_c) * bg_a * (1.0 - fg_a);
+            s.round().clamp(0.0, 255.0) as u8
+        };
+        dst.r = blend_ch(optical_rgb[0], bg_rgb[0]);
+        dst.g = blend_ch(optical_rgb[1], bg_rgb[1]);
+        dst.b = blend_ch(optical_rgb[2], bg_rgb[2]);
+        dst.a = (out_a * 255.0).round().clamp(0.0, 255.0) as u8;
+    }
+    out
 }

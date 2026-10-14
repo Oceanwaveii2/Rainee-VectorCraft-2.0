@@ -183,7 +183,7 @@ impl Session {
             if doc.ancestry(*id).is_some_and(|a| {
                 a.iter().any(|id| {
                     doc.node(*id).is_some_and(|n| {
-                        n.mask.is_some()
+                        n.extras().mask.is_some()
                             || !n.appearance.effects.is_empty()
                             || matches!(n.kind, NodeKind::Group { clip: true, .. } | NodeKind::Layer { clip: true, .. })
                     })
@@ -356,13 +356,13 @@ impl Session {
                     * Affine::scale_non_uniform(p.region.width() / p.size[0] as f64, p.region.height() / p.size[1] as f64);
                 let mut raster = Node::new(
                     id,
-                    NodeKind::Image(ImageObject { key, width: p.size[0], height: p.size[1], xf, link: None, placement: Default::default() }),
+                    NodeKind::Image(Box::new(ImageObject { key, width: p.size[0], height: p.size[1], xf, link: None, placement: Default::default() })),
                 );
                 raster.name = Some("NeuBE raster appearance (regenerate after source edits)".into());
                 children.push(Arc::new(raster));
                 let mut group = Node::group(d.alloc_id(), children);
                 group.name = Some("Neural brush + editable vector sources".into());
-                group.attrs = Some(Box::new(vectorcraft_doc::ObjectAttributes {
+                group.extras_mut().attrs = Some(Box::new(vectorcraft_doc::ObjectAttributes {
                     note:
                         "NeuBE raster appearance. Use Release Neural Appearance to restore visible editable vectors, then regenerate after editing."
                             .into(),

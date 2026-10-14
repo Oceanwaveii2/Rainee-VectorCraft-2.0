@@ -230,7 +230,7 @@ pub(crate) fn fallback_geometry(path: &BezPath, brush: &NaturalBrush, stroke: &S
     }
     let plain = StrokeLayer::new(stroke.paint.clone(), 1.0);
     let nib = crate::Calligraphic { size: width.clamp(0.01, MAX_WIDTH), ..Default::default() };
-    crate::calli::calligraphic(&nib, &simplified, 1.0, &stroke.paint, "Natural bounded fallback", &plain)
+    crate::calli::calligraphic(&nib, &simplified, 1.0, &plain, "Natural bounded fallback")
 }
 
 fn control_length(seg: &PathSeg) -> f64 {
@@ -861,15 +861,16 @@ mod tests {
     #[test]
     fn routed_stroke_respects_weight_pressure_asymmetry_and_tilt() {
         use crate::{Brush, BrushKind, stroke_pieces};
-        use vectorcraft_doc::{NibProfile, WidthProfile};
+        use vectorcraft_doc::{Document, NibProfile, WidthProfile};
+        let doc = Document::new(200.0, 200.0);
         let brush = Brush { name: "test".into(), kind: BrushKind::Natural(NaturalBrush { width: 4.0, ..Default::default() }) };
         let mut stroke = StrokeLayer::new(Paint::solid(Color::BLACK), 1.0);
-        let plain = stroke_pieces(&brush, &line(), &stroke);
+        let plain = stroke_pieces(&doc, &brush, &line(), &stroke);
         stroke.width = 2.0;
-        let weighted = stroke_pieces(&brush, &line(), &stroke);
+        let weighted = stroke_pieces(&doc, &brush, &line(), &stroke);
         assert!(bounds(&weighted).height() > bounds(&plain).height() * 1.7);
         stroke.profile = Some(WidthProfile { points: vec![(0.0, 0.0, 0.0), (0.5, 2.0, 0.3), (1.0, 0.0, 0.0)] });
-        let pressure = stroke_pieces(&brush, &line(), &stroke);
+        let pressure = stroke_pieces(&doc, &brush, &line(), &stroke);
         assert_ne!(signature(&weighted), signature(&pressure));
         let bb = bounds(&pressure);
         assert!(bb.y1 > -bb.y0 * 3.0);
@@ -887,10 +888,10 @@ mod tests {
             .fold(0.0, f64::max);
         assert!(middle > ends * 3.0);
         stroke.nib = Some(NibProfile { points: vec![(0.0, 0.0, 0.2), (1.0, 0.0, 0.2)] });
-        let tilted = stroke_pieces(&brush, &line(), &stroke);
+        let tilted = stroke_pieces(&doc, &brush, &line(), &stroke);
         assert!(bounds(&tilted).height() < bounds(&pressure).height() * 0.3);
         stroke.width = 0.0;
-        assert!(stroke_pieces(&brush, &line(), &stroke).is_empty());
+        assert!(stroke_pieces(&doc, &brush, &line(), &stroke).is_empty());
     }
 
     #[test]
@@ -972,7 +973,8 @@ mod tests {
                 .collect(),
         });
         stroke.nib = Some(NibProfile { points: positions().map(|t| (t, 80.0 * t, 0.35 + 0.6 * t)).collect() });
-        let (nodes, diagnostic) = stroke_pieces_with_diagnostic(&brush, &line(), &stroke);
+        let doc = vectorcraft_doc::Document::new(200.0, 200.0);
+        let (nodes, diagnostic) = stroke_pieces_with_diagnostic(&doc, &brush, &line(), &stroke);
         assert_eq!(diagnostic, None, "actual-sample profiles must not trigger ordinary fallback");
         assert_eq!(nodes.len(), settings.fibers);
         assert_eq!(signature(&nodes), signature(&stroke_geometry(&line(), &settings, &stroke).unwrap()));
@@ -989,7 +991,8 @@ mod tests {
     #[test]
     fn oversized_strokes_keep_bounded_calligraphic_art_and_diagnostic() {
         use crate::{Brush, BrushKind, stroke_pieces, stroke_pieces_with_diagnostic};
-        use vectorcraft_doc::WidthProfile;
+        use vectorcraft_doc::{Document, WidthProfile};
+        let doc = Document::new(400.0, 400.0);
         let brush = Brush { name: "fallback test".into(), kind: BrushKind::Natural(NaturalBrush::default()) };
         let mut p = BezPath::new();
         p.move_to((0.0, 0.0));
@@ -999,43 +1002,45 @@ mod tests {
         }
         let before = p.clone();
         let s = StrokeLayer::new(Paint::solid(Color::BLACK), 1.0);
-        let (out, diagnostic) = stroke_pieces_with_diagnostic(&brush, &p, &s);
+        let (out, diagnostic) = stroke_pieces_with_diagnostic(&doc, &brush, &p, &s);
         assert_eq!(diagnostic, Some(NaturalError::TooManyElements));
         assert!(!out.is_empty());
         assert_eq!(p, before);
-        assert_eq!(signature(&out), signature(&stroke_pieces(&brush, &p, &s)));
-        assert_eq!(signature(&out), signature(&stroke_pieces_with_diagnostic(&brush, &p, &s).0));
+        assert_eq!(signature(&out), signature(&stroke_pieces(&doc, &brush, &p, &s)));
+        assert_eq!(signature(&out), signature(&stroke_pieces_with_diagnostic(&doc, &brush, &p, &s).0));
         let anchors: usize = out.iter().map(|n| n.path_data().unwrap().anchors().count()).sum();
         assert!(anchors <= MAX_FALLBACK_ANCHORS);
         let bb = bounds(&out);
         assert!(bb.x0 <= 0.0 && bb.x1 >= 400.0);
         assert!(bb.y0 >= -3.5 && bb.y1 <= 3.5);
         let wide = StrokeLayer::new(s.paint.clone(), 4.0);
-        let wide_out = stroke_pieces_with_diagnostic(&brush, &p, &wide).0;
+        let wide_out = stroke_pieces_with_diagnostic(&doc, &brush, &p, &wide).0;
         assert!(bounds(&wide_out).height() > bb.height());
         let mut profile = s.clone();
         profile.profile = Some(WidthProfile { points: vec![(0.0, 1.0, 1.0); MAX_PROFILE_POINTS + 1] });
-        let (out, diagnostic) = stroke_pieces_with_diagnostic(&brush, &line(), &profile);
+        let (out, diagnostic) = stroke_pieces_with_diagnostic(&doc, &brush, &line(), &profile);
         assert_eq!(diagnostic, Some(NaturalError::InvalidProfile));
         assert!(!out.is_empty());
         let oversized_weight = StrokeLayer::new(s.paint.clone(), 5000.0);
-        let (out, diagnostic) = stroke_pieces_with_diagnostic(&brush, &line(), &oversized_weight);
+        let (out, diagnostic) = stroke_pieces_with_diagnostic(&doc, &brush, &line(), &oversized_weight);
         assert_eq!(diagnostic, Some(NaturalError::InvalidWidth));
         assert!(!out.is_empty());
         assert!(bounds(&out).height() <= MAX_WIDTH + 1e-6);
         for width in [f64::INFINITY, f64::NAN, -1.0] {
-            let (out, diagnostic) = stroke_pieces_with_diagnostic(&brush, &line(), &StrokeLayer::new(s.paint.clone(), width));
+            let (out, diagnostic) = stroke_pieces_with_diagnostic(&doc, &brush, &line(), &StrokeLayer::new(s.paint.clone(), width));
             assert!(out.is_empty());
             assert_eq!(diagnostic, Some(NaturalError::InvalidWidth));
         }
         let mut invalid = p.clone();
         invalid.line_to((f64::INFINITY, 0.0));
-        assert!(stroke_pieces_with_diagnostic(&brush, &invalid, &s).0.is_empty());
+        assert!(stroke_pieces_with_diagnostic(&doc, &brush, &invalid, &s).0.is_empty());
     }
 
     #[test]
     fn huge_source_fallback_bounds_allocations_and_separate_subpaths() {
         use crate::{Brush, BrushKind, stroke_pieces_with_diagnostic};
+        use vectorcraft_doc::Document;
+        let doc = Document::new(1000.0, 1000.0);
         let brush = Brush { name: "stress".into(), kind: BrushKind::Natural(NaturalBrush::default()) };
         let stroke = StrokeLayer::new(Paint::solid(Color::BLACK), 2.0);
         let mut huge = BezPath::new();
@@ -1044,7 +1049,7 @@ mod tests {
             huge.move_to((x, 0.0));
             huge.curve_to((x + 2.0, 4.0), (x + 8.0, -4.0), (x + 10.0, 0.0));
         }
-        let (out, diagnostic) = stroke_pieces_with_diagnostic(&brush, &huge, &stroke);
+        let (out, diagnostic) = stroke_pieces_with_diagnostic(&doc, &brush, &huge, &stroke);
         assert_eq!(diagnostic, Some(NaturalError::TooManyElements));
         assert!(!out.is_empty());
         let anchors: usize = out.iter().map(|n| n.path_data().unwrap().anchors().count()).sum();

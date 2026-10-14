@@ -1,0 +1,18 @@
+================================================================================
+VectorCraft 2.0 / Rainee - Unique Build Summary
+================================================================================
+Unique File:     VC2_b009_Studio-Optics.exe
+Latest Pointer:  VectorCraft-2.0-Latest.exe
+Build Identifier:b009
+Build Timestamp: 2026-10-14_0327
+Git Commit Hash: 46f77f0
+Commit Summary:  Merge Sol UI repairs with Argon Rebelle fluid optics and Super Live Trace
+Feature Tag:     Studio-Optics
+Binary Size:     79.03 MB (82,866,688 bytes)
+SHA-256 Hash:    d943c418236337ad400a939a33acaf815d69798ddc21cdfaddb398a968c7f673
+Security / Lints:#![forbid(unsafe_code)] compliant, zero-panic clippy clean
+Locations:
+  1. D:\DevData\Rainee\builds\VC2_b009_Studio-Optics.exe
+  2. D:\0\Rainee drawing app\ArtCraft-Foundation\VectorCraft - Gemini Edition\builds\VC2_b009_Studio-Optics.exe
+  3. D:\DevData\Rainee\builds\VectorCraft-2.0-Latest.exe
+================================================================================

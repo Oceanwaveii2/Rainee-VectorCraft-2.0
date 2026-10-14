@@ -6,32 +6,51 @@
 //! any of them regenerate the art and nothing else does.
 
 use std::collections::HashMap;
+use std::hash::{DefaultHasher, Hash, Hasher};
 use std::sync::Arc;
 
 use vectorcraft_brush::Brush;
-use vectorcraft_doc::{AppearanceItem, Document, Node, StrokeLayer};
+use vectorcraft_brush::optics_ext::{self, BrushOpticsExt};
+use vectorcraft_doc::{AppearanceItem, Document, Node, NodeKind, StrokeLayer, SymbolBoxes};
 use vectorcraft_geom::{BezPath, Rect};
 use vello_cpu::RenderContext;
 
+use crate::lru::{self, FrameCache};
 use crate::{Frame, Renderer};
 
-struct Entry {
+pub(crate) struct Entry {
     path: BezPath,
     stroke: StrokeLayer,
     brush: Arc<Brush>,
+    optics: Option<BrushOpticsExt>,
     pieces: Arc<Vec<Node>>,
-    stamp: u64,
 }
 
 /// Parsed brush library and generated brush art.
-#[derive(Default)]
 pub(crate) struct BrushCache {
     /// The document value the library was parsed from (`None` = defaults).
-    src: Option<Option<vectorcraft_brush::serde_json::Value>>,
+    src: Option<(Option<vectorcraft_brush::serde_json::Value>, Option<vectorcraft_brush::serde_json::Value>)>,
+    /// A hash of that value (0 for the defaults), which rasters drawing brushed strokes record
+    /// ([`crate::fx::Inputs`]).
+    key: u64,
     /// (frame stamp, document address) the library was last validated for.
     checked: (u64, usize),
     lib: HashMap<String, Arc<Brush>>,
-    entries: HashMap<(u64, usize), Entry>,
+    optics: HashMap<String, BrushOpticsExt>,
+    pub(crate) entries: FrameCache<(u64, usize), Entry>,
+}
+
+impl Default for BrushCache {
+    fn default() -> Self {
+        Self {
+            src: None,
+            key: 0,
+            checked: (0, 0),
+            lib: HashMap::new(),
+            optics: HashMap::new(),
+            entries: FrameCache::new(lru::BRUSH_BUDGET, 512),
+        }
+    }
 }
 
 impl BrushCache {
@@ -42,23 +61,47 @@ impl BrushCache {
         }
         self.checked = key;
         let cur = doc.unknown.get(vectorcraft_brush::DOC_KEY);
-        if self.src.as_ref().is_some_and(|s| s.as_ref() == cur) {
+        let cur_opt = doc.unknown.get(optics_ext::OPTICS_DOC_KEY);
+        if self.src.as_ref().is_some_and(|(s, o)| s.as_ref() == cur && o.as_ref() == cur_opt) {
             return;
         }
-        self.src = Some(cur.cloned());
+        self.src = Some((cur.cloned(), cur_opt.cloned()));
+        self.key = cur.map_or(0, |v| {
+            let mut h = DefaultHasher::new();
+            vectorcraft_brush::serde_json::to_string(v).unwrap_or_default().hash(&mut h);
+            h.finish()
+        });
         self.lib = vectorcraft_brush::library(doc).into_iter().map(|b| (b.name.clone(), Arc::new(b))).collect();
+        self.optics = optics_ext::library_optics(doc);
+    }
+
+    /// [`Self::key`] for the brush library `doc` holds (checked once a frame, `stamp`).
+    pub(crate) fn library_key(&mut self, doc: &Document, stamp: u64) -> u64 {
+        self.library(doc, stamp);
+        self.key
     }
 }
 
-/// Cull bounds that allow for brush art reaching past the stroke (scatter, wide nibs).
-pub(crate) fn cull_bounds(n: &Node) -> Option<Rect> {
-    let b = crate::fx::cull_bounds(n)?;
-    if !vectorcraft_brush::has_brush(n) {
-        return Some(b);
-    }
-    let w = n.appearance.items.iter().filter_map(|i| if let AppearanceItem::Stroke(s) = i { Some(s.width) } else { None }).fold(1.0, f64::max);
-    let pad = 16.0 * w + 8.0;
+/// Cull bounds that allow for brush art reaching past the stroke (scatter, wide nibs), symbol
+/// instances measured by their art from `symbols`, with the brushed strokes in that art.
+pub(crate) fn cull_bounds(symbols: &SymbolBoxes, n: &Node) -> Option<Rect> {
+    let b = crate::fx::cull_bounds(symbols, n)?;
+    let pad = pad(symbols, n);
     Some(b.inflate(pad, pad))
+}
+
+/// How far brush art can paint past `n`'s brushed strokes, or past the brushed strokes in the art
+/// of symbol instance `n`: `16 × w + 8`, where `w` is the widest stroke (at least 1) of `n` when it
+/// has a visible brushed stroke and of the objects in that art that have one
+/// ([`SymbolBoxes::brush_width`]), and 0 when neither has one.
+pub(crate) fn pad(symbols: &SymbolBoxes, n: &Node) -> f64 {
+    let own = vectorcraft_brush::has_brush(n)
+        .then(|| n.appearance.items.iter().filter_map(|i| if let AppearanceItem::Stroke(s) = i { Some(s.width) } else { None }).fold(1.0, f64::max));
+    let art = match &n.kind {
+        NodeKind::SymbolInstance { symbol, .. } => symbols.brush_width(symbol).map(|w| w.max(1.0)),
+        _ => None,
+    };
+    own.into_iter().chain(art).reduce(f64::max).map_or(0.0, |w| 16.0 * w + 8.0)
 }
 
 pub use vectorcraft_brush::instance_art;
@@ -70,20 +113,16 @@ impl Renderer {
         let Some(name) = st.brush.as_deref() else { return false };
         self.brushes.library(f.doc, self.stamp);
         let Some(brush) = self.brushes.lib.get(name).cloned() else { return false };
+        let opt = self.brushes.optics.get(name).cloned();
         let idx = n.appearance.items.iter().position(|i| matches!(i, AppearanceItem::Stroke(s) if std::ptr::eq(s, st))).unwrap_or(usize::MAX);
         let key = (n.id.0, idx);
         let stamp = self.stamp;
-        let pieces = match self.brushes.entries.get_mut(&key) {
-            Some(e) if Arc::ptr_eq(&e.brush, &brush) && e.stroke == *st && e.path == *bp => {
-                e.stamp = stamp;
-                e.pieces.clone()
-            }
+        let pieces = match self.brushes.entries.get(&key, stamp) {
+            Some(e) if Arc::ptr_eq(&e.brush, &brush) && e.optics == opt && e.stroke == *st && e.path == *bp => e.pieces.clone(),
             _ => {
-                let pieces = Arc::new(vectorcraft_brush::stroke_pieces(&brush, bp, st));
-                if self.brushes.entries.len() > 2048 {
-                    self.brushes.entries.retain(|_, e| stamp.saturating_sub(e.stamp) <= 3);
-                }
-                self.brushes.entries.insert(key, Entry { path: bp.clone(), stroke: st.clone(), brush, pieces: pieces.clone(), stamp });
+                let pieces = Arc::new(optics_ext::elevate_stroke_pieces(f.doc, &brush, bp, st, opt.as_ref()));
+                let bytes = size_of::<Entry>() + lru::path_bytes(bp) + pieces.iter().map(lru::node_bytes).sum::<usize>();
+                self.brushes.entries.insert(key, Entry { path: bp.clone(), stroke: st.clone(), brush, optics: opt, pieces: pieces.clone() }, bytes, stamp);
                 pieces
             }
         };
@@ -182,5 +221,99 @@ mod tests {
         d.insert(Some(l), 0, inst).unwrap();
         let img = Renderer::new().render(&d, 100, 100, Affine::IDENTITY, &RenderOptions::default());
         assert_eq!(img.pixel(50, 50), [255, 0, 0, 255]);
+    }
+
+    #[test]
+    fn super_brush_optics_elevate_stroke_and_invalidate_cache() {
+        let mut r = Renderer::new();
+        let mut d = doc_with_line(Some("3 pt. Round"), 2.0);
+        let baseline = render(&mut r, &d);
+
+        let mut opt_map = std::collections::HashMap::new();
+        opt_map.insert(
+            "3 pt. Round".to_string(),
+            vectorcraft_brush::optics_ext::BrushOpticsExt {
+                rebelle_media: Some(vectorcraft_brush::optics_ext::RebelleMedia::WatercolorWash),
+                optical_mode: vectorcraft_brush::optics_ext::OpticalMode::KubelkaMunkWetBleed,
+                coffee_ring_pooling: 1.2,
+                capillary_bleed: 0.9,
+                ..Default::default()
+            },
+        );
+        vectorcraft_brush::optics_ext::store_optics(&mut d, &opt_map);
+        let elevated = render(&mut r, &d);
+        assert_ne!(baseline.pixels, elevated.pixels, "optical glaze and coffee-ring rim must rerender");
+        let cached = render(&mut r, &d);
+        assert_eq!(elevated.pixels, cached.pixels, "second frame hits cache deterministically");
+    }
+
+    #[test]
+    fn an_instance_is_culled_by_the_brushed_strokes_in_its_art() {
+        // The art: a line from (0, 40) to (0, 60) with a 1 pt stroke painted by a 20 pt round nib,
+        // drawn from x -6. The line lies left of the view, and the nib paints 10 pt either side of it.
+        let mut d = Document::new(100.0, 100.0);
+        let mut lib = vectorcraft_brush::library(&d);
+        let Some(vectorcraft_brush::BrushKind::Calligraphic(c)) = lib.iter_mut().find(|b| b.name == "3 pt. Round").map(|b| &mut b.kind) else {
+            panic!("the 3 pt. Round brush")
+        };
+        c.size = 20.0;
+        vectorcraft_brush::store(&mut d, &lib);
+        let mut ap = Appearance::basic(Paint::None, Paint::solid(Color::BLACK), 1.0);
+        ap.stroke_mut().unwrap().brush = Some("3 pt. Round".into());
+        let art = Node::path(vectorcraft_doc::NodeId(0), shapes::line((0.0, 40.0).into(), (0.0, 60.0).into()), ap);
+        d.symbols.push(vectorcraft_doc::Symbol { name: "Nib".into(), art: std::sync::Arc::new(art) });
+        let id = d.alloc_id();
+        let inst = Node::new(id, vectorcraft_doc::NodeKind::SymbolInstance { symbol: "Nib".into(), xf: Affine::translate((-6.0, 0.0)) });
+        let l = d.layers[0].id;
+        d.insert(Some(l), 0, inst).unwrap();
+        let img = render(&mut Renderer::new(), &d);
+        assert!(dark(img.pixel(1, 50)), "{:?}", img.pixel(1, 50));
+    }
+
+    #[test]
+    fn a_repeat_is_culled_by_the_brush_art_of_what_it_holds() {
+        // A one-by-one grid repeat of the line of the test above drawn from x -8, then of an
+        // instance of a symbol of that line: the nib paints 10 pt either side of the line, into
+        // the view.
+        let line = |d: &mut Document| {
+            let mut ap = Appearance::basic(Paint::None, Paint::solid(Color::BLACK), 1.0);
+            ap.stroke_mut().unwrap().brush = Some("3 pt. Round".into());
+            Node::path(d.alloc_id(), shapes::line((0.0, 40.0).into(), (0.0, 60.0).into()), ap)
+        };
+        for instance in [false, true] {
+            let mut d = Document::new(100.0, 100.0);
+            let mut lib = vectorcraft_brush::library(&d);
+            let Some(vectorcraft_brush::BrushKind::Calligraphic(c)) = lib.iter_mut().find(|b| b.name == "3 pt. Round").map(|b| &mut b.kind) else {
+                panic!("the 3 pt. Round brush")
+            };
+            c.size = 20.0;
+            vectorcraft_brush::store(&mut d, &lib);
+            let moved = Affine::translate((-8.0, 0.0));
+            let source = if instance {
+                let art = line(&mut d);
+                d.symbols.push(vectorcraft_doc::Symbol { name: "Nib".into(), art: std::sync::Arc::new(art) });
+                Node::new(d.alloc_id(), vectorcraft_doc::NodeKind::SymbolInstance { symbol: "Nib".into(), xf: moved })
+            } else {
+                let mut n = line(&mut d);
+                n.transform(moved, false);
+                n
+            };
+            let grid = vectorcraft_doc::TileType::Grid;
+            let kind = vectorcraft_doc::RepeatKind::Grid {
+                h_spacing: 0.0,
+                v_spacing: 0.0,
+                rows: 1,
+                cols: 1,
+                grid_type: grid,
+                flip_rows: false,
+                flip_cols: false,
+            };
+            let spec = vectorcraft_doc::RepeatSpec { kind, source: vec![std::sync::Arc::new(source)] };
+            let repeat = Node::new(d.alloc_id(), vectorcraft_doc::NodeKind::Repeat(spec));
+            let l = d.layers[0].id;
+            d.insert(Some(l), 0, repeat).unwrap();
+            let img = render(&mut Renderer::new(), &d);
+            assert!(dark(img.pixel(1, 50)), "an instance: {instance}; {:?}", img.pixel(1, 50));
+        }
     }
 }
