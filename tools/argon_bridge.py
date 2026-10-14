@@ -43,16 +43,17 @@ def run_cmd(cmd: list[str], cwd: str = REPO_ROOT) -> tuple[int, str, str]:
 
 
 def get_git_info() -> tuple[str, str, int]:
-    code, out, _ = run_cmd(["git", "rev-parse", "--short", "HEAD"])
+    git_dir = r"D:\DevData\Rainee\temp\gh_export" if os.path.exists(r"D:\DevData\Rainee\temp\gh_export\.git") else REPO_ROOT
+    code, out, _ = run_cmd(["git", "rev-parse", "--short", "HEAD"], cwd=git_dir)
     git_hash = out.strip() if code == 0 else "unknown"
 
-    code, out, _ = run_cmd(["git", "rev-list", "--count", "HEAD"])
+    code, out, _ = run_cmd(["git", "rev-list", "--count", "HEAD"], cwd=git_dir)
     try:
         commit_count = int(out.strip()) if code == 0 else 1
     except ValueError:
         commit_count = 1
 
-    code, out, _ = run_cmd(["git", "log", "-1", "--pretty=%s"])
+    code, out, _ = run_cmd(["git", "log", "-1", "--pretty=%s"], cwd=git_dir)
     commit_msg = out.strip() if code == 0 else "VectorCraft build"
 
     return git_hash, commit_msg, commit_count
