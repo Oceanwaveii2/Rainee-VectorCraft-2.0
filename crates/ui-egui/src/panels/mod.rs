@@ -22,6 +22,7 @@ pub mod gradient;
 pub mod graphic_styles;
 pub mod history;
 pub mod image_trace;
+pub mod super_trace_ext;
 pub mod info;
 pub mod layers;
 pub mod libraries;

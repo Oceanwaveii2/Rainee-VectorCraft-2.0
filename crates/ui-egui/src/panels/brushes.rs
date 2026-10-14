@@ -305,6 +305,7 @@ fn show_library(app: &mut VectorcraftApp, ui: &mut Ui) {
 }
 
 mod studio_controls;
+pub mod super_studio_ext;
 
 #[derive(Clone, Default)]
 struct Studio {

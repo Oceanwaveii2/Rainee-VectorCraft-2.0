@@ -1825,3 +1825,7 @@ mod tests_setup;
 mod tests_strokegradient;
 #[cfg(test)]
 mod tests_tileedge;
+
+// --- VectorCraft Super Brushes & Fluid Optics ---
+pub mod km_optics;
+pub mod fluid_pipeline;
